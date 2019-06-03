@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author liwl
  * @version 2019-04-18
  */
-@Controller
+@Controller 
 @RequestMapping(value = "${frontPath}/shop/shop")
 public class AppLoginController {
 	
