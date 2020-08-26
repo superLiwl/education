@@ -1,0 +1,64 @@
+<% layout('/layouts/default.html', {title: '问题管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('问题管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<% if(hasPermi('vote:voteQuestion:edit')){ %>
+					<a href="${ctx}/vote/voteQuestion/form" class="btn btn-default btnTool" title="${text('新增问题')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+				<% } %>
+				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${voteQuestion}" action="${ctx}/vote/voteQuestion/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<#form:hidden name="ctrlPermi" value="${@Global.getConfig('user.adminCtrlPermi', '2')}"/>
+				<div class="form-group">
+					<label class="control-label">${text('标题')}：</label>
+					<div class="control-inline">
+						<#form:input path="title" maxlength="200" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('排序')}：</label>
+					<div class="control-inline">
+						<#form:input path="sort" maxlength="4" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('父id')}：</label>
+					<div class="control-inline">
+						<#form:input path="parentId" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	showCheckbox:true,
+	columnModel: [
+		{header:'${text("标题")}', name:'title', index:'a.title', width:150, align:"center"},
+	],
+	treeGrid: true,			// 启用树结构表格
+	defaultExpandLevel: 0,	// 默认展开的层次
+	expandNodeClearPostData: 'id,parentId,', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

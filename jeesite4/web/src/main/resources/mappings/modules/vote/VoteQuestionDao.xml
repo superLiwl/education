@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeesite.modules.vote.dao.VoteQuestionDao">
+
+    <select id="findList" resultType="map">
+        SELECT id,title,sort,tree_level treeLevel,tree_leaf treeLeaf,parent_id parentId,parent_id parentCode,if(parent_id = '0','false','true') as isTreeLeaf,if(parent_id = '0', 'true','false') as isRoot FROM `vote_question`
+        <where>
+            <if test="treeLevel != null and treeLevel != ''">
+                and tree_level = #{treeLevel}
+            </if>
+            <if test="parentId != null and parentId != ''">
+                and parent_id = #{parentId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

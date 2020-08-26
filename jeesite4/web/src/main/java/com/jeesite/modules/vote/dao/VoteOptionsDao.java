@@ -5,14 +5,14 @@ package com.jeesite.modules.vote.dao;
 
 import com.jeesite.common.dao.CrudDao;
 import com.jeesite.common.mybatis.annotation.MyBatisDao;
-import com.jeesite.modules.vote.entity.VoteNaire;
+import com.jeesite.modules.vote.entity.VoteOptions;
 
 /**
- * 问卷DAO接口
+ * 问题DAO接口
  * @author liwl
  * @version 2020-08-26
  */
 @MyBatisDao
-public interface VoteNaireDao extends CrudDao<VoteNaire> {
+public interface VoteOptionsDao extends CrudDao<VoteOptions> {
 	
 }
