@@ -10,7 +10,7 @@
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 	
-	<artifactId>jeesite-web</artifactId>
+	<artifactId>vote-web</artifactId>
 	<packaging>war</packaging>
 	
 	<name>JeeSite Web</name>
