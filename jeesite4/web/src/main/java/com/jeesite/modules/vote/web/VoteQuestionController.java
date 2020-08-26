@@ -63,14 +63,22 @@ public class VoteQuestionController extends BaseController {
 	@RequiresPermissions("vote:voteQuestion:view")
 	@RequestMapping(value = "listData")
 	@ResponseBody
-	public Page<Map<String, Object>> listData(VoteQuestion voteQuestion, String ctrlPermi) {
-		System.out.println(ctrlPermi);
+	public Page<Map<String, Object>> listData(VoteQuestion voteQuestion) {
 		Map<String, Object> params = new HashMap<>();
-		if(null == voteQuestion.getParentCode()){
+		if(null == voteQuestion.getParentCode() || "".equals(voteQuestion.getParentCode())){
 			params.put("treeLevel","0");
 		}else{
 			params.put("parentId",voteQuestion.getParentCode());
 		}
+
+		if(null != voteQuestion.getNaireId() && !"".equals(voteQuestion.getNaireId())){
+			params.put("naireId",voteQuestion.getNaireId());
+		}else{
+			Page<Map<String, Object>> page = new Page<Map<String, Object>>();
+			page.setList(null);
+			return page;
+		}
+
 		List<Map<String, Object>> result =voteQuestionService.findList(params);
 		Page<Map<String, Object>> page = new Page<Map<String, Object>>();
 		page.setList(result);

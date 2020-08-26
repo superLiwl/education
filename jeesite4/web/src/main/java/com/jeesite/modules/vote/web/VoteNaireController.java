@@ -22,6 +22,8 @@ import com.jeesite.common.web.BaseController;
 import com.jeesite.modules.vote.entity.VoteNaire;
 import com.jeesite.modules.vote.service.VoteNaireService;
 
+import java.util.Date;
+
 /**
  * 问卷Controller
  * @author liwl
@@ -81,6 +83,7 @@ public class VoteNaireController extends BaseController {
 	@PostMapping(value = "save")
 	@ResponseBody
 	public String save(@Validated VoteNaire voteNaire) {
+		voteNaire.setCreateTime(new Date());
 		voteNaireService.save(voteNaire);
 		return renderResult(Global.TRUE, text("保存问卷成功！"));
 	}
@@ -94,6 +97,23 @@ public class VoteNaireController extends BaseController {
 	public String delete(VoteNaire voteNaire) {
 		voteNaireService.delete(voteNaire);
 		return renderResult(Global.TRUE, text("删除问卷成功！"));
+	}
+
+	/**
+	 * 更改问卷状态
+	 */
+	@RequiresPermissions("vote:voteNaire:edit")
+	@RequestMapping(value = "updateStatues")
+	@ResponseBody
+	public String updateStatues(String type ,String ids) {
+		String msg = "";
+		if("2".equals(type)){
+			msg = "发布成功";
+		}else if("3".equals(type)){
+			msg = "终止成功";
+		}
+		voteNaireService.updateStatues(type,ids);
+		return renderResult(Global.TRUE, text(msg));
 	}
 	
 }

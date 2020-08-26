@@ -6,6 +6,12 @@
 				<i class="fa icon-notebook"></i> ${text('问卷管理')}
 			</div>
 			<div class="box-tools pull-right">
+				<% if(hasPermi('vote:voteNaire:edit')){ %>
+				<a href="#" class="btn btn-default" id="btnPublish" onclick="getCheckBoxValue('2')" title="${text('发布')}"><i class="fa fa-filter"></i> ${text('发布')}</a>
+				<a href="#" class="btn btn-default" id="btnResult" title="${text('查看结果')}"><i class="fa fa-filter"></i> ${text('查看结果')}</a>
+				<a href="#" class="btn btn-default" id="btnStop" onclick="getCheckBoxValue('3')" title="${text('终止投票')}"><i class="fa fa-filter"></i> ${text('终止投票')}</a>
+				<a href="#" class="btn btn-default" id="btnSee" title="${text('预览')}"><i class="fa fa-filter"></i> ${text('预览')}</a>
+				<% } %>
 				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
 				<% if(hasPermi('vote:voteNaire:edit')){ %>
 					<a href="${ctx}/vote/voteNaire/form" class="btn btn-default btnTool" title="${text('新增问卷')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
@@ -68,29 +74,40 @@
 // 初始化DataGrid对象
 $('#dataGrid').dataGrid({
 	searchForm: $("#searchForm"),
+	showCheckbox:true,
 	columnModel: [
 		{header:'${text("问卷名称")}', name:'name', index:'a.name', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
 			return '<a href="${ctx}/vote/voteNaire/form?id='+row.id+'" class="btnList" data-title="${text("编辑问卷")}">'+(val||row.id)+'</a>';
 		}},
 		{header:'${text("问卷描述")}', name:'content', index:'a.content', width:150, align:"left"},
 		{header:'${text("创建时间")}', name:'createTime', index:'a.create_time', width:150, align:"center"},
-		{header:'${text("状态")}', name:'statues', index:'a.statues', width:150, align:"left"},
-		{header:'${text("0-未删除，1-已删除")}', name:'delFlag', index:'a.del_flag', width:150, align:"left"},
+		{header:'${text("状态")}', name:'statues', index:'a.statues', width:80, align:"center", formatter: function(val, obj, row, act){
+				return js.getDictLabel(${@DictUtils.getDictListJson('vote_statues')}, val, '未知', true);
+			}},
 		{header:'${text("排序")}', name:'sort', index:'a.sort', width:150, align:"center"},
 		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
 			var actions = [];
 			<% if(hasPermi('vote:voteNaire:edit')){ %>
 				actions.push('<a href="${ctx}/vote/voteNaire/form?id='+row.id+'" class="btnList" title="${text("编辑问卷")}"><i class="fa fa-pencil"></i></a>&nbsp;');
 				actions.push('<a href="${ctx}/vote/voteNaire/delete?id='+row.id+'" class="btnList" title="${text("删除问卷")}" data-confirm="${text("确认要删除该问卷吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/vote/voteQuestion/list?naireId='+row.id+'" class="btnList" title="${text("投票")}"><i class="fa fa-glass"></i></a>&nbsp;');
 			<% } %>
 			return actions.join('');
 		}}
 	],
-	treeGrid: true,			// 启用树结构表格
-	defaultExpandLevel: 0,	// 默认展开的层次
-	expandNodeClearPostData: 'viewCode,companyName,fullName,', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）	// 加载成功后执行事件
 	ajaxSuccess: function(data){
 		
 	}
 });
+
+function getCheckBoxValue(type) {
+	var vals = [];
+	$.each($('input:checkbox:checked'),function(){
+		vals.push($(this).attr('id').replace("jqg_dataGrid_",""));
+	});
+	js.ajaxSubmit("${ctx}/vote/voteNaire/updateStatues?type="+type+"&ids="+vals, function(data){
+		js.showMessage(data.message);
+		page();
+	});
+}
 </script>

@@ -7,6 +7,8 @@ import com.jeesite.common.dao.CrudDao;
 import com.jeesite.common.mybatis.annotation.MyBatisDao;
 import com.jeesite.modules.vote.entity.VoteNaire;
 
+import java.util.Map;
+
 /**
  * 问卷DAO接口
  * @author liwl
@@ -14,5 +16,5 @@ import com.jeesite.modules.vote.entity.VoteNaire;
  */
 @MyBatisDao
 public interface VoteNaireDao extends CrudDao<VoteNaire> {
-	
+    void updateStatues(Map<String, Object> params);
 }

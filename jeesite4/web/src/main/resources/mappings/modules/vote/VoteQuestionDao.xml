@@ -11,6 +11,9 @@
             <if test="parentId != null and parentId != ''">
                 and parent_id = #{parentId}
             </if>
+            <if test="naireId != null and naireId != ''">
+                and id in(SELECT question_id FROM vote_naire_question WHERE naire_id = #{naireId})
+            </if>
         </where>
     </select>
 
