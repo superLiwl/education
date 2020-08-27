@@ -8,15 +8,17 @@
 			<div class="box-tools pull-right">
 				<% if(hasPermi('vote:voteNaire:edit')){ %>
 				<a href="#" class="btn btn-default" id="btnPublish" onclick="getCheckBoxValue('2')" title="${text('发布')}"><i class="fa fa-filter"></i> ${text('发布')}</a>
-				<a href="#" class="btn btn-default" id="btnResult" title="${text('查看结果')}"><i class="fa fa-filter"></i> ${text('查看结果')}</a>
+				<a href="#" class="btn btn-default" id="btnResult" onclick="toVoteResult('查看结果')" title="${text('查看结果')}"><i class="fa fa-filter"></i> ${text('查看结果')}</a>
 				<a href="#" class="btn btn-default" id="btnStop" onclick="getCheckBoxValue('3')" title="${text('终止投票')}"><i class="fa fa-filter"></i> ${text('终止投票')}</a>
-				<a href="#" class="btn btn-default" id="btnSee" title="${text('预览')}"><i class="fa fa-filter"></i> ${text('预览')}</a>
+				<a href="#" class="btn btn-default" id="btnSee" onclick="toVoteResult('预览')" title="${text('预览')}"><i class="fa fa-filter"></i> ${text('预览')}</a>
 				<% } %>
 				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
 				<% if(hasPermi('vote:voteNaire:edit')){ %>
 					<a href="${ctx}/vote/voteNaire/form" class="btn btn-default btnTool" title="${text('新增问卷')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
 				<% } %>
 				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+
+				<a href="#" class="btn btn-default" id="voteResult"></a>
 			</div>
 		</div>
 		<div class="box-body">
@@ -109,5 +111,26 @@ function getCheckBoxValue(type) {
 		js.showMessage(data.message);
 		page();
 	});
+}
+
+function toVoteResult(title) {
+	var vals = [];
+	$.each($('input:checkbox:checked'),function(){
+		vals.push($(this).attr('id').replace("jqg_dataGrid_",""));
+	});
+	console.log(vals[0]);
+	if(!vals[0]){
+		js.showMessage("请选择一个问卷", title, "info", 2000);
+		return;
+	}if(vals.length == 0){
+		js.showMessage("请选择一个问卷", title, "info", 2000);
+		return;
+	}else if(vals.length > 1){
+		js.showMessage("只能选择一个问卷", title, "info", 2000);
+		return;
+	}
+	var url="${ctx}/vote/voteNaire/result?id="+vals[0];
+	// $("#voteResult").attr("href",url);
+	js.addTabPage($("#voteResult"), title, url, true, false);
 }
 </script>

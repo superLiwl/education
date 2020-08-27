@@ -81,15 +81,19 @@ function getCheckBoxValue() {
 }
 
 function tc() {
+	var tableHtml = "<tr><td>序号</td><td>人员名称</td><td></td></tr>" +
+			        "<tr><td>1</td><td>张三</td><td><input type='checkbox' checked></td></tr>"+
+					"<tr><td>2</td><td>李四</td><td><input type='checkbox' checked></td></tr>"+
+					"<tr><td>3</td><td>王五</td><td><input type='checkbox' checked></td></tr>";
 	//在这里面输入任何合法的js语句
 	layer.open({
 		type: 1 //Page层类型
 		,area: ['500px', '300px']
-		,title: '你好，layer。'
+		,title: '已选人员'
 		,shade: 0.6 //遮罩透明度
 		,maxmin: true //允许全屏最小化
 		,anim: 1 //0-6的动画形式，-1不开启
-		,content: '<div style="padding:50px;">这是一个非常普通的页面层，传入了自定义的html</div>'
+		,content: '<div style="padding:50px;"><table class="table table-striped">'+tableHtml+'</table></div>'
 	});
 }
 </script>

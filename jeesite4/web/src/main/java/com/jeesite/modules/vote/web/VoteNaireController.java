@@ -80,6 +80,16 @@ public class VoteNaireController extends BaseController {
     }
 
     /**
+     * 查看投票信息
+     */
+    @RequiresPermissions("vote:voteNaire:view")
+    @RequestMapping(value = {"result", ""})
+    public String result(VoteNaire voteNaire, Model model) {
+        model.addAttribute("voteNaire", voteNaire);
+        return "modules/vote/voteNaireResult";
+    }
+
+    /**
      * 保存数据
      */
     @RequiresPermissions("vote:voteNaire:edit")
