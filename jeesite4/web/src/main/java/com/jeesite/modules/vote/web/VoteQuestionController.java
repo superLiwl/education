@@ -81,6 +81,7 @@ public class VoteQuestionController extends BaseController {
 			params.put("naireId",voteQuestion.getNaireId());
 		}
 
+		params.put("title",voteQuestion.getTitle());
 		List<Map<String, Object>> result =voteQuestionService.findList(params);
 		Page<Map<String, Object>> page = new Page<Map<String, Object>>();
 		page.setList(result);
