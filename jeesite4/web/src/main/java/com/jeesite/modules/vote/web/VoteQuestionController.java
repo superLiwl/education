@@ -6,7 +6,10 @@ package com.jeesite.modules.vote.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jeesite.common.shiro.realm.LoginInfo;
+import com.jeesite.modules.vote.service.VoteNaireService;
 import com.sun.corba.se.spi.ior.ObjectKey;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +41,8 @@ public class VoteQuestionController extends BaseController {
 
 	@Autowired
 	private VoteQuestionService voteQuestionService;
+	@Autowired
+	private VoteNaireService voteNaireService;
 	
 	/**
 	 * 获取数据
@@ -54,6 +59,7 @@ public class VoteQuestionController extends BaseController {
 	@RequestMapping(value = {"list", ""})
 	public String list(VoteQuestion voteQuestion, Model model) {
 		model.addAttribute("voteQuestion", voteQuestion);
+		model.addAttribute("voteNaire", voteNaireService.get(voteQuestion.getNaireId()));
 		return "modules/vote/voteQuestionList";
 	}
 	

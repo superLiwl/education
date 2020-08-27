@@ -6,6 +6,8 @@ package com.jeesite.modules.vote.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jeesite.common.shiro.realm.LoginInfo;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,7 @@ import java.util.Date;
 
 /**
  * 问卷Controller
+ *
  * @author liwl
  * @version 2020-08-26
  */
@@ -33,87 +36,100 @@ import java.util.Date;
 @RequestMapping(value = "${adminPath}/vote/voteNaire")
 public class VoteNaireController extends BaseController {
 
-	@Autowired
-	private VoteNaireService voteNaireService;
-	
-	/**
-	 * 获取数据
-	 */
-	@ModelAttribute
-	public VoteNaire get(String id, boolean isNewRecord) {
-		return voteNaireService.get(id, isNewRecord);
-	}
-	
-	/**
-	 * 查询列表
-	 */
-	@RequiresPermissions("vote:voteNaire:view")
-	@RequestMapping(value = {"list", ""})
-	public String list(VoteNaire voteNaire, Model model) {
-		model.addAttribute("voteNaire", voteNaire);
-		return "modules/vote/voteNaireList";
-	}
-	
-	/**
-	 * 查询列表数据
-	 */
-	@RequiresPermissions("vote:voteNaire:view")
-	@RequestMapping(value = "listData")
-	@ResponseBody
-	public Page<VoteNaire> listData(VoteNaire voteNaire, HttpServletRequest request, HttpServletResponse response) {
-		voteNaire.setPage(new Page<>(request, response));
-		Page<VoteNaire> page = voteNaireService.findPage(voteNaire);
-		return page;
-	}
+    @Autowired
+    private VoteNaireService voteNaireService;
 
-	/**
-	 * 查看编辑表单
-	 */
-	@RequiresPermissions("vote:voteNaire:view")
-	@RequestMapping(value = "form")
-	public String form(VoteNaire voteNaire, Model model) {
-		model.addAttribute("voteNaire", voteNaire);
-		return "modules/vote/voteNaireForm";
-	}
+    /**
+     * 获取数据
+     */
+    @ModelAttribute
+    public VoteNaire get(String id, boolean isNewRecord) {
+        return voteNaireService.get(id, isNewRecord);
+    }
 
-	/**
-	 * 保存数据
-	 */
-	@RequiresPermissions("vote:voteNaire:edit")
-	@PostMapping(value = "save")
-	@ResponseBody
-	public String save(@Validated VoteNaire voteNaire) {
-		voteNaire.setCreateTime(new Date());
-		voteNaireService.save(voteNaire);
-		return renderResult(Global.TRUE, text("保存问卷成功！"));
-	}
-	
-	/**
-	 * 删除数据
-	 */
-	@RequiresPermissions("vote:voteNaire:edit")
-	@RequestMapping(value = "delete")
-	@ResponseBody
-	public String delete(VoteNaire voteNaire) {
-		voteNaireService.delete(voteNaire);
-		return renderResult(Global.TRUE, text("删除问卷成功！"));
-	}
+    /**
+     * 查询列表
+     */
+    @RequiresPermissions("vote:voteNaire:view")
+    @RequestMapping(value = {"list", ""})
+    public String list(VoteNaire voteNaire, Model model) {
+        model.addAttribute("voteNaire", voteNaire);
+        return "modules/vote/voteNaireList";
+    }
 
-	/**
-	 * 更改问卷状态
-	 */
-	@RequiresPermissions("vote:voteNaire:edit")
-	@RequestMapping(value = "updateStatues")
-	@ResponseBody
-	public String updateStatues(String type ,String ids) {
-		String msg = "";
-		if("2".equals(type)){
-			msg = "发布成功";
-		}else if("3".equals(type)){
-			msg = "终止成功";
-		}
-		voteNaireService.updateStatues(type,ids);
-		return renderResult(Global.TRUE, text(msg));
-	}
-	
+    /**
+     * 查询列表数据
+     */
+    @RequiresPermissions("vote:voteNaire:view")
+    @RequestMapping(value = "listData")
+    @ResponseBody
+    public Page<VoteNaire> listData(VoteNaire voteNaire, HttpServletRequest request, HttpServletResponse response) {
+        voteNaire.setPage(new Page<>(request, response));
+        Page<VoteNaire> page = voteNaireService.findPage(voteNaire);
+        return page;
+    }
+
+    /**
+     * 查看编辑表单
+     */
+    @RequiresPermissions("vote:voteNaire:view")
+    @RequestMapping(value = "form")
+    public String form(VoteNaire voteNaire, Model model) {
+        model.addAttribute("voteNaire", voteNaire);
+        return "modules/vote/voteNaireForm";
+    }
+
+    /**
+     * 保存数据
+     */
+    @RequiresPermissions("vote:voteNaire:edit")
+    @PostMapping(value = "save")
+    @ResponseBody
+    public String save(@Validated VoteNaire voteNaire) {
+        voteNaire.setCreateTime(new Date());
+        voteNaireService.save(voteNaire);
+        return renderResult(Global.TRUE, text("保存问卷成功！"));
+    }
+
+    /**
+     * 删除数据
+     */
+    @RequiresPermissions("vote:voteNaire:edit")
+    @RequestMapping(value = "delete")
+    @ResponseBody
+    public String delete(VoteNaire voteNaire) {
+        voteNaireService.delete(voteNaire);
+        return renderResult(Global.TRUE, text("删除问卷成功！"));
+    }
+
+    /**
+     * 更改问卷状态
+     */
+    @RequiresPermissions("vote:voteNaire:edit")
+    @RequestMapping(value = "updateStatues")
+    @ResponseBody
+    public String updateStatues(String type, String ids) {
+        String msg = "";
+        if ("2".equals(type)) {
+            msg = "发布成功";
+        } else if ("3".equals(type)) {
+            msg = "终止成功";
+        }
+        voteNaireService.updateStatues(type, ids);
+        return renderResult(Global.TRUE, text(msg));
+    }
+
+    /**
+     * 去投票
+     */
+    @RequiresPermissions("vote:voteNaire:edit")
+    @RequestMapping(value = "toVoteByUser")
+    @ResponseBody
+    public String toVoteByUser(String ids, String naireId) {
+        LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
+        String msg = voteNaireService.toVoteByUser(naireId, login.getId(), ids);
+        return renderResult(Global.TRUE, text(msg));
+    }
+
+
 }

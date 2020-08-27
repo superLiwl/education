@@ -10,4 +10,14 @@
 		</foreach>
 	</update>
 
+
+	<select id="checkQuesIds" resultType="string">
+		SELECT id FROM `vote_question` q WHERE q.parent_id in
+		(SELECT question_id FROM `vote_naire_question` nq WHERE nq.naire_id=#{naireId})
+		AND q.id in
+		<foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</select>
+
 </mapper>
