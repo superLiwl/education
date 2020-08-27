@@ -6,7 +6,7 @@
 				<i class="fa icon-notebook"></i> ${voteNaire.name}
 			</div>
 			<div class="box-tools pull-right">
-				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>&nbsp;&nbsp;&nbsp;
+				<a href="#" class="btn btn-default" onclick="getListData()" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>&nbsp;&nbsp;&nbsp;
 				<a href="#" class="btn btn-default" >${text('已选：52票/100票')}</a>
 				<% if(hasPermi('vote:voteQuestion:edit')){ %>
 					<a href="#" class="btn btn-default" onclick="getCheckBoxValue()" title="${text('投票')}"><i class="fa fa-plus"></i> ${text('投票')}</a>
@@ -50,7 +50,10 @@ function getListData() {
 	var url = "${ctx}/vote/voteQuestion/listData";
 	js.ajaxSubmit({
 		url: url,
-		data: {naireId: $("#naireId").val()},
+		data: {
+			naireId: $("#naireId").val(),
+			title:$("#title").val(),
+		},
 		callback: function(data){
 			var divHtml = "";
 			$.each(data,function(index,ele){
