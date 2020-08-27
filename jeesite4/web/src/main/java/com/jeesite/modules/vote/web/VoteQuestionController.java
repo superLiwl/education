@@ -73,10 +73,6 @@ public class VoteQuestionController extends BaseController {
 
 		if(null != voteQuestion.getNaireId() && !"".equals(voteQuestion.getNaireId())){
 			params.put("naireId",voteQuestion.getNaireId());
-		}else{
-			Page<Map<String, Object>> page = new Page<Map<String, Object>>();
-			page.setList(null);
-			return page;
 		}
 
 		List<Map<String, Object>> result =voteQuestionService.findList(params);

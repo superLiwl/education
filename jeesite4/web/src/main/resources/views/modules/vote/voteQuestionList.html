@@ -3,19 +3,26 @@
 	<div class="box box-main">
 		<div class="box-header">
 			<div class="box-title">
-				<i class="fa icon-notebook"></i> ${text('问题管理')}
+				<i class="fa icon-notebook"></i> ${text('先进干部评选')}
 			</div>
 			<div class="box-tools pull-right">
-				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<a href="#" class="btn btn-default" >${text('已选：52票/100票')}</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<% if(hasPermi('vote:voteQuestion:edit')){ %>
-					<a href="${ctx}/vote/voteQuestion/form" class="btn btn-default btnTool" title="${text('新增问题')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+					<a href="${ctx}/vote/voteQuestion/form" class="btn btn-default btnTool" title="${text('投票')}"><i class="fa fa-plus"></i> ${text('投票')}</a>
 				<% } %>
 				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('评选说明文字:上市可就打哈萨克稍等哈看见盛大的的哈时间快递好看点')}
 			</div>
 		</div>
 		<div class="box-body">
 			<#form:form id="searchForm" model="${voteQuestion}" action="${ctx}/vote/voteQuestion/listData" method="post" class="form-inline hide"
 					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<#form:input path="naireId" name="naireId" maxlength="200" class="form-control width-120 hide" />
 				<div class="form-group">
 					<label class="control-label">${text('标题')}：</label>
 					<div class="control-inline">
@@ -51,11 +58,11 @@ $('#dataGrid').dataGrid({
 	searchForm: $("#searchForm"),
 	showCheckbox:true,
 	columnModel: [
-		{header:'${text("标题")}', name:'title', index:'a.title', width:150, align:"center"},
+		{header:'${text("投票选择")}', name:'title', index:'a.title', width:150, align:"center"},
 	],
 	treeGrid: true,			// 启用树结构表格
 	defaultExpandLevel: 0,	// 默认展开的层次
-	expandNodeClearPostData: 'id,parentId,', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）	// 加载成功后执行事件
+	expandNodeClearPostData: 'id,parentId,naireId,', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）	// 加载成功后执行事件
 	ajaxSuccess: function(data){
 		
 	}
