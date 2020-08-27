@@ -33,7 +33,6 @@ public class VoteQuestion extends DataEntity<VoteQuestion> {
     private String parentId;        // 父id
     private String treeLevel;
     private String treeLeaf;
-    private String parentCode;
     private String naireId;
 
 
@@ -86,14 +85,6 @@ public class VoteQuestion extends DataEntity<VoteQuestion> {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
-    }
-
-    public String getParentCode() {
-        return parentCode;
-    }
-
-    public void setParentCode(String parentCode) {
-        this.parentCode = parentCode;
     }
 
     public String getNaireId() {

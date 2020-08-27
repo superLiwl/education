@@ -77,8 +77,14 @@ public class VoteQuestionService extends CrudService<VoteQuestionDao, VoteQuesti
 		super.delete(voteQuestion);
 	}
 
-
 	public List<Map<String, Object>> findList(Map<String, Object> params){
-		return voteQuestionDao.findList(params);
+		List<Map<String, Object>> result = voteQuestionDao.findList(params);
+		if(null != result && !result.isEmpty() && result.size() > 0){
+			for (Map<String, Object> m : result) {
+				params.put("parentId",m.get("id"));
+				m.put("subList",voteQuestionDao.findSubList(params));
+			}
+		}
+		return result;
 	}
 }

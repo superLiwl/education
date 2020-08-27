@@ -18,5 +18,8 @@ import java.util.Map;
  */
 @MyBatisDao
 public interface VoteQuestionDao extends CrudDao<VoteQuestion> {
+
 	List<Map<String, Object>> findList(Map<String, Object> params);
+
+	List<Map<String, Object>> findSubList(Map<String, Object> params);
 }

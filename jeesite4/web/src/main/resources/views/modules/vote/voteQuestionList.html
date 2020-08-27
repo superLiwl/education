@@ -6,13 +6,19 @@
 				<i class="fa icon-notebook"></i> ${voteNaire.name}
 			</div>
 			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>&nbsp;&nbsp;&nbsp;
 				<a href="#" class="btn btn-default" >${text('已选：52票/100票')}</a>
 				<% if(hasPermi('vote:voteQuestion:edit')){ %>
 					<a href="#" class="btn btn-default" onclick="getCheckBoxValue()" title="${text('投票')}"><i class="fa fa-plus"></i> ${text('投票')}</a>
 				<% } %>
 				<a href="#" class="btn btn-default" onclick="tc()" title="${text('购物车')}"><i class="fa fa-cart-plus"></i> ${text('购物车')}</a>
-				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
 				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+			<div class="box-tools pull-right">
+				<#form:input id="title" maxlength="200" class="form-control width-120" />
+			</div>
+			<div class="box-tools pull-right">
+				${text('标题：')}
 			</div>
 		</div>
 		<div class="box-header">
@@ -20,58 +26,107 @@
 				<i class="fa icon-notebook"></i> 评选说明文字:&nbsp;${voteNaire.content}
 			</div>
 		</div>
-		<div class="box-body">
-			<#form:form id="searchForm" model="${voteQuestion}" action="${ctx}/vote/voteQuestion/listData" method="post" class="form-inline hide"
-					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
-				<#form:input path="naireId" name="naireId" id="naireId" maxlength="200" class="form-control width-120 hide" />
-				<div class="form-group">
-					<label class="control-label">${text('标题')}：</label>
-					<div class="control-inline">
-						<#form:input path="title" maxlength="200" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
-					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
-				</div>
-			</#form:form>
-			<table id="dataGrid"></table>
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('开始投票：')}
+			</div>
+		</div>
+		<#form:input path="naireId" name="naireId" id="naireId" maxlength="200" class="form-control width-120 hide" />
+		<div class="panel-group" id="accordion">
+
 		</div>
 	</div>
 </div>
+<!--折叠样式必备-->
+<script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
 <% } %>
 <script>
 // 初始化DataGrid对象
-$('#dataGrid').dataGrid({
-	searchForm: $("#searchForm"),
-	showCheckbox:true,
-	columnModel: [
-		{header:'${text("投票选择")}', name:'title', index:'a.title', width:150, align:"center"},
-	],
-	treeGrid: true,			// 启用树结构表格
-	defaultExpandLevel: 0,	// 默认展开的层次
-	expandNodeClearPostData: 'parentId,naireId,', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）	// 加载成功后执行事件
-	ajaxSuccess: function(data){
-		
-	},
-	onSelectRow: function(id, isSelect, event){
-		if(event && event.target && !$(event.target).hasClass('cbox')){
-			$('#dataGrid').dataGrid('setSelectRow', id, isSelect);
-			console.log(id);
-			console.log($('#dataGrid').dataGrid('getSelectRow'));
-			console.log($('#dataGrid').dataGrid('getRowData', id));
-			return;
-		}
-	}
+$(document).ready(function(){
+	getListData();
 });
+
+function getListData() {
+	var url = "${ctx}/vote/voteQuestion/listData";
+	js.ajaxSubmit({
+		url: url,
+		data: {naireId: $("#naireId").val()},
+		callback: function(data){
+			var divHtml = "";
+			$.each(data,function(index,ele){
+				if(ele){
+					divHtml += getDivHtml(ele);
+				}
+			});
+			$("#accordion").html(divHtml);
+		},
+		dataType: 'json',
+		async: true,
+		message: '正在获取数据...'
+	});
+}
+
+function getDivHtml(info) {
+	var id = "div_c_"+info.id;
+	var subHtml = getSubHtml(info);
+	var str= "<div class=\"panel panel-default\" >" +
+			 "<div class=\"panel-heading\">" +
+			 "<h4 class=\"panel-title\">" +"<input type='checkbox' name='parentCheckBox_"+info.id+"' onclick='checkAllByParentId(this)' value='"+info.id+"'>"+
+			 "<a href=\"#"+id+"\" data-toggle=\"collapse\" data-parent=\"#accordion\">"+info.title+"</a>" +
+			 "</h4>" +
+			 "</div>" +
+			 "<div class=\"panel-collapse collapse in\" id=\""+id+"\">" +
+			 "<div class=\"panel-body\">"+subHtml+"</div>" +
+			 "</div>" +
+			 "</div>";
+	return str;
+}
+
+function getSubHtml(info) {
+	var str = "";
+	if(info.subList){
+		$.each(info.subList,function(index,ele){
+			if(ele){
+				str += ele.title +"<input type='checkbox' name='subCheckBox_"+ele.parent_id+"' content='"+ele.title+"' parentId='"+ele.parent_id+"' onclick='checkAllBySubId(this)' value='"+ele.id+"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+			}
+		});
+	}
+	return str;
+}
+//parent点击效果
+function checkAllByParentId(obj) {
+	if($(obj).is(':checked')) {
+		$("input[name=subCheckBox_"+$(obj).val()+"]").prop("checked",true);
+	}else{
+		$("input[name=subCheckBox_"+$(obj).val()+"]").prop("checked",false);
+	}
+}
+//sub点击效果
+function checkAllBySubId(obj) {
+	var parentId = $(obj).attr("parentId");
+	//判断sub是否都被选择
+	var isAllcheck = true;
+	$("input[name=subCheckBox_"+parentId+"]").each(function(){
+		if(!$(this).is(':checked')){
+			isAllcheck = false;
+		}
+	});
+	if(isAllcheck){
+		$("input[name=parentCheckBox_"+parentId+"]").prop("checked",true);
+	}else{
+		$("input[name=parentCheckBox_"+parentId+"]").prop("checked",false);
+	}
+}
 
 function getCheckBoxValue() {
 	var vals = [];
 	var val = "";
+	var pId = "";
 	$.each($('input:checkbox:checked'),function(){
-		val = $(this).attr('id');
-		if("cb_dataGrid" != val){
-			vals.push(val.replace("jqg_dataGrid_",""));
+		val = $(this).val();
+		pId = $(this).attr("parentId");
+		if(val && pId){
+			vals.push(val);
 		}
 	});
 	js.ajaxSubmit("${ctx}/vote/voteNaire/toVoteByUser?naireId="+$("#naireId").val()+"&ids="+vals, function(data){
@@ -81,19 +136,31 @@ function getCheckBoxValue() {
 }
 
 function tc() {
-	var tableHtml = "<tr><td>序号</td><td>人员名称</td><td></td></tr>" +
-			        "<tr><td>1</td><td>张三</td><td><input type='checkbox' checked></td></tr>"+
-					"<tr><td>2</td><td>李四</td><td><input type='checkbox' checked></td></tr>"+
-					"<tr><td>3</td><td>王五</td><td><input type='checkbox' checked></td></tr>";
+	var tableHtml = "<tr><td>序号</td><td>人员名称</td><td></td></tr>";
+	var val = "";
+	var pId = "";
+	var xh = 1;
+	$.each($('input:checkbox'), function () {
+		val = $(this).val();
+		pId = $(this).attr("parentId");
+		if (val && pId) {
+			if ($(this).is(':checked')) {
+				tableHtml += "<tr><td>" + xh + "</td><td>" + $(this).attr("content") + "</td><td><input type='checkbox' checked></td></tr>";
+			} else {
+				tableHtml += "<tr><td>" + xh + "</td><td>" + $(this).attr("content") + "</td><td><input type='checkbox'></td></tr>";
+			}
+			xh++;
+		}
+	});
 	//在这里面输入任何合法的js语句
 	layer.open({
 		type: 1 //Page层类型
-		,area: ['500px', '300px']
-		,title: '已选人员'
-		,shade: 0.6 //遮罩透明度
-		,maxmin: true //允许全屏最小化
-		,anim: 1 //0-6的动画形式，-1不开启
-		,content: '<div style="padding:50px;"><table class="table table-striped">'+tableHtml+'</table></div>'
+		, area: ['600px', '400px']
+		, title: '已选人员'
+		, shade: 0.6 //遮罩透明度
+		, maxmin: true //允许全屏最小化
+		, anim: 1 //0-6的动画形式，-1不开启
+		, content: '<div style="padding:50px;"><table class="table table-striped">' + tableHtml + '</table></div>'
 	});
 }
 </script>
