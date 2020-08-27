@@ -56,6 +56,15 @@ public class VoteNaireController extends BaseController {
         model.addAttribute("voteNaire", voteNaire);
         return "modules/vote/voteNaireList";
     }
+    /**
+     * 查询列表
+     */
+    @RequiresPermissions("vote:voteNaire:view")
+    @RequestMapping(value = {"listPt", ""})
+    public String listPt(VoteNaire voteNaire, Model model) {
+        model.addAttribute("voteNaire", voteNaire);
+        return "modules/vote/voteNaireListPt";
+    }
 
     /**
      * 查询列表数据
