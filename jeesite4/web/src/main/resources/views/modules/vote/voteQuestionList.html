@@ -38,20 +38,21 @@
 	</div>
 </div>
 <!--折叠样式必备-->
-<script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
 <% } %>
 <script>
 // 初始化DataGrid对象
 $(document).ready(function(){
 	getListData();
 });
-
+var naireId ;
 function getListData() {
 	var url = "${ctx}/vote/voteQuestion/listData";
+	var zId = $("#naireId").val();
 	js.ajaxSubmit({
 		url: url,
 		data: {
-			naireId: $("#naireId").val(),
+			naireId: zId,
 			title:$("#title").val(),
 		},
 		callback: function(data){
@@ -62,6 +63,7 @@ function getListData() {
 				}
 			});
 			$("#accordion").html(divHtml);
+			$("#naireId").val(zId);
 		},
 		dataType: 'json',
 		async: true,
@@ -75,7 +77,7 @@ function getDivHtml(info) {
 	var str= "<div class=\"panel panel-default\" >" +
 			 "<div class=\"panel-heading\">" +
 			 "<h4 class=\"panel-title\">" +"<input type='checkbox' name='parentCheckBox_"+info.id+"' onclick='checkAllByParentId(this)' value='"+info.id+"'>"+
-			 "<a href=\"#"+id+"\" data-toggle=\"collapse\" data-parent=\"#accordion\">"+info.title+"</a>" +
+			 "<a href=\"#"+id+"\" data-toggle=\"collapse\" data-parent=\"#accordion\">"+info.title+"<i class='fa fa-angle-down'></i></a>" +
 			 "</h4>" +
 			 "</div>" +
 			 "<div class=\"panel-collapse collapse in\" id=\""+id+"\">" +
@@ -132,7 +134,10 @@ function getCheckBoxValue() {
 			vals.push(val);
 		}
 	});
-	js.ajaxSubmit("${ctx}/vote/voteNaire/toVoteByUser?naireId="+$("#naireId").val()+"&ids="+vals, function(data){
+	var nId = window.location.search.replace("?naireId=","");
+	var url = "${ctx}/vote/voteNaire/toVoteByUser?naireId="+nId+"&ids="+vals;
+	console.log(url);
+	js.ajaxSubmit(url, function(data){
 		js.showMessage(data.message);
 		page();
 	});
@@ -149,10 +154,8 @@ function tc() {
 		if (val && pId) {
 			if ($(this).is(':checked')) {
 				tableHtml += "<tr><td>" + xh + "</td><td>" + $(this).attr("content") + "</td><td><input type='checkbox' checked></td></tr>";
-			} else {
-				tableHtml += "<tr><td>" + xh + "</td><td>" + $(this).attr("content") + "</td><td><input type='checkbox'></td></tr>";
+				xh++;
 			}
-			xh++;
 		}
 	});
 	//在这里面输入任何合法的js语句
