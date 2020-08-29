@@ -32,7 +32,7 @@
 			</div>
 		</div>
 		<#form:input path="naireId" name="naireId" id="naireId" maxlength="200" class="form-control width-120 hide" />
-		<div class="panel-group" id="accordion">
+		<div class="panel-group" id="accordion"  style="height:650px;overflow:auto;">
 
 		</div>
 	</div>
@@ -136,7 +136,6 @@ function getCheckBoxValue() {
 	});
 	var nId = window.location.search.replace("?naireId=","");
 	var url = "${ctx}/vote/voteNaire/toVoteByUser?naireId="+nId+"&ids="+vals;
-	console.log(url);
 	js.ajaxSubmit(url, function(data){
 		js.showMessage(data.message);
 		page();

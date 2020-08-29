@@ -7,8 +7,11 @@ import com.jeesite.common.entity.Page;
 import com.jeesite.common.service.CrudService;
 import com.jeesite.modules.vote.dao.VoteAnswerDao;
 import com.jeesite.modules.vote.dao.VoteNaireDao;
+import com.jeesite.modules.vote.dao.VoteUserNaireDao;
 import com.jeesite.modules.vote.entity.VoteAnswer;
 import com.jeesite.modules.vote.entity.VoteNaire;
+import com.jeesite.modules.vote.entity.VoteUserNaire;
+import com.jeesite.modules.vote.entity.VoteUserNaireVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +31,8 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
     private VoteNaireDao voteNaireDao;
     @Autowired
     private VoteAnswerDao voteAnswerDao;
+    @Autowired
+    private VoteUserNaireDao voteUserNaireDao;
 
     /**
      * 获取单条数据
@@ -155,5 +160,39 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
         }
         voteAnswerDao.insertBatch(ansList);
         return "投票成功";
+    }
+
+
+    /**
+     * 更改问卷状态
+     */
+    @Transactional(readOnly = false)
+    public String saveNaireUser(VoteUserNaireVo vo) {
+        if(null == vo.getNaireIds() || vo.getNaireIds().isEmpty() || vo.getNaireIds().size() == 0){
+            return  "问卷id为空";
+        }
+        if(null == vo.getUserCodes() || vo.getUserCodes().isEmpty() || vo.getUserCodes().size() == 0){
+            return  "问卷id为空";
+        }
+        //循环问卷
+        VoteUserNaire userNaire;
+        VoteUserNaire userNaireDel;
+        List<VoteUserNaire> insertEntityList= new ArrayList<>();
+        for (String naireId : vo.getNaireIds()){
+            for (String userCode : vo.getUserCodes()){
+                userNaire = new VoteUserNaire();
+                userNaire.setId(UUID.randomUUID().toString());
+                userNaire.setNaireId(naireId);
+                userNaire.setUserCode(userCode);
+                userNaire.setProportion(vo.getProportion());
+                insertEntityList.add(userNaire);
+            }
+            //情况问卷已配置用户
+            userNaireDel = new VoteUserNaire();
+            userNaireDel.setNaireId(naireId);
+            voteUserNaireDao.deleteByEntity(userNaireDel);
+        }
+        voteUserNaireDao.insertBatch(insertEntityList);
+        return "配置成功";
     }
 }

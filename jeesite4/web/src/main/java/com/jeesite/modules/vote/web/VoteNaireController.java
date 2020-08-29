@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jeesite.common.shiro.realm.LoginInfo;
+import com.jeesite.modules.vote.entity.VoteUserNaireVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import com.jeesite.modules.vote.entity.VoteNaire;
 import com.jeesite.modules.vote.service.VoteNaireService;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * 问卷Controller
@@ -150,5 +152,15 @@ public class VoteNaireController extends BaseController {
         return renderResult(Global.TRUE, text(msg));
     }
 
-
+    /**
+     * 去投票
+     */
+    @RequiresPermissions("vote:voteNaire:edit")
+    @RequestMapping(value = "saveNaireUser")
+    @ResponseBody
+    public String saveNaireUser(VoteUserNaireVo vo) {
+//        String naireIds, String proportion,String userCodes
+        String msg = voteNaireService.saveNaireUser(vo);
+        return renderResult(Global.TRUE, text(msg));
+    }
 }

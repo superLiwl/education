@@ -7,9 +7,10 @@
 			</div>
 			<div class="box-tools pull-right">
 				<% if(hasPermi('vote:voteNaire:edit')){ %>
-				<a href="#" class="btn btn-default" id="btnPublish" onclick="getCheckBoxValue('2')" title="${text('发布')}"><i class="fa fa-filter"></i> ${text('发布')}</a>
+				<a href="#" class="btn btn-default" id="btnAddUser" title="${text('添加用户')}"><i class="fa fa-plus"></i> ${text('配置投票用户')}</a>
+				<a href="#" class="btn btn-default" id="btnPublish" onclick="getCheckBoxValue('2','发布')" title="${text('发布')}"><i class="fa fa-filter"></i> ${text('发布')}</a>
 				<a href="#" class="btn btn-default" id="btnResult" onclick="toVoteResult('查看结果')" title="${text('查看结果')}"><i class="fa fa-filter"></i> ${text('查看结果')}</a>
-				<a href="#" class="btn btn-default" id="btnStop" onclick="getCheckBoxValue('3')" title="${text('终止投票')}"><i class="fa fa-filter"></i> ${text('终止投票')}</a>
+				<a href="#" class="btn btn-default" id="btnStop" onclick="getCheckBoxValue('3','终止投票')" title="${text('终止投票')}"><i class="fa fa-filter"></i> ${text('终止投票')}</a>
 				<a href="#" class="btn btn-default" id="btnSee" onclick="toVoteResult('预览')" title="${text('预览')}"><i class="fa fa-filter"></i> ${text('预览')}</a>
 				<% } %>
 				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
@@ -17,7 +18,7 @@
 					<a href="${ctx}/vote/voteNaire/form" class="btn btn-default btnTool" title="${text('新增问卷')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
 				<% } %>
 				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
-				<a href="#" class="btn btn-default" id="voteResult"></a>
+				<a href="#" class="btn btn-default hide" id="voteResult"></a>
 			</div>
 		</div>
 		<div class="box-body">
@@ -70,6 +71,17 @@
 		</div>
 	</div>
 </div>
+<div class="hide">
+	<#form:listselect id="userSelect" title="${text('用户选择')}" url="${ctx}/sys/empUser/empUserSelect" allowClear="false" checkbox="true" itemCode="userCode" itemName="userName"/>
+</div>
+
+<div class="hide">
+	<#form:form id="saveNaireUserForm" action="${ctx}/vote/voteNaire/saveNaireUser" method="post" class="form-inline">
+		<#form:input name="userCodes" id="userCodes" class="form-control width-120"/>
+		<#form:input name="naireIds" id="naireIds" class="form-control width-120"/>
+		<#form:input name="proportion" id="proportion" class="form-control width-120"/>
+	</#form:form>
+</div>
 <% } %>
 <script>
 // 初始化DataGrid对象
@@ -101,11 +113,15 @@ $('#dataGrid').dataGrid({
 	}
 });
 
-function getCheckBoxValue(type) {
-	var vals = [];
-	$.each($('input:checkbox:checked'),function(){
-		vals.push($(this).attr('id').replace("jqg_dataGrid_",""));
-	});
+function getCheckBoxValue(type,title) {
+	var vals = getCheckVals();
+	if(!vals[0]){
+		js.showMessage("至少选择一个问卷", title, "info", 2000);
+		return;
+	}if(vals.length == 0){
+		js.showMessage("至少选择一个问卷", title, "info", 2000);
+		return;
+	}
 	js.ajaxSubmit("${ctx}/vote/voteNaire/updateStatues?type="+type+"&ids="+vals, function(data){
 		js.showMessage(data.message);
 		page();
@@ -113,11 +129,7 @@ function getCheckBoxValue(type) {
 }
 
 function toVoteResult(title) {
-	var vals = [];
-	$.each($('input:checkbox:checked'),function(){
-		vals.push($(this).attr('id').replace("jqg_dataGrid_",""));
-	});
-	console.log(vals[0]);
+	var vals = getCheckVals();
 	if(!vals[0]){
 		js.showMessage("请选择一个问卷", title, "info", 2000);
 		return;
@@ -129,7 +141,47 @@ function toVoteResult(title) {
 		return;
 	}
 	var url="${ctx}/vote/voteNaire/result?id="+vals[0];
-	// $("#voteResult").attr("href",url);
 	js.addTabPage($("#voteResult"), title, url, true, false);
+}
+
+$('#btnAddUser').click(function(){
+	var vals = getCheckVals();
+	if(!vals[0]){
+		js.showMessage("至少选择一个问卷", "配置投票用户", "info", 2000);
+		return;
+	}if(vals.length == 0){
+		js.showMessage("至少选择一个问卷", "配置投票用户", "info", 2000);
+		return;
+	}
+	$('#userSelectCode').val('');
+	$('#userSelectName').val('').click();
+});
+$('#userSelectCode').change(function(){
+	var userCodes = $('#userSelectCode').val()
+	var naireIds = getCheckVals();
+	var proportion = "1";
+	$("#userCodes").val(userCodes);
+	$("#naireIds").val(naireIds);
+	$("#proportion").val(proportion);
+
+	js.ajaxSubmitForm($('#saveNaireUserForm'), {
+				callback: function (data) {
+					console.log(data);
+				},
+				dataType: 'json',
+				async: true,
+				message: '正在获取数据...'
+			});
+});
+function getCheckVals() {
+	var vals = [];
+	var val;
+	$.each($('input:checkbox:checked'), function () {
+		val = $(this).attr('id').replace("jqg_dataGrid_", "").replace("cb_dataGrid", "");
+		if (val) {
+			vals.push(val);
+		}
+	});
+	return vals;
 }
 </script>
