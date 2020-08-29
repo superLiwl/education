@@ -6,7 +6,7 @@
 				<i class="fa icon-notebook"></i> ${voteNaire.name}
 			</div>
 			<div class="box-tools pull-right">
-				<a href="#" class="btn btn-default" onclick="getListData()" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>&nbsp;&nbsp;&nbsp;
+				<a href="#" class="btn btn-default" onclick="toDiv()" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>&nbsp;&nbsp;&nbsp;
 				<a href="#" class="text" id="has_all"></a>&nbsp;&nbsp;
 				<% if(hasPermi('vote:voteQuestion:edit')){ %>
 					<a href="#" class="btn btn-default" onclick="getCheckBoxValue()" title="${text('投票')}"><i class="fa fa-plus"></i> ${text('投票')}</a>
@@ -31,7 +31,6 @@
 				<i class="fa icon-notebook"></i> ${text('开始投票：')}
 			</div>
 		</div>
-		<#form:input path="naireId" name="naireId" id="naireId" maxlength="200" class="form-control width-120 hide" />
 		<div class="panel-group" id="accordion"  style="height:650px;overflow:auto;">
 
 		</div>
@@ -45,10 +44,23 @@
 $(document).ready(function(){
 	getListData();
 });
-var naireId ;
+
+function toDiv() {
+	var id = $("#title").val();
+	try{
+		var mainContainer = $('#accordion'), scrollToContainer = mainContainer.find('#'+id);//滚动到<div id="thisMainPanel">中类名为son-panel的最后一个div处
+		//动画效果
+		mainContainer.animate({
+			scrollTop: scrollToContainer.offset().top - mainContainer.offset().top + mainContainer.scrollTop()
+		}, 500);//500毫秒滑动到指定位置
+	}catch(e){
+		js.showMessage("未能检索到"+id+"，请完整输入检索内容");
+	}
+}
+
 function getListData() {
 	var url = "${ctx}/vote/voteQuestion/listData";
-	var zId = $("#naireId").val();
+	var zId = window.location.search.replace("?naireId=","");
 	js.ajaxSubmit({
 		url: url,
 		data: {
@@ -63,8 +75,6 @@ function getListData() {
 				}
 			});
 			$("#accordion").html(divHtml);
-
-			$("#naireId").val(zId);
 			$("#has_all").html("已选：0票/"+subSize+"票");
 		},
 		dataType: 'json',
@@ -77,7 +87,7 @@ function getDivHtml(info) {
 	var id = "div_c_"+info.id;
 	var subHtml = getSubHtml(info);
 	var str= "<div class=\"panel panel-default\" >" +
-			 "<div class=\"panel-heading\">" +
+			 "<div class=\"panel-heading\" id='"+info.title+"'>" +
 			 "<h4 class=\"panel-title\">" +"<input type='checkbox' name='parentCheckBox_"+info.id+"' onclick='checkAllByParentId(this)' value='"+info.id+"'>"+
 			 "<a href=\"#"+id+"\" data-toggle=\"collapse\" data-parent=\"#accordion\">"+info.title+"<i class='fa fa-angle-down'></i></a>" +
 			 "</h4>" +
@@ -146,7 +156,7 @@ function getCheckVals() {
 	return vals;
 }
 function getCheckBoxValue() {
-	var vals = getCheckVals()
+	var vals = getCheckVals();
 	var nId = window.location.search.replace("?naireId=","");
 	var url = "${ctx}/vote/voteNaire/toVoteByUser?naireId="+nId+"&ids="+vals;
 	js.ajaxSubmit(url, function(data){
