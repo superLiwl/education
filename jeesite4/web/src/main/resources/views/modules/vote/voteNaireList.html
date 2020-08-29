@@ -166,7 +166,7 @@ $('#userSelectCode').change(function(){
 
 	js.ajaxSubmitForm($('#saveNaireUserForm'), {
 				callback: function (data) {
-					console.log(data);
+					js.showMessage(data.message, "配置投票用户", "info", 2000);
 				},
 				dataType: 'json',
 				async: true,
