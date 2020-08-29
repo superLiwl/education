@@ -3,7 +3,7 @@
 	<div class="box box-main">
 		<div class="box-header">
 			<div class="box-title">
-				<i class="fa icon-notebook"></i> ${text('问卷管理')}
+				<i class="fa icon-notebook"></i> ${text('投票配置')}
 			</div>
 			<div class="box-tools pull-right">
 				<% if(hasPermi('vote:voteNaire:edit')){ %>
@@ -28,37 +28,6 @@
 					<label class="control-label">${text('问卷名称')}：</label>
 					<div class="control-inline">
 						<#form:input path="name" maxlength="50" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('问卷描述')}：</label>
-					<div class="control-inline">
-						<#form:input path="content" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('创建时间')}：</label>
-					<div class="control-inline">
-						<#form:input path="createTime" readonly="true" maxlength="20" class="form-control laydate width-datetime"
-							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('状态')}：</label>
-					<div class="control-inline">
-						<#form:input path="statues" maxlength="1" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('0-未删除，1-已删除')}：</label>
-					<div class="control-inline">
-						<#form:input path="delFlag" maxlength="1" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('排序')}：</label>
-					<div class="control-inline">
-						<#form:input path="sort" maxlength="4" class="form-control width-120"/>
 					</div>
 				</div>
 				<div class="form-group">
@@ -103,7 +72,6 @@ $('#dataGrid').dataGrid({
 			<% if(hasPermi('vote:voteNaire:edit')){ %>
 				actions.push('<a href="${ctx}/vote/voteNaire/form?id='+row.id+'" class="btnList" title="${text("编辑问卷")}"><i class="fa fa-pencil"></i></a>&nbsp;');
 				actions.push('<a href="${ctx}/vote/voteNaire/delete?id='+row.id+'" class="btnList" title="${text("删除问卷")}" data-confirm="${text("确认要删除该问卷吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
-				actions.push('<a href="${ctx}/vote/voteQuestion/list?naireId='+row.id+'" class="btnList" title="${text("投票")}"><i class="fa fa-glass"></i></a>&nbsp;');
 			<% } %>
 			return actions.join('');
 		}}

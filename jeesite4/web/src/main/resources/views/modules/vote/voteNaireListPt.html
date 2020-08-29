@@ -3,126 +3,56 @@
 	<div class="box box-main">
 		<div class="box-header">
 			<div class="box-title">
-				<i class="fa icon-notebook"></i> ${text('问卷管理')}
+				<i class="fa icon-notebook"></i> ${text('投票管理')}
 			</div>
 			<div class="box-tools pull-right">
-				<% if(hasPermi('vote:voteNaire:edit')){ %>
-				<a href="#" class="btn btn-default" id="btnResult" onclick="toVoteResult('查看结果')" title="${text('查看结果')}"><i class="fa fa-filter"></i> ${text('查看结果')}</a>
-				<a href="#" class="btn btn-default" id="btnSee" onclick="toVoteResult('预览')" title="${text('预览')}"><i class="fa fa-filter"></i> ${text('预览')}</a>
-				<% } %>
 				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
 				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
-				<a href="#" class="btn btn-default" id="voteResult"></a>
 			</div>
 		</div>
 		<div class="box-body">
 			<#form:form id="searchForm" model="${voteNaire}" action="${ctx}/vote/voteNaire/listData" method="post" class="form-inline hide"
-					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
-				<div class="form-group">
-					<label class="control-label">${text('问卷名称')}：</label>
-					<div class="control-inline">
-						<#form:input path="name" maxlength="50" class="form-control width-120"/>
-					</div>
+			data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+			<div class="form-group">
+				<label class="control-label">${text('问卷名称')}：</label>
+				<div class="control-inline">
+					<#form:input path="name" maxlength="50" class="form-control width-120"/>
 				</div>
-				<div class="form-group">
-					<label class="control-label">${text('问卷描述')}：</label>
-					<div class="control-inline">
-						<#form:input path="content" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('创建时间')}：</label>
-					<div class="control-inline">
-						<#form:input path="createTime" readonly="true" maxlength="20" class="form-control laydate width-datetime"
-							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('状态')}：</label>
-					<div class="control-inline">
-						<#form:input path="statues" maxlength="1" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('0-未删除，1-已删除')}：</label>
-					<div class="control-inline">
-						<#form:input path="delFlag" maxlength="1" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('排序')}：</label>
-					<div class="control-inline">
-						<#form:input path="sort" maxlength="4" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
-					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
-				</div>
-			</#form:form>
-			<table id="dataGrid"></table>
-			<div id="dataGridPage"></div>
-		</div>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+				<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+			</div>
+		</#form:form>
+		<table id="dataGrid"></table>
+		<div id="dataGridPage"></div>
 	</div>
 </div>
 <% } %>
 <script>
-// 初始化DataGrid对象
-$('#dataGrid').dataGrid({
-	searchForm: $("#searchForm"),
-	showCheckbox:true,
-	columnModel: [
-		{header:'${text("问卷名称")}', name:'name', index:'a.name', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
-			return '<a href="${ctx}/vote/voteNaire/form?id='+row.id+'" class="btnList" data-title="${text("编辑问卷")}">'+(val||row.id)+'</a>';
-		}},
-		{header:'${text("问卷描述")}', name:'content', index:'a.content', width:150, align:"left"},
-		{header:'${text("创建时间")}', name:'createTime', index:'a.create_time', width:150, align:"center"},
-		{header:'${text("状态")}', name:'statues', index:'a.statues', width:80, align:"center", formatter: function(val, obj, row, act){
-				return js.getDictLabel(${@DictUtils.getDictListJson('vote_statues')}, val, '未知', true);
-			}},
-		{header:'${text("排序")}', name:'sort', index:'a.sort', width:150, align:"center"},
-		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
-			var actions = [];
-			<% if(hasPermi('vote:voteNaire:edit')){ %>
-				actions.push('<a href="${ctx}/vote/voteQuestion/list?naireId='+row.id+'" class="btnList" title="${text("投票")}"><i class="fa fa-glass"></i></a>&nbsp;');
-			<% } %>
-			return actions.join('');
-		}}
-	],
-	ajaxSuccess: function(data){
-		
-	}
-});
+	// 初始化DataGrid对象
+	$('#dataGrid').dataGrid({
+		searchForm: $("#searchForm"),
+		columnModel: [
+			{header:'${text("问卷名称")}', name:'name', index:'a.name', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+					return '<a href="${ctx}/vote/voteNaire/form?id='+row.id+'" class="btnList" data-title="${text("编辑问卷")}">'+(val||row.id)+'</a>';
+				}},
+			{header:'${text("问卷描述")}', name:'content', index:'a.content', width:150, align:"left"},
+			{header:'${text("创建时间")}', name:'createTime', index:'a.create_time', width:150, align:"center"},
+			{header:'${text("状态")}', name:'statues', index:'a.statues', width:80, align:"center", formatter: function(val, obj, row, act){
+					return js.getDictLabel(${@DictUtils.getDictListJson('vote_statues')}, val, '未知', true);
+				}},
+			{header:'${text("排序")}', name:'sort', index:'a.sort', width:150, align:"center"},
+			{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+					var actions = [];
+				<% if(hasPermi('vote:voteNaire:edit')){ %>
+						actions.push('<a href="${ctx}/vote/voteQuestion/list?naireId='+row.id+'" class="btnList" title="${text("投票")}"><i class="fa fa-glass"></i></a>&nbsp;');
+					<% } %>
+					return actions.join('');
+				}}
+		],
+		ajaxSuccess: function(data){
 
-function getCheckBoxValue(type) {
-	var vals = [];
-	$.each($('input:checkbox:checked'),function(){
-		vals.push($(this).attr('id').replace("jqg_dataGrid_",""));
+		}
 	});
-	js.ajaxSubmit("${ctx}/vote/voteNaire/updateStatues?type="+type+"&ids="+vals, function(data){
-		js.showMessage(data.message);
-		page();
-	});
-}
-
-function toVoteResult(title) {
-	var vals = [];
-	$.each($('input:checkbox:checked'),function(){
-		vals.push($(this).attr('id').replace("jqg_dataGrid_",""));
-	});
-	console.log(vals[0]);
-	if(!vals[0]){
-		js.showMessage("请选择一个问卷", title, "info", 2000);
-		return;
-	}if(vals.length == 0){
-		js.showMessage("请选择一个问卷", title, "info", 2000);
-		return;
-	}else if(vals.length > 1){
-		js.showMessage("只能选择一个问卷", title, "info", 2000);
-		return;
-	}
-	var url="${ctx}/vote/voteNaire/result?id="+vals[0];
-	// $("#voteResult").attr("href",url);
-	js.addTabPage($("#voteResult"), title, url, true, false);
-}
 </script>
