@@ -5,6 +5,7 @@ package com.jeesite.modules.vote.service;
 
 import com.jeesite.common.entity.Page;
 import com.jeesite.common.service.CrudService;
+import com.jeesite.common.shiro.realm.LoginInfo;
 import com.jeesite.modules.vote.dao.VoteAnswerDao;
 import com.jeesite.modules.vote.dao.VoteNaireDao;
 import com.jeesite.modules.vote.dao.VoteUserNaireDao;
@@ -12,6 +13,7 @@ import com.jeesite.modules.vote.entity.VoteAnswer;
 import com.jeesite.modules.vote.entity.VoteNaire;
 import com.jeesite.modules.vote.entity.VoteUserNaire;
 import com.jeesite.modules.vote.entity.VoteUserNaireVo;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +57,27 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
     @Override
     public Page<VoteNaire> findPage(VoteNaire voteNaire) {
         return super.findPage(voteNaire);
+    }
+
+    /**
+     * 查询分页数据-pt
+     *
+     * @param voteNaire 查询条件
+     * @return
+     */
+    public Page<VoteNaire> findPagePt(VoteNaire voteNaire) {
+        int pageNo = voteNaire.getPage().getPageNo();
+        int pageSize = voteNaire.getPage().getPageSize();
+        LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
+        String userCode = login.getId();
+        Map<String, Object> params = new HashMap<>();
+        params.put("userCode", userCode);
+        params.put("start", (pageNo - 1) * pageSize);
+        params.put("end", pageNo * pageSize);
+        params.put("name", voteNaire.getName());
+        Page<VoteNaire> result = new Page<VoteNaire>();
+        result.setList(voteNaireDao.getListByPages(params));
+        return result;
     }
 
     /**

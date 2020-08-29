@@ -28,4 +28,17 @@
 		WHERE a.naire_id =#{naireId} GROUP BY a.question_id
 	</select>
 
+	<select id="getListByPages" resultType="VoteNaire">
+		SELECT * FROM `vote_naire`
+		<where>
+			<if test="userCode != null and userCode != '' and userCode != 'system'">
+				id in (SELECT naire_id FROM `vote_user_naire` WHERE user_code = #{userCode})
+			</if>
+			<if test="name != null and name != ''">
+				and name like CONCAT('%',#{name},'%')
+			</if>
+		</where>
+		limit ${start},${end}
+	</select>
+
 </mapper>

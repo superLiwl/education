@@ -82,6 +82,18 @@ public class VoteNaireController extends BaseController {
     }
 
     /**
+     * 查询列表数据
+     */
+    @RequiresPermissions("vote:voteNaire:view")
+    @RequestMapping(value = "listDataPt")
+    @ResponseBody
+    public Page<VoteNaire> listDataPt(VoteNaire voteNaire, HttpServletRequest request, HttpServletResponse response) {
+        voteNaire.setPage(new Page<>(request, response));
+        Page<VoteNaire> page = voteNaireService.findPagePt(voteNaire);
+        return page;
+    }
+
+    /**
      * 查看编辑表单
      */
     @RequiresPermissions("vote:voteNaire:view")
