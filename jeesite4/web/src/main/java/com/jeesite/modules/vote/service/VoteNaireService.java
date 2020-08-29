@@ -224,7 +224,7 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
                 map.put("subCount", r.get("count"));
                 map.put("pTitle", r.get("pTitle"));
                 map.put("allCount", r.get("allCount"));
-                map.put("rate", roundRatio(String.valueOf(r.get("count")),String.valueOf(r.get("allCount"))));
+                map.put("rate", roundRatio(String.valueOf(r.get("count")), String.valueOf(r.get("allCount"))));
                 //计算占比
                 map.put("pId", pId);
                 //判断是否有pid的节点-有就增加到list中，没有则新加入
@@ -252,6 +252,21 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
         }
         return result;
     }
+
+    @Transactional(readOnly = false)
+    public long findAllCount(String naireId) {
+        VoteUserNaire v = new VoteUserNaire();
+        v.setNaireId(naireId);
+        return voteUserNaireDao.findCount(v);
+    }
+
+    @Transactional(readOnly = false)
+    public long findHasCount(String naireId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("naireId", naireId);
+        return voteUserNaireDao.getHasCount(params);
+    }
+
 
     /**
      * 计算百分比，精确到小数点两位
