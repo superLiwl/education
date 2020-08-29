@@ -1,103 +1,59 @@
 <% layout('/layouts/default.html', {title: '', bodyClass: ''}){ %>
 <!-- <link rel="stylesheet" href="${ctxStatic}/modules/sys/sysDesktop.css?${_version}"> -->
-<div class="content pb0">
-	<div class="row">
-		<section class="col-md-12 ui-sortable">
-			<div class="box box-widget">
-				<div class="col-md-12">
-					<p class="text-left">
-						<strong>省纪委监委</strong>
-					</p>
-					<div class="progress-group">
-						<span class="progress-text">张三</span>
-						<span class="progress-number"><b>100</b>/200</span>
-						<div class="progress sm">
-							<div class="progress-bar progress-bar-aqua" style="width: 50%;height: 50px;"></div>
-						</div>
-					</div>
-					<div class="progress-group">
-						<span class="progress-text">李四</span>
-						<span class="progress-number"><b>310</b>/400</span>
-						<div class="progress sm">
-							<div class="progress-bar progress-bar-red" style="width: 76%"></div>
-						</div>
-					</div>
-					<div class="progress-group">
-						<span class="progress-text">王五</span>
-						<span class="progress-number"><b>480</b>/800</span>
-						<div class="progress sm">
-							<div class="progress-bar progress-bar-green" style="width: 60%"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-	</div>
-	<div class="row">
-		<section class="col-md-12 ui-sortable">
-			<div class="box box-widget">
-				<div class="col-md-12">
-					<p class="text-left">
-						<strong>省委办公厅</strong>
-					</p>
-					<div class="progress-group">
-						<span class="progress-text">赵六</span>
-						<span class="progress-number"><b>100</b>/200</span>
-						<div class="progress sm">
-							<div class="progress-bar progress-bar-aqua" style="width: 50%;height: 50px;"></div>
-						</div>
-					</div>
-					<div class="progress-group">
-						<span class="progress-text">周七</span>
-						<span class="progress-number"><b>310</b>/400</span>
-						<div class="progress sm">
-							<div class="progress-bar progress-bar-red" style="width: 76%"></div>
-						</div>
-					</div>
-					<div class="progress-group">
-						<span class="progress-text">吴八</span>
-						<span class="progress-number"><b>480</b>/800</span>
-						<div class="progress sm">
-							<div class="progress-bar progress-bar-green" style="width: 60%"></div>
-						</div>
-					</div>
-					<div class="progress-group">
-						<span class="progress-text">张九</span>
-						<span class="progress-number"><b>480</b>/800</span>
-						<div class="progress sm">
-							<div class="progress-bar progress-bar-green" style="width: 60%"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-	</div>
-</div>
+<div class="content pb0" id="resultDiv">
 
-<footer class="main-footer m0">
-	<div class="pull-right hidden-xs">当前版本： ${@Global.getConfig('productVersion')}</div>
-	&copy; ${@DateUtils.getYear()} ${@Global.getConfig('productName')} - Powered By <a href="http://jeesite.com">JeeSite</a>
-</footer>
+</div>
 <% } %>
-<script src="${ctxStatic}/jquery/jquery-ui-sortable-1.12.1.min.js"></script>
-<script src="${ctxStatic}/echarts/4.2/echarts.min.js"></script>
 <script>
-$(function(){
-	$(window).resize(function(){
-		var footerHeight = $('.main-footer').outerHeight() || 0;
-		var windowHeight = $(window).height();
-		$('.content').css('min-height', windowHeight - footerHeight);
-		// myChart1.resize(); myChart2.resize(); myChart3.resize();
-	}).resize();
-	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-		$(window).resize();
-	});
-	$('.ui-sortable').sortable({
-		connectWith : '.ui-sortable',
-		handle      : '.box-header, .nav-tabs',
-		placeholder : 'sort-highlight',
-		forcePlaceholderSize: true,
-		zIndex : 999999
-	}).find('.box-header, .nav-tabs').css('cursor', 'move');
-});
+    $(document).ready(function () {
+        getListData();
+    });
+
+    function getListData() {
+        var nId = window.location.search.replace("?id=", "");
+        var url = "${ctx}/vote/voteNaire/seeResult?naireId=" + nId;
+        js.ajaxSubmit(url, function (data) {
+        	var html = "";
+            if (data && data.length > 1 && data[0]) {
+				$.each(data,function(index,ele){
+					if(ele){
+						html += getRow(ele);
+					}
+				});
+            }
+            $("#resultDiv").html(html);
+        });
+    }
+
+    function getRow(info) {
+		var html = " <div class=\"row\">" +
+				"        <section class=\"col-md-12 ui-sortable\">" +
+				"            <div class=\"box box-widget\">" +
+				"                <div class=\"col-md-12\">" +
+				"                    <p class=\"text-left\">" +
+				"                        <strong>"+info.pTitle+"</strong>" +
+				"                    </p>";
+		if (info.subList && info.subList.length > 1 && info.subList[0]) {
+			$.each(info.subList,function(index,ele){
+				if(ele){
+					html += getSub(ele);
+				}
+			});
+		}
+		html += "                </div>" +
+				"            </div>" +
+				"        </section>" +
+				"    </div>";
+		return html;
+    }
+    function getSub(info) {
+		var html ="<div class=\"progress-group\">" +
+				"	<span class=\"progress-text\">"+info.subTitle+"</span>" +
+				" 	<span class=\"progress-number\"><b>"+info.subCount+"</b>/"+info.allCount+"</span>" +
+				" 	<div class=\"progress sm\">" +
+				"      	<div class=\"progress-bar progress-bar-red\" style=\"width: "+(info.rate*100)+"%\"></div>" +
+				"  	</div>" +
+				" </div>";
+		return html;
+	}
 </script>

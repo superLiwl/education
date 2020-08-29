@@ -20,4 +20,12 @@
 		</foreach>
 	</select>
 
+	<select id="seeResult" resultType="map">
+		SELECT q.title,count(a.id) count,(SELECT p.title FROM vote_question p WHERE p.id = q.parent_id) pTitle,q.parent_id ,
+		(SELECT count(id) FROM `vote_user_naire` WHERE naire_id = a.naire_id) allCount
+		FROM `vote_answer` a
+		LEFT JOIN vote_question q ON q.id = a.question_id
+		WHERE a.naire_id =#{naireId} GROUP BY a.question_id
+	</select>
+
 </mapper>

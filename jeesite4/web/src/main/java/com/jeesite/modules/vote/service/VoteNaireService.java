@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -115,14 +116,14 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
         VoteNaire naire = new VoteNaire();
         naire.setId(naireId);
         naire.setDelFlag("0");
-        naire =  voteNaireDao.get(naire);
-        if(null == naire){
+        naire = voteNaireDao.get(naire);
+        if (null == naire) {
             return "已失效，暂不能投票";
         }
-        if("1".equals(naire.getStatues())){
+        if ("1".equals(naire.getStatues())) {
             return "未发布，暂不能投票";
         }
-        if("3".equals(naire.getStatues())){
+        if ("3".equals(naire.getStatues())) {
             return "已终止，暂不能投票";
         }
 
@@ -136,21 +137,21 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
         select.setNaireId(naireId);
         select.setUserId(userId);
         Long count = voteAnswerDao.findCount(select);
-        if(count.intValue() > 0){
+        if (count.intValue() > 0) {
             return "已经投过票了";
         }
         //校验是否有投票选项
         Map<String, Object> params = new HashMap<>();
-        params.put("naireId",naireId);
-        params.put("ids",noCheckIds);
+        params.put("naireId", naireId);
+        params.put("ids", noCheckIds);
         List<String> checkIds = voteNaireDao.checkQuesIds(params);
-        if(null == checkIds || checkIds.isEmpty() || checkIds.size() == 0){
+        if (null == checkIds || checkIds.isEmpty() || checkIds.size() == 0) {
             return "请选择投票选项";
         }
         //保存投票信息
         List<VoteAnswer> ansList = new ArrayList<>();
         VoteAnswer answer;
-        for(String id : checkIds){
+        for (String id : checkIds) {
             answer = new VoteAnswer();
             answer.setId(UUID.randomUUID().toString());
             answer.setUserId(userId);
@@ -168,18 +169,18 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
      */
     @Transactional(readOnly = false)
     public String saveNaireUser(VoteUserNaireVo vo) {
-        if(null == vo.getNaireIds() || vo.getNaireIds().isEmpty() || vo.getNaireIds().size() == 0){
-            return  "问卷id为空";
+        if (null == vo.getNaireIds() || vo.getNaireIds().isEmpty() || vo.getNaireIds().size() == 0) {
+            return "问卷id为空";
         }
-        if(null == vo.getUserCodes() || vo.getUserCodes().isEmpty() || vo.getUserCodes().size() == 0){
-            return  "问卷id为空";
+        if (null == vo.getUserCodes() || vo.getUserCodes().isEmpty() || vo.getUserCodes().size() == 0) {
+            return "问卷id为空";
         }
         //循环问卷
         VoteUserNaire userNaire;
         VoteUserNaire userNaireDel;
-        List<VoteUserNaire> insertEntityList= new ArrayList<>();
-        for (String naireId : vo.getNaireIds()){
-            for (String userCode : vo.getUserCodes()){
+        List<VoteUserNaire> insertEntityList = new ArrayList<>();
+        for (String naireId : vo.getNaireIds()) {
+            for (String userCode : vo.getUserCodes()) {
                 userNaire = new VoteUserNaire();
                 userNaire.setId(UUID.randomUUID().toString());
                 userNaire.setNaireId(naireId);
@@ -195,4 +196,85 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
         voteUserNaireDao.insertBatch(insertEntityList);
         return "配置成功";
     }
+
+    /**
+     * 更改问卷状态
+     */
+    @Transactional(readOnly = false)
+    public List<Map<String, Object>> seeResult(String naireId) {
+        if (null == naireId || "".equals(naireId)) {
+            return null;
+        }
+        Map<String, Object> params = new HashMap<>();
+        params.put("naireId", naireId);
+        List<Map<String, Object>> list = voteNaireDao.seeResult(params);
+        Map<String, Boolean> pMap = new HashMap<>();//用来判断是已经有父id
+        Map<String, Object> pTitleMap = new HashMap<>();//用来存父id的title
+        Map<String, List<Map<String, Object>>> pListMap = new HashMap<>();//父id的子集合
+        //重新构造一下数据
+        if (null != list && !list.isEmpty() && list.size() > 0) {
+            Map<String, Object> map;
+            String pId;
+            List<Map<String, Object>> subList;
+            for (Map<String, Object> r : list) {
+                map = new HashMap<>();
+                pId = String.valueOf(r.get("parent_id"));
+                //构造map
+                map.put("subTitle", r.get("title"));
+                map.put("subCount", r.get("count"));
+                map.put("pTitle", r.get("pTitle"));
+                map.put("allCount", r.get("allCount"));
+                map.put("rate", roundRatio(String.valueOf(r.get("count")),String.valueOf(r.get("allCount"))));
+                //计算占比
+                map.put("pId", pId);
+                //判断是否有pid的节点-有就增加到list中，没有则新加入
+                if (null != pMap.get(pId) && pMap.get(pId)) {
+                    subList = pListMap.get(pId);
+                    subList.add(map);
+                } else {
+                    pMap.put(pId, true);
+                    pTitleMap.put(pId, r.get("pTitle"));
+                    subList = new ArrayList<>();
+                    subList.add(map);
+                }
+                //放入到集合中
+                pListMap.put(pId, subList);
+            }
+        }
+        List<Map<String, Object>> result = new ArrayList<>();
+        Map<String, Object> map;
+        for (String key : pMap.keySet()) {
+            map = new HashMap<>();
+            map.put("pid", key);
+            map.put("pTitle", pTitleMap.get(key));
+            map.put("subList", pListMap.get(key));
+            result.add(map);
+        }
+        return result;
+    }
+
+    /**
+     * 计算百分比，精确到小数点两位
+     */
+    public static double roundRatio(String v1, String v2) {
+        if ("0".equals(v2)) {
+            return 0.0;
+        }
+        double result = div(v1, v2, 4);
+        BigDecimal b1 = new BigDecimal(Double.toString(result));
+        return b1.divide(new BigDecimal(1), 2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    public static double div(String v1, String v2, int scale) {
+        if (scale < 0) {
+            throw new IllegalArgumentException("没有指精确位数");
+        }
+        BigDecimal b1 = new BigDecimal(v1);
+
+        BigDecimal b2 = new BigDecimal(v2);
+
+        return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+
+    }
+
 }

@@ -26,6 +26,7 @@ import com.jeesite.modules.vote.entity.VoteNaire;
 import com.jeesite.modules.vote.service.VoteNaireService;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -153,14 +154,23 @@ public class VoteNaireController extends BaseController {
     }
 
     /**
-     * 去投票
+     * 配置投票用户
      */
     @RequiresPermissions("vote:voteNaire:edit")
     @RequestMapping(value = "saveNaireUser")
     @ResponseBody
     public String saveNaireUser(VoteUserNaireVo vo) {
-//        String naireIds, String proportion,String userCodes
         String msg = voteNaireService.saveNaireUser(vo);
         return renderResult(Global.TRUE, text(msg));
+    }
+
+    /**
+     * 查看结果
+     */
+    @RequiresPermissions("vote:voteNaire:edit")
+    @RequestMapping(value = "seeResult")
+    @ResponseBody
+    public List<Map<String,Object>> seeResult(String naireId) {
+        return voteNaireService.seeResult(naireId);
     }
 }
