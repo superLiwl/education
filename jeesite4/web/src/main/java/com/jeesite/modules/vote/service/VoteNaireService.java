@@ -8,11 +8,9 @@ import com.jeesite.common.service.CrudService;
 import com.jeesite.common.shiro.realm.LoginInfo;
 import com.jeesite.modules.vote.dao.VoteAnswerDao;
 import com.jeesite.modules.vote.dao.VoteNaireDao;
+import com.jeesite.modules.vote.dao.VoteNaireQuestionDao;
 import com.jeesite.modules.vote.dao.VoteUserNaireDao;
-import com.jeesite.modules.vote.entity.VoteAnswer;
-import com.jeesite.modules.vote.entity.VoteNaire;
-import com.jeesite.modules.vote.entity.VoteUserNaire;
-import com.jeesite.modules.vote.entity.VoteUserNaireVo;
+import com.jeesite.modules.vote.entity.*;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +34,8 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
     private VoteAnswerDao voteAnswerDao;
     @Autowired
     private VoteUserNaireDao voteUserNaireDao;
+    @Autowired
+    private VoteNaireQuestionDao voteNaireQuestionDao;
 
     /**
      * 获取单条数据
@@ -288,6 +288,36 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
         Map<String, Object> params = new HashMap<>();
         params.put("naireId", naireId);
         return voteUserNaireDao.getHasCount(params);
+    }
+
+    /**
+     * 更改问卷状态
+     */
+    @Transactional(readOnly = false)
+    public String saveQuestions(VoteUserNaireVo vo) {
+        if (null == vo.getNaireIds() || vo.getNaireIds().isEmpty() || vo.getNaireIds().size() == 0) {
+            return "问卷id为空";
+        }
+        if (null == vo.getUserCodes() || vo.getUserCodes().isEmpty() || vo.getUserCodes().size() == 0) {
+            return "选项id为空";
+        }
+        //循环问卷
+        VoteNaireQuestion voteNaireQuestion ;
+        VoteNaireQuestion del ;
+        List<VoteNaireQuestion> insertEntityList = new ArrayList<>();
+        for (String naireId : vo.getNaireIds()) {
+            del = new VoteNaireQuestion();
+            del.setNaireId(naireId);
+            voteNaireQuestionDao.deleteByEntity(del);
+            for (String userCode : vo.getUserCodes()) {
+                voteNaireQuestion = new VoteNaireQuestion();
+                voteNaireQuestion.setNaireId(naireId);
+                voteNaireQuestion.setQuestionId(userCode);
+                insertEntityList.add(voteNaireQuestion);
+            }
+        }
+        voteNaireQuestionDao.insertBatch(insertEntityList);
+        return "配置成功";
     }
 
 

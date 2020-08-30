@@ -185,4 +185,15 @@ public class VoteNaireController extends BaseController {
     public List<Map<String,Object>> seeResult(String naireId) {
         return voteNaireService.seeResult(naireId);
     }
+
+    /**
+     * 配置投票用户
+     */
+    @RequiresPermissions("vote:voteNaire:edit")
+    @RequestMapping(value = "saveQuestions")
+    @ResponseBody
+    public String saveQuestions(VoteUserNaireVo vo) {
+        String msg = voteNaireService.saveQuestions(vo);
+        return renderResult(Global.TRUE, text(msg));
+    }
 }

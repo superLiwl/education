@@ -7,7 +7,8 @@
 			</div>
 			<div class="box-tools pull-right">
 				<% if(hasPermi('vote:voteNaire:edit')){ %>
-				<a href="#" class="btn btn-default" id="btnAddUser" title="${text('添加用户')}"><i class="fa fa-plus"></i> ${text('配置投票用户')}</a>
+				<a href="#" class="btn btn-default" onclick="conQuestion()" title="${text('问卷配题')}"><i class="fa fa-plus"></i> ${text('问卷配题')}</a>
+				<a href="#" class="btn btn-default" id="btnAddUser" title="${text('配置投票用户')}"><i class="fa fa-plus"></i> ${text('配置投票用户')}</a>
 				<a href="#" class="btn btn-default" id="btnPublish" onclick="getCheckBoxValue('2','发布')" title="${text('发布')}"><i class="fa fa-filter"></i> ${text('发布')}</a>
 				<a href="#" class="btn btn-default" id="btnResult" onclick="toVoteResult('查看结果')" title="${text('查看结果')}"><i class="fa fa-filter"></i> ${text('查看结果')}</a>
 				<a href="#" class="btn btn-default" id="btnStop" onclick="getCheckBoxValue('3','终止投票')" title="${text('终止投票')}"><i class="fa fa-filter"></i> ${text('终止投票')}</a>
@@ -50,6 +51,14 @@
 		<#form:input name="naireIds" id="naireIds" class="form-control width-120"/>
 		<#form:input name="proportion" id="proportion" class="form-control width-120"/>
 	</#form:form>
+</div>
+
+<div class="hide">
+	<#form:form id="saveQuestionsForm" action="${ctx}/vote/voteNaire/saveQuestions" method="post" class="form-inline">
+	<#form:input name="userCodes" id="userCodes_q" class="form-control width-120"/>
+	<#form:input name="naireIds" id="naireIds_q" class="form-control width-120"/>
+	<#form:input name="proportion" id="proportion_q" class="form-control width-120"/>
+</#form:form>
 </div>
 <% } %>
 <script>
@@ -150,6 +159,81 @@ function getCheckVals() {
 			vals.push(val);
 		}
 	});
+	$("#naireIds").val(vals);
 	return vals;
+}
+
+function conQuestion() {
+	var vals = getCheckVals();
+	if(!vals[0]){
+		js.showMessage("至少选择一个问卷", "配置投票用户", "info", 2000);
+		return;
+	}if(vals.length == 0){
+		js.showMessage("至少选择一个问卷", "配置投票用户", "info", 2000);
+		return;
+	}
+	//查询所有考题
+	var url = "${ctx}/vote/voteQuestion/listQuestion";
+	js.ajaxSubmit(url, function(data){
+		var tableHtml = "<tr><td>序号</td><td>题名</td><td><input type='checkbox' name='chackAllQuestion' onclick='checkAllQ(this)' value=''></td></td></tr>";
+		if(data && data.length > 0 && data[0]){
+			var xh = 1;
+			$.each(data,function(index,ele){
+				if(ele){
+					tableHtml +=getTableHtml(xh,ele)
+					xh++;
+				}
+			});
+			//在这里面输入任何合法的js语句
+			layer.open({
+				type: 1 //Page层类型
+				, area: ['600px', '400px']
+				, title: '选择考题'
+				, shade: 0.6 //遮罩透明度
+				, maxmin: true //允许全屏最小化
+				, anim: 1 //0-6的动画形式，-1不开启
+				, content: '<div style="padding:50px;"><table class="table table-striped">' + tableHtml + '</table><div class="pull-right"><button type="button" onclick="toSaveQ()" class="btn btn-success">保存</button></div></div>'
+			});
+		}
+	});
+}
+function getTableHtml(xh,info) {
+	return "<tr><td>" + xh + "</td><td>" + info.title + "</td><td><input type='checkbox' name='chackQuestion' value='" + info.id + "' ></td></tr>";
+}
+
+function checkAllQ(obj) {
+	if($(obj).is(':checked')) {
+		$("input[name=chackQuestion]").prop("checked",true);
+	}else{
+		$("input[name=chackQuestion]").prop("checked",false);
+	}
+}
+
+function toSaveQ() {
+	var vals = [];
+	$.each($('input[name=chackQuestion]:checked'), function () {
+		vals.push($(this).val());
+	});
+	if(!vals[0]){
+		js.showMessage("至少选择一个选项", "选择考题", "info", 2000);
+		return;
+	}if(vals.length == 0){
+		js.showMessage("至少选择一个选项", "选择考题", "info", 2000);
+		return;
+	}
+	var naireIds = $("#naireIds").val();
+	$("#userCodes_q").val(vals);
+	$("#naireIds_q").val(naireIds);
+	$("#proportion_q").val("1");
+
+	js.ajaxSubmitForm($('#saveQuestionsForm'), {
+		callback: function (data) {
+			js.showMessage(data.message, "配置选项", "info", 2000);
+		},
+		dataType: 'json',
+		async: true,
+		message: '正在获取数据...'
+	});
+
 }
 </script>

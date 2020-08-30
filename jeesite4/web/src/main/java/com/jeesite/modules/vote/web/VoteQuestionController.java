@@ -82,6 +82,17 @@ public class VoteQuestionController extends BaseController {
 	}
 
 	/**
+	 * 查询列表数据
+	 */
+	@RequiresPermissions("vote:voteQuestion:view")
+	@RequestMapping(value = "listQuestion")
+	@ResponseBody
+	public List<VoteQuestion> listQuestion(VoteQuestion voteQuestion) {
+		voteQuestion.setParentId("0");
+		return voteQuestionService.findList(voteQuestion);
+	}
+
+	/**
 	 * 查看编辑表单
 	 */
 	@RequiresPermissions("vote:voteQuestion:view")
