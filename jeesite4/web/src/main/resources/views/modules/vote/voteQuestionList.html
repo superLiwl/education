@@ -31,7 +31,7 @@
 				<i class="fa icon-notebook"></i> ${text('开始投票：')}
 			</div>
 		</div>
-		<div class="panel-group" id="accordion"  style="height:650px;overflow:auto;">
+		<div class="panel-group" id="accordion" >
 
 		</div>
 	</div>
@@ -43,6 +43,8 @@
 // 初始化DataGrid对象
 $(document).ready(function(){
 	getListData();
+	$("body").attr("style","overflow:hidden");
+	$("#accordion").attr("style","height:"+document.body.clientWidth/3+"px;overflow:auto;");
 });
 
 function toDiv() {
