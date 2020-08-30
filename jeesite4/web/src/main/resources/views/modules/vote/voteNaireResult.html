@@ -14,7 +14,7 @@
         var url = "${ctx}/vote/voteNaire/seeResult?naireId=" + nId;
         js.ajaxSubmit(url, function (data) {
         	var html = "";
-            if (data && data.length > 1 && data[0]) {
+            if (data && data.length > 0 && data[0]) {
 				$.each(data,function(index,ele){
 					if(ele){
 						html += getRow(ele);
@@ -33,7 +33,7 @@
 				"                    <p class=\"text-left\">" +
 				"                        <strong>"+info.pTitle+"</strong>" +
 				"                    </p>";
-		if (info.subList && info.subList.length > 1 && info.subList[0]) {
+		if (info.subList && info.subList.length > 0 && info.subList[0]) {
 			$.each(info.subList,function(index,ele){
 				if(ele){
 					html += getSub(ele);
