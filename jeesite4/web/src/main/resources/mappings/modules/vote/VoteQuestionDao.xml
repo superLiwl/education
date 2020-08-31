@@ -13,6 +13,7 @@
     </select>
 
     <select id="findSubList" resultType="map">
-        SELECT id,title,parent_id FROM `vote_question` WHERE parent_id = #{parentId}
+        SELECT id,title,parent_id,tree_leaf FROM `vote_question` WHERE parent_id = #{parentId}
     </select>
+
 </mapper>

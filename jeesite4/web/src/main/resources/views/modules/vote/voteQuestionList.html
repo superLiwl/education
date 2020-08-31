@@ -36,6 +36,7 @@
 		</div>
 	</div>
 </div>
+<a href="#" class="btn btn-default hide" id="voteResult"></a>
 <!--折叠样式必备-->
 <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
 <% } %>
@@ -108,12 +109,19 @@ function getSubHtml(info) {
 		$.each(info.subList,function(index,ele){
 			if(ele){
 				subSize ++;
-				str += ele.title +"<input type='checkbox' name='subCheckBox_"+ele.parent_id+"' content='"+ele.title+"' parentId='"+ele.parent_id+"' onclick='checkAllBySubId(this)' value='"+ele.id+"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+				str += "<a href='#' onclick='toUrl(\""+ele.tree_leaf+"\")'>" + ele.title +"</a><input type='checkbox' name='subCheckBox_"+ele.parent_id+"' content='"+ele.title+"' parentId='"+ele.parent_id+"' onclick='checkAllBySubId(this)' value='"+ele.id+"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 			}
 		});
 	}
 	return str;
 }
+
+function toUrl(url) {
+	if(url){
+		js.addTabPage($("#voteResult"), "详情", url, true, false);
+	}
+}
+
 //parent点击效果
 function checkAllByParentId(obj) {
 	if($(obj).is(':checked')) {
