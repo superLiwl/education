@@ -41,4 +41,10 @@
 		limit ${start},${end}
 	</select>
 
+	<select id="toSeeUser" resultType="map">
+		SELECT un.*,(SELECT count(1) FROM `vote_answer` a WHERE a.user_id =un.user_code AND a.naire_id = un.naire_id) checkCount ,u.user_name
+		FROM `vote_user_naire` un LEFT JOIN js_sys_user u on u.user_code = un.user_code
+		WHERE un.naire_id =#{naireId} ;
+	</select>
+
 </mapper>
