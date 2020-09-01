@@ -1,9 +1,9 @@
-<% layout('/layouts/default.html', {title: '问题管理', libs: ['validate','dataGrid']}){ %>
+<% layout('/layouts/default.html', {title: '参评单位管理', libs: ['validate','dataGrid']}){ %>
 <div class="main-content">
 	<div class="box box-main">
 		<div class="box-header with-border">
 			<div class="box-title">
-				<i class="fa icon-note"></i> ${text(voteQuestion.isNewRecord ? '新增问题' : '编辑问题')}
+				<i class="fa icon-note"></i> ${text(voteQuestion.isNewRecord ? '新增参评单位' : '编辑参评单位')}
 			</div>
 			<div class="box-tools pull-right">
 				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -18,7 +18,7 @@
 					<div class="col-xs-12">
 						<div class="form-group">
 							<label class="control-label col-sm-2" title="">
-								<span class="required hide">*</span> ${text('标题')}：<i class="fa icon-question hide"></i></label>
+								<span class="required hide">*</span> ${text('参评单位')}：<i class="fa icon-question hide"></i></label>
 							<div class="col-sm-5">
 								<#form:input path="title" maxlength="200" class="form-control"/>
 							</div>
@@ -69,9 +69,9 @@ $("#voteOptionsDataGrid").dataGrid({
 	columnModel: [
 		{header:'状态', name:'status', editable:true, hidden:true},
 		{header:'主键', name:'id', editable:true, hidden:true},
-		{header:'${text("标题")}', name:'title', width:150, editable:true, edittype:'text', editoptions:{'maxlength':'50', 'class':'form-control'}},
+		{header:'${text("参评人")}', name:'title', width:150, editable:true, edittype:'text', editoptions:{'maxlength':'50', 'class':'form-control'}},
 		{header:'${text("跳转地址")}', name:'url', width:150, editable:true, edittype:'text', editoptions:{'maxlength':'255', 'class':'form-control'}},
-		{header:'${text("问题表主键")}', name:'questionId.id', editable:true, hidden:true},
+		{header:'${text("参评单位表主键")}', name:'questionId.id', editable:true, hidden:true},
 		{header:'${text("操作")}', name:'actions', width:80, sortable:false, fixed:true, formatter: function(val, obj, row, act){
 			var actions = [];
 			if (val == 'new'){
