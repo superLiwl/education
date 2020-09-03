@@ -196,4 +196,14 @@ public class VoteNaireController extends BaseController {
         String msg = voteNaireService.saveQuestions(vo);
         return renderResult(Global.TRUE, text(msg));
     }
+
+    /**
+     * 查询列表数据
+     */
+    @RequiresPermissions("vote:voteNaire:view")
+    @RequestMapping(value = "toSeeUser")
+    @ResponseBody
+    public List<Map<String,Object>> toSeeUser(String naireId) {
+        return voteNaireService.toSeeUser(naireId);
+    }
 }
