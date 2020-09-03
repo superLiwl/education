@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeesite.modules.vote.dao.VoteQuestionDao">
+
+    <select id="findList" resultType="map">
+        SELECT id,title,parent_id FROM `vote_question` WHERE tree_level = '0'
+        <if test="title != null and title != ''">
+            and title like CONCAT('%',#{title},'%')
+        </if>
+        <if test="naireId != null and naireId != ''">
+            and id in(SELECT question_id FROM vote_naire_question WHERE naire_id = #{naireId})
+        </if>
+    </select>
+
+    <select id="findSubList" resultType="map">
+        SELECT id,title,parent_id,tree_leaf FROM `vote_question` WHERE parent_id = #{parentId}
+    </select>
+
+</mapper>

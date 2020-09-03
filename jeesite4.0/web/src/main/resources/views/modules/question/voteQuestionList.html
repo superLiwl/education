@@ -1,14 +1,14 @@
-<% layout('/layouts/default.html', {title: '问题管理', libs: ['dataGrid']}){ %>
+<% layout('/layouts/default.html', {title: '参评单位管理', libs: ['dataGrid']}){ %>
 <div class="main-content">
 	<div class="box box-main">
 		<div class="box-header">
 			<div class="box-title">
-				<i class="fa icon-notebook"></i> ${text('问题管理')}
+				<i class="fa icon-notebook"></i> ${text('参评单位管理')}
 			</div>
 			<div class="box-tools pull-right">
 				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
 				<% if(hasPermi('question:voteQuestion:edit')){ %>
-					<a href="${ctx}/question/voteQuestion/form" class="btn btn-default btnTool" title="${text('新增问题')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+					<a href="${ctx}/question/voteQuestion/form" class="btn btn-default btnTool" title="${text('新增参评单位')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
 				<% } %>
 				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
 			</div>
@@ -38,15 +38,15 @@
 $('#dataGrid').dataGrid({
 	searchForm: $("#searchForm"),
 	columnModel: [
-		{header:'${text("标题")}', name:'title', index:'a.title', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
-			return '<a href="${ctx}/question/voteQuestion/form?id='+row.id+'" class="btnList" data-title="${text("编辑问题")}">'+(val||row.id)+'</a>';
+		{header:'${text("参评单位")}', name:'title', index:'a.title', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/question/voteQuestion/form?id='+row.id+'" class="btnList" data-title="${text("编辑参评单位")}">'+(val||row.id)+'</a>';
 		}},
 		{header:'${text("排序")}', name:'sort', index:'a.sort', width:150, align:"center"},
 		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
 			var actions = [];
 			<% if(hasPermi('question:voteQuestion:edit')){ %>
-				actions.push('<a href="${ctx}/question/voteQuestion/form?id='+row.id+'" class="btnList" title="${text("编辑问题")}"><i class="fa fa-pencil"></i></a>&nbsp;');
-				actions.push('<a href="${ctx}/question/voteQuestion/delete?id='+row.id+'" class="btnList" title="${text("删除问题")}" data-confirm="${text("确认要删除该问题吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/question/voteQuestion/form?id='+row.id+'" class="btnList" title="${text("编辑参评单位")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/question/voteQuestion/delete?id='+row.id+'" class="btnList" title="${text("删除参评单位")}" data-confirm="${text("确认要删除该参评单位吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
 			<% } %>
 			return actions.join('');
 		}}

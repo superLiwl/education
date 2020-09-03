@@ -320,6 +320,15 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
         return "配置成功";
     }
 
+    /**
+     * 更改问卷状态
+     */
+    @Transactional(readOnly = false)
+    public List<Map<String, Object>> toSeeUser(String naireId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("naireId",naireId);
+        return voteNaireDao.toSeeUser(params);
+    }
 
     /**
      * 计算百分比，精确到小数点两位

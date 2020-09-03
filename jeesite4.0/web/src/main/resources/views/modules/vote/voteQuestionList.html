@@ -31,11 +31,17 @@
 				<i class="fa icon-notebook"></i> ${text('开始投票：')}
 			</div>
 		</div>
-		<div class="panel-group" id="accordion"  style="height:650px;overflow:auto;">
+		<div class="panel-group" id="accordion" >
 
 		</div>
 	</div>
 </div>
+<div class="hide">
+	<#form:form id="listQuestionForm" action="${ctx}/vote/voteQuestion/listData" method="post" class="form-inline">
+		<#form:input name="naireId" id="naireId_q" class="form-control width-120"/>
+	</#form:form>
+</div>
+<a href="#" class="btn btn-default hide" id="voteResult"></a>
 <!--折叠样式必备-->
 <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
 <% } %>
@@ -43,6 +49,8 @@
 // 初始化DataGrid对象
 $(document).ready(function(){
 	getListData();
+	$("body").attr("style","overflow:hidden");
+	$("#accordion").attr("style","height:"+document.body.clientWidth/3+"px;overflow:auto;");
 });
 
 function toDiv() {
@@ -59,15 +67,10 @@ function toDiv() {
 }
 
 function getListData() {
-	var url = "${ctx}/vote/voteQuestion/listData";
 	var zId = window.location.search.replace("?naireId=","");
-	js.ajaxSubmit({
-		url: url,
-		data: {
-			naireId: zId,
-			title:$("#title").val(),
-		},
-		callback: function(data){
+	$("naireId_q").val(zId);
+	js.ajaxSubmitForm($('#listQuestionForm'), {
+		callback: function (data) {
 			var divHtml = "";
 			$.each(data,function(index,ele){
 				if(ele){
@@ -106,12 +109,19 @@ function getSubHtml(info) {
 		$.each(info.subList,function(index,ele){
 			if(ele){
 				subSize ++;
-				str += ele.title +"<input type='checkbox' name='subCheckBox_"+ele.parent_id+"' content='"+ele.title+"' parentId='"+ele.parent_id+"' onclick='checkAllBySubId(this)' value='"+ele.id+"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+				str += "<a href='#' onclick='toUrl(\""+ele.tree_leaf+"\")'>" + ele.title +"</a><input type='checkbox' name='subCheckBox_"+ele.parent_id+"' content='"+ele.title+"' parentId='"+ele.parent_id+"' onclick='checkAllBySubId(this)' value='"+ele.id+"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 			}
 		});
 	}
 	return str;
 }
+
+function toUrl(url) {
+	if(url){
+		js.addTabPage($("#voteResult"), "详情", url, true, false);
+	}
+}
+
 //parent点击效果
 function checkAllByParentId(obj) {
 	if($(obj).is(':checked')) {
