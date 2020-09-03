@@ -1,0 +1,108 @@
+<% layout('/layouts/default.html', {title: '', bodyClass: ''}){ %>
+<!-- <link rel="stylesheet" href="${ctxStatic}/modules/sys/sysDesktop.css?${_version}"> -->
+<div class="content pb0">
+	<div class="row">
+		<div class="col-md-3 col-sm-6 col-xs-12">
+			<div class="info-box">
+				<span class="info-box-icon bg-aqua"><i class="fa fa-cog"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text">先进干部</span>
+					<span class="info-box-number">已投:<small>562</small></span>
+					<span class="info-box-number">总票:<small>2790000</small></span>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3 col-sm-6 col-xs-12">
+			<div class="info-box">
+				<span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text">先进处室</span>
+					<span class="info-box-number">已投:<small>59650</small></span>
+					<span class="info-box-number">总票:<small>51116000</small></span>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix visible-sm-block"></div>
+		<div class="col-md-3 col-sm-6 col-xs-12">
+			<div class="info-box">
+				<span class="info-box-icon bg-green"><i class="fa fa-internet-explorer"></i></span>
+				<div class="info-box-content">
+                    <span class="info-box-text">先进处长</span>
+                    <span class="info-box-number">已投:<small>3690</small></span>
+                    <span class="info-box-number">总票:<small>558000</small></span>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3 col-sm-6 col-xs-12">
+			<div class="info-box">
+				<span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
+
+				<div class="info-box-content">
+					<span class="info-box-text">总投票人数</span>
+					<span class="info-box-number">1100</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<section class="col-md-12 ui-sortable">
+			<div class="box box-widget">
+						<div class="col-md-12">
+							<p class="text-center">
+								<strong>投票进展</strong>
+							</p>
+							<div class="progress-group">
+								<span class="progress-text">先进干部评选</span>
+								<span class="progress-number"><b>100</b>/200</span>
+								<div class="progress sm">
+									<div class="progress-bar progress-bar-aqua" style="width: 50%;"></div>
+								</div>
+							</div>
+							<div class="progress-group">
+								<span class="progress-text">先进处室评选</span>
+								<span class="progress-number"><b>310</b>/400</span>
+								<div class="progress sm">
+									<div class="progress-bar progress-bar-red" style="width: 76%"></div>
+								</div>
+							</div>
+							<div class="progress-group">
+								<span class="progress-text">先进处长评选</span>
+								<span class="progress-number"><b>480</b>/800</span>
+								<div class="progress sm">
+									<div class="progress-bar progress-bar-green" style="width: 60%"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+    </div>
+</div>
+<footer class="main-footer m0">
+	<div class="pull-right hidden-xs">当前版本： ${@Global.getConfig('productVersion')}</div>
+	&copy; ${@DateUtils.getYear()} ${@Global.getConfig('productName')} - Powered By <a href="http://jeesite.com">JeeSite</a>
+</footer>
+<% } %>
+<script src="${ctxStatic}/jquery/jquery-ui-sortable-1.12.1.min.js"></script>
+<script src="${ctxStatic}/echarts/4.2/echarts.min.js"></script>
+<script>
+$(function(){
+	$(window).resize(function(){
+		var footerHeight = $('.main-footer').outerHeight() || 0;
+		var windowHeight = $(window).height();
+		$('.content').css('min-height', windowHeight - footerHeight);
+		// myChart1.resize(); myChart2.resize(); myChart3.resize();
+	}).resize();
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		$(window).resize();
+	});
+	$('.ui-sortable').sortable({
+		connectWith : '.ui-sortable',
+		handle      : '.box-header, .nav-tabs',
+		placeholder : 'sort-highlight',
+		forcePlaceholderSize: true,
+		zIndex : 999999
+	}).find('.box-header, .nav-tabs').css('cursor', 'move');
+});
+</script>
