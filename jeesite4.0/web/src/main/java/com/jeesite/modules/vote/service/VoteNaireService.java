@@ -115,19 +115,33 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
 
 
     /**
-     * 更改问卷状态
+     * 更改问卷状态--发布，终止
      */
     @Transactional(readOnly = false)
-    public void updateStatues(String type, String ids) {
+    public String updateStatues(String type, String ids) {
         String idArry[] = ids.split(",");
         List<String> idList = new ArrayList<>();
         for (String id : idArry) {
             idList.add(id);
         }
+        String result = "";
         Map<String, Object> params = new HashMap<>();
-        params.put("ids", idList);
-        params.put("type", type);
-        voteNaireDao.updateStatues(params);
+        params.put("naireIds", idList);
+        Long count = voteUserNaireDao.isAllDraft(params);
+        if (count.intValue() > 0) {
+            result = "所选问卷中包含已发布或者已终止的问卷，请重新选择。";
+        } else {
+            Map<String, Object> updateParams = new HashMap<>();
+            params.put("ids", idList);
+            params.put("type", type);
+            voteNaireDao.updateStatues(updateParams);
+            if ("2".equals(type)) {
+                result = "发布成功";
+            } else if ("3".equals(type)) {
+                result = "终止成功";
+            }
+        }
+        return result;
     }
 
     /**
@@ -188,7 +202,7 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
 
 
     /**
-     * 更改问卷状态
+     * 配置可投票用户
      */
     @Transactional(readOnly = false)
     public String saveNaireUser(VoteUserNaireVo vo) {
@@ -197,6 +211,12 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
         }
         if (null == vo.getUserCodes() || vo.getUserCodes().isEmpty() || vo.getUserCodes().size() == 0) {
             return "问卷id为空";
+        }
+        Map<String,Object> params = new HashMap<>();
+        params.put("naireIds",vo.getNaireIds());
+        Long count = voteUserNaireDao.isAllDraft(params);
+        if(count.intValue() > 0){
+            return "所选问卷中包含已发布或者已终止的问卷，请重新选择。";
         }
         //循环问卷
         VoteUserNaire userNaire;

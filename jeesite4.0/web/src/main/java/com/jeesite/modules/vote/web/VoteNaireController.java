@@ -143,13 +143,7 @@ public class VoteNaireController extends BaseController {
     @RequestMapping(value = "updateStatues")
     @ResponseBody
     public String updateStatues(String type, String ids) {
-        String msg = "";
-        if ("2".equals(type)) {
-            msg = "发布成功";
-        } else if ("3".equals(type)) {
-            msg = "终止成功";
-        }
-        voteNaireService.updateStatues(type, ids);
+        String msg = voteNaireService.updateStatues(type, ids);
         return renderResult(Global.TRUE, text(msg));
     }
 

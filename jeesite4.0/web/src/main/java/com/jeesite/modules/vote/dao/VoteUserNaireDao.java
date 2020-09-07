@@ -19,4 +19,6 @@ import java.util.Map;
 public interface VoteUserNaireDao extends CrudDao<VoteUserNaire> {
 
     long getHasCount(Map<String, Object> params);
+
+    long isAllDraft(Map<String, Object> params);
 }
