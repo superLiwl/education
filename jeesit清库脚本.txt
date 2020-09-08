@@ -1,0 +1,38 @@
+DELETE FROM js_sys_post;
+DELETE FROM js_sys_office;
+DELETE FROM js_sys_company;
+DELETE FROM js_sys_employee;
+DELETE FROM js_sys_employee_post;
+DELETE FROM js_sys_role WHERE role_code NOT IN ('corpAdmin','default');
+DELETE FROM js_sys_role_data_scope;
+DELETE FROM js_sys_user WHERE user_code NOT IN ('system','admin');
+DELETE FROM js_sys_user_data_scope;
+DELETE FROM js_sys_user_role;
+DELETE FROM js_sys_log;
+
+DELETE FROM `js_gen_table_column`;
+DELETE FROM `js_gen_table`;
+
+//同步用户脚本
+INSERT INTO js_sys_user(user_code,login_code,user_name,password,user_type,ref_code,ref_name,mgr_type,pwd_security_level,pwd_update_date,user_weight,status,create_by,create_date,update_by,update_date,corp_code,corp_name)
+SELECT emp_code user_code,emp_name login_code,emp_name user_name,'45b6c089bd26f16a7bd80112844969e1b92048653629b30fd05bac5b' password,'employee' user_type,emp_code ref_code,
+emp_name ref_name,'0' mgr_type , '0' pwd_security_level,NOW() pwd_update_date,'0' user_weight,'0' status,'system' create_by,NOW() create_date,
+'system' update_by,NOW() update_date,'0' corp_code,'JeeSite' corp_name
+FROM `js_sys_employee`;
+
+//修改默认密码
+SELECT config_value FROM `js_sys_config` WHERE id = '1301489715930755072';
+
+//重置密码方法
+http://127.0.0.1:8980/vote/a/sys/empUser/resetpwd?userCode=styj01_t1xu
+
+SELECT * FROM js_sys_config WHERE id = '1301489715930755072';
+
+UPDATE `js_sys_config` SET config_value='2s5dkdf!' WHERE id = '1301489715930755072';
+
+
+SELECT * FROM `js_sys_user` WHERE login_code LIKE 'slcj%';
+
+
+UPDATE `js_sys_user` SET `password` ='2df5715c3d58ec80bd9e6cb232e3300122b4b0628bae0655979accc5' WHERE login_code LIKE 'slcj%';
+
