@@ -181,7 +181,7 @@ public class VoteNaireController extends BaseController {
     }
 
     /**
-     * 配置投票用户
+     * 投票配题
      */
     @RequiresPermissions("vote:voteNaire:edit")
     @RequestMapping(value = "saveQuestions")

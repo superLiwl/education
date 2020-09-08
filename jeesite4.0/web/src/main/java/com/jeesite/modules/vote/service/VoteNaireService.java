@@ -311,7 +311,7 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
     }
 
     /**
-     * 更改问卷状态
+     * 投票配题
      */
     @Transactional(readOnly = false)
     public String saveQuestions(VoteUserNaireVo vo) {
@@ -320,6 +320,13 @@ public class VoteNaireService extends CrudService<VoteNaireDao, VoteNaire> {
         }
         if (null == vo.getUserCodes() || vo.getUserCodes().isEmpty() || vo.getUserCodes().size() == 0) {
             return "选项id为空";
+        }
+
+        Map<String,Object> params = new HashMap<>();
+        params.put("naireIds",vo.getNaireIds());
+        Long count = voteUserNaireDao.isAllDraft(params);
+        if(count.intValue() > 0){
+            return "所选问卷中包含已发布或者已终止的问卷，请重新选择。";
         }
         //循环问卷
         VoteNaireQuestion voteNaireQuestion ;
