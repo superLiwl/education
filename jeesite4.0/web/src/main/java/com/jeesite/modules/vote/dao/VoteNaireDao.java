@@ -26,4 +26,6 @@ public interface VoteNaireDao extends CrudDao<VoteNaire> {
     List<VoteNaire> getListByPages(Map<String, Object> params);
 
     List<Map<String, Object>> toSeeUser(Map<String, Object> params);
+
+    List<Map<String, Object>> getOfficeList();
 }
