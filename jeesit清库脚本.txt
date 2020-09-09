@@ -24,7 +24,7 @@ FROM `js_sys_employee`;
 SELECT config_value FROM `js_sys_config` WHERE id = '1301489715930755072';
 
 //重置密码方法
-http://127.0.0.1:8980/vote/a/sys/empUser/resetpwd?userCode=styj01_t1xu
+http://127.0.0.1:8980/vote/a/sys/empUser/resetpwd?userCode=smch01_qzzv
 
 SELECT * FROM js_sys_config WHERE id = '1301489715930755072';
 
