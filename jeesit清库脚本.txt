@@ -38,3 +38,11 @@ UPDATE `js_sys_user` SET `password` ='2df5715c3d58ec80bd9e6cb232e3300122b4b0628b
 
 
 UPDATE js_sys_user u INNER JOIN (SELECT `password` FROM `js_sys_user` WHERE user_name = 'ssjt01') a set u.`password` = a.`password` WHERE user_name = 'mssdw';
+
+
+//参评单位---sql
+INSERT INTO `jeesite`.`review_term` (`id`, `review_name`, `sort`, `office_code`, `office_name`, `create_time`)
+SELECT UUID(),'省直机关践行“工匠精神”候选先进处室','1',o.office_code,o.office_name,NOW() FROM `js_sys_office` o WHERE parent_code = 'SD' LIMIT 0,92;
+//参评单位选项---sql
+INSERT INTO `jeesite`.`review_term_options` (`id`, `term_id`, `option_name`, `position`, `head_img`, `sort`)
+SELECT UUID(),t.id,CONCAT(t.office_name,'-','刘浩'),'固定资产投资处处长','','2' FROM `review_term` t;
