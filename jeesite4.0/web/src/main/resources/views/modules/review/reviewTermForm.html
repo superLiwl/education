@@ -88,7 +88,12 @@ $("#reviewTermOptionsDataGrid").dataGrid({
 		{header:'${text('参评表id')}', name:'termId.id', editable:true, hidden:true},
 		{header:'${text('名称')}', name:'optionName', width:150, editable:true, edittype:'text', editoptions:{'maxlength':'100', 'class':'form-control required'}},
 		{header:'${text('职位')}', name:'position', width:150, editable:true, edittype:'text', editoptions:{'maxlength':'100', 'class':'form-control'}},
-		// {header:'${text('头像')}', name:'headImg', width:150, editable:true, edittype:'image', editoptions:{'maxlength':'255', 'class':'form-control'}},
+		// {header:'${text('头像')}', name:'headImg', width:150,sortable:false, fixed:true, formatter: function(val, obj, row, act){
+		// 		var actions = [];
+		// 		actions.push('<img src="${ctxStatic}/login_bg.jpg" width="60" height="60" onclick="onLoadImage(this)"></img>');
+		// 		return actions.join('');
+		// 	}, editoptions: {defaultValue: 'new'}
+		// },
 		{header:'${text('排序')}', name:'sort', width:150, editable:true, edittype:'text', editoptions:{'maxlength':'3', 'class':'form-control required digits'}},
 		{header:'${text('操作')}', name:'actions', width:80, sortable:false, fixed:true, formatter: function(val, obj, row, act){
 			var actions = [];
@@ -115,6 +120,10 @@ $("#reviewTermOptionsDataGrid").dataGrid({
 		$("#officeCodeName").val($("#officeName").val());
 	}
 });
+
+// function onLoadImage(obj) {
+//
+// }
 </script>
 <script>
 $("#inputForm").validate({

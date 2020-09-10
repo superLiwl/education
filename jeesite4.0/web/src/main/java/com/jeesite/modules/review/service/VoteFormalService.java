@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
  */
-package com.jeesite.modules.vote.service;
+package com.jeesite.modules.review.service;
 
 import com.jeesite.common.entity.Page;
 import com.jeesite.common.service.CrudService;

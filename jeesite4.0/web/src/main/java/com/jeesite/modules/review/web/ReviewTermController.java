@@ -64,7 +64,7 @@ public class ReviewTermController extends BaseController {
 	@RequestMapping(value = "listData")
 	@ResponseBody
 	public Page<ReviewTerm> listData(ReviewTerm reviewTerm, HttpServletRequest request, HttpServletResponse response) {
-		Page<ReviewTerm> page = reviewTermService.findPage(new Page<ReviewTerm>(request, response), reviewTerm); 
+		Page<ReviewTerm> page = reviewTermService.findPage(new Page<ReviewTerm>(request, response), reviewTerm);
 		return page;
 	}
 
@@ -104,5 +104,14 @@ public class ReviewTermController extends BaseController {
 		reviewTermService.delete(reviewTerm);
 		return renderResult(Global.TRUE, text("删除参评管理成功！"));
 	}
-	
+
+	/**
+	 * 查询列表
+	 */
+	@RequestMapping(value = {"gongshi", ""})
+	public String gongshi() {
+		return "modules/voteformal/gongshi";
+	}
+
+
 }
