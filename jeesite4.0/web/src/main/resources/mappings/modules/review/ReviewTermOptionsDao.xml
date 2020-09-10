@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jeesite.modules.review.dao.ReviewTermOptionsDao">
-	
-	<!-- 查询数据
-	<select id="findList" resultType="ReviewTermOptions">
-		SELECT ${sqlMap.column.toSql()}
-		FROM ${sqlMap.table.toSql()}
-		<where>
-			${sqlMap.where.toSql()}
-		</where>
-		ORDER BY ${sqlMap.order.toSql()}
-	</select> -->
+
+	<select id="getReviewTermList" resultType="map">
+		SELECT DISTINCT office_code,office_name FROM `review_term` ORDER BY office_code ASC;
+	</select>
+
+	<select id="getReviewTermListByOfficeCode" resultType="map">
+		SELECT DISTINCT id,review_name,office_code,office_name FROM `review_term` WHERE office_code = #{officeCode} ORDER BY sort ASC ;
+	</select>
+
+	<select id="getReviewTermOptionsListByTermId" resultType="map">
+		SELECT id,option_name,position,term_id FROM `review_term_options` WHERE term_id = #{termId} ORDER BY sort ASC;
+	</select>
 	
 </mapper>

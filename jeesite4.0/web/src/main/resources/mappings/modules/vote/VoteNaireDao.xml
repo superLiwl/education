@@ -47,8 +47,4 @@
 		WHERE un.naire_id =#{naireId} ;
 	</select>
 
-	<select id="getOfficeList" resultType="map">
-		SELECT office_code,office_name FROM `js_sys_office` WHERE parent_code = "SD" ORDER BY tree_sort ASC
-	</select>
-
 </mapper>

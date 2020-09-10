@@ -24,6 +24,7 @@ import java.util.Map;
 public class VoteFormalController extends BaseController {
     @Autowired
     private VoteFormalService voteFormalService;
+
     /**
      * 查询列表
      */
@@ -35,10 +36,19 @@ public class VoteFormalController extends BaseController {
     /**
      * 查询列表数据
      */
-    @RequestMapping(value = "getOfficeList")
+    @RequestMapping(value = "getReviewTermList")
     @ResponseBody
-    public List<Map<String,Object>> getOfficeList() {
-        return voteFormalService.getOfficeList();
+    public List<Map<String, Object>> getReviewTermList() {
+        return voteFormalService.getReviewTermList();
+    }
+
+    /**
+     * 查询列表数据
+     */
+    @RequestMapping(value = "getReviewTermListByOfficeCode")
+    @ResponseBody
+    public List<Map<String, Object>> getReviewTermListByOfficeCode(String officeCode) {
+        return voteFormalService.getReviewTermListByOfficeCode(officeCode);
     }
 
 }
