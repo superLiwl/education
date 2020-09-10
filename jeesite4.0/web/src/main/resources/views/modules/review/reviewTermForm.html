@@ -1,0 +1,132 @@
+<% layout('/layouts/default.html', {title: '参评管理管理', libs: ['validate','fileupload','dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa fa-list-alt"></i> ${text(reviewTerm.isNewRecord ? '新增参评管理' : '编辑参评管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${reviewTerm}" action="${ctx}/review/reviewTerm/save" method="post" class="form-horizontal">
+			<div class="box-body">
+				<div class="form-unit">${text('基本信息')}</div>
+				<#form:hidden path="id"/>
+				<div class="row">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group">
+							<label class="control-label col-sm-2" title="">
+								<span class="required ">*</span> ${text('参评单位')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-5">
+								<#form:treeselect id="officeCode" title="${text('机构选择')}"
+								path="officeCode" labelPath=""
+								url="${ctx}/sys/office/treeData"
+								class=" required" allowClear="true"/>
+							</div>
+						</div>
+					</div>
+					<#form:hidden path="officeName"/>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group">
+							<label class="control-label col-sm-2" title="">
+								<span class="required ">*</span> ${text('参评项')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-5">
+								<#form:input path="reviewName" maxlength="100" class="form-control required"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group">
+							<label class="control-label col-sm-2" title="">
+								<span class="required ">*</span> ${text('排序')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-5">
+								<#form:input path="sort" maxlength="3" class="form-control required digits"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<h4 class="form-unit">${text('参评人')}</h4>
+				<div class="ml10 mr10">
+					<table id="reviewTermOptionsDataGrid"></table>
+					<% if (hasPermi('review:reviewTerm:edit')){ %>
+						<a href="#" id="reviewTermOptionsDataGridAddRowBtn" class="btn btn-primary btn-sm mt10 mb10"><i class="fa fa-plus"></i> ${text('增行')}</a>
+					<% } %>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<% if (hasPermi('review:reviewTerm:edit')){ %>
+							<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<% } %>
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+//初始化参评人DataGrid对象
+$("#reviewTermOptionsDataGrid").dataGrid({
+
+	data: ${toJson(reviewTerm.reviewTermOptionsList)},
+	datatype: "local", // 设置本地数据
+	autoGridHeight: function(){return 'auto'}, // 设置自动高度
+	
+	// 设置数据表格列
+	columnModel: [
+		{header:'状态', name:'status', editable:true, hidden:true},
+		{header:'主键', name:'id', editable:true, hidden:true},
+		{header:'${text('参评表id')}', name:'termId.id', editable:true, hidden:true},
+		{header:'${text('名称')}', name:'optionName', width:150, editable:true, edittype:'text', editoptions:{'maxlength':'100', 'class':'form-control required'}},
+		{header:'${text('职位')}', name:'position', width:150, editable:true, edittype:'text', editoptions:{'maxlength':'100', 'class':'form-control'}},
+		// {header:'${text('头像')}', name:'headImg', width:150, editable:true, edittype:'image', editoptions:{'maxlength':'255', 'class':'form-control'}},
+		{header:'${text('排序')}', name:'sort', width:150, editable:true, edittype:'text', editoptions:{'maxlength':'3', 'class':'form-control required digits'}},
+		{header:'${text('操作')}', name:'actions', width:80, sortable:false, fixed:true, formatter: function(val, obj, row, act){
+			var actions = [];
+			if (val == 'new'){
+				actions.push('<a href="#" onclick="js.confirm(\'${text('你确认要删除这条数据吗？')}\', function(){$(\'#reviewTermOptionsDataGrid\').dataGrid(\'delRowData\',\''+obj.rowId+'\')});return false;"><i class="fa fa-trash-o"></i></a>&nbsp;');
+			}else{
+				actions.push('<a href="#" onclick="js.confirm(\'${text('你确认要删除这条数据吗？')}\', function(){$(\'#reviewTermOptionsDataGrid\').dataGrid(\'setRowData\',\''+obj.rowId+'\',null,{display:\'none\'})});$(\'#'+obj.rowId+'_status\').val(\''+Global.STATUS_DELETE+'\');return false;"><i class="fa fa-trash-o"></i></a>&nbsp;');
+			}
+			return actions.join('');
+		}, editoptions: {defaultValue: 'new'}}
+	],
+	
+	// 编辑表格参数
+	editGrid: true,				// 是否是编辑表格
+	editGridInitRowNum: 1,		// 编辑表格的初始化新增行数
+	editGridAddRowBtn: $('#reviewTermOptionsDataGridAddRowBtn'),	// 子表增行按钮
+	editGridAddRowInitData: {id: '', status: Global.STATUS_NORMAL},	// 新增行的时候初始化的数据
+	
+	// 编辑表格的提交数据参数
+	editGridInputFormListName: 'reviewTermOptionsList', // 提交的数据列表名
+	editGridInputFormListAttrs: 'status,id,termId.id,optionName,position,headImg,sort,', // 提交数据列表的属性字段
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		$("#officeCodeName").val($("#officeName").val());
+	}
+});
+</script>
+<script>
+$("#inputForm").validate({
+	submitHandler: function(form){
+		js.ajaxSubmitForm($(form), function(data){
+			js.showMessage(data.message);
+			if(data.result == Global.TRUE){
+				js.closeCurrentTabPage(function(contentWindow){
+					contentWindow.page();
+				});
+			}
+		}, "json");
+    }
+});
+</script>
