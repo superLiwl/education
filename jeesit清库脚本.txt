@@ -36,3 +36,5 @@ SELECT * FROM `js_sys_user` WHERE login_code LIKE 'slcj%';
 
 UPDATE `js_sys_user` SET `password` ='2df5715c3d58ec80bd9e6cb232e3300122b4b0628bae0655979accc5' WHERE login_code LIKE 'slcj%';
 
+
+UPDATE js_sys_user u INNER JOIN (SELECT `password` FROM `js_sys_user` WHERE user_name = 'ssjt01') a set u.`password` = a.`password` WHERE user_name = 'mssdw';
