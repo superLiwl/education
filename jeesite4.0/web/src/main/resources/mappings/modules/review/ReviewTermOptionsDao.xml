@@ -11,12 +11,13 @@
 	</select>
 
 	<select id="getReviewTermOptionsListByTermId" resultType="map">
-		SELECT id,option_name,position,term_id FROM `review_term_options` WHERE term_id = #{termId} ORDER BY sort ASC;
+		SELECT o.id,o.option_name,o.position,o.term_id,EXISTS(SELECT * FROM review_term_answer a WHERE a.option_id = o.id) isAnswer
+		FROM `review_term_options` o WHERE o.term_id = #{termId} ORDER BY sort ASC;
 	</select>
 
 
 	<select id="getTremClass" resultType="string">
-		SELECT t.review_name FROM `review_term` t GROUP BY t.review_name;
+		SELECT t.review_name FROM `review_term` t GROUP BY t.review_name ORDER BY t.sort ASC;
 	</select>
 
 	<select id="getOptionsCountByClass" resultType="Long">

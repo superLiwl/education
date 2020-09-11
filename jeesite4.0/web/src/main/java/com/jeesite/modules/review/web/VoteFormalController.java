@@ -3,8 +3,12 @@
  */
 package com.jeesite.modules.review.web;
 
+import com.jeesite.common.shiro.realm.LoginInfo;
 import com.jeesite.common.web.BaseController;
+import com.jeesite.modules.review.entity.ReviewTermAnswer;
+import com.jeesite.modules.review.service.ReviewTermAnswerService;
 import com.jeesite.modules.review.service.VoteFormalService;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +28,8 @@ import java.util.Map;
 public class VoteFormalController extends BaseController {
     @Autowired
     private VoteFormalService voteFormalService;
+    @Autowired
+    private ReviewTermAnswerService reviewTermAnswerService;
 
     /**
      * 公示
@@ -58,6 +64,7 @@ public class VoteFormalController extends BaseController {
     public List<Map<String, Object>> getReviewTermListByOfficeCode(String officeCode) {
         return voteFormalService.getReviewTermListByOfficeCode(officeCode);
     }
+
     /**
      * 获取投票数据
      */
@@ -65,6 +72,28 @@ public class VoteFormalController extends BaseController {
     @ResponseBody
     public List<Map<String, Object>> getAnswerInfo() {
         return voteFormalService.getAnswerInfo();
+    }
+
+    /**
+     * 确定投票
+     */
+    @RequestMapping(value = "submitAnswer")
+    @ResponseBody
+    public String submitAnswer(String optionIds) {
+        return voteFormalService.submitAnswer(optionIds);
+    }
+
+    /**
+     * 获取所有投票信息
+     */
+    @RequestMapping(value = "getAllAnswer")
+    @ResponseBody
+    public List<ReviewTermAnswer> getAllAnswer() {
+        LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
+        String userId = login.getId();
+        ReviewTermAnswer select = new ReviewTermAnswer();
+        select.setUserId(userId);
+        return reviewTermAnswerService.findList(select);
     }
 
 }

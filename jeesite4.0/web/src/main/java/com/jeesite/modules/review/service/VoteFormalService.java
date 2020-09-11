@@ -3,9 +3,12 @@
  */
 package com.jeesite.modules.review.service;
 
+import com.jeesite.common.lang.StringUtils;
 import com.jeesite.common.service.CrudService;
 import com.jeesite.common.shiro.realm.LoginInfo;
+import com.jeesite.modules.review.dao.ReviewTermAnswerDao;
 import com.jeesite.modules.review.dao.ReviewTermOptionsDao;
+import com.jeesite.modules.review.entity.ReviewTermAnswer;
 import com.jeesite.modules.vote.dao.VoteNaireDao;
 import com.jeesite.modules.vote.entity.VoteNaire;
 import org.apache.shiro.SecurityUtils;
@@ -13,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 问卷Service
@@ -29,6 +29,8 @@ import java.util.Map;
 public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
     @Autowired
     private ReviewTermOptionsDao reviewTermOptionsDao;
+    @Autowired
+    private ReviewTermAnswerDao reviewTermAnswerDao;
 
     /**
      * 查询参评单位
@@ -74,18 +76,52 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
                 params.put("tremClass", c);
                 //获取投票总数
                 allOptionCount = reviewTermOptionsDao.getOptionsCountByClass(params);
-                params.put("allOptionCount",allOptionCount);
+                params.put("allOptionCount", allOptionCount);
                 params.put("userId", userId);
                 //获取已选的投票数据
                 answerList = reviewTermOptionsDao.getAnswerOptionsByClass(params);
-                if(null != answerList){
-                    params.put("hasOptionCount",answerList.size());
+                if (null != answerList) {
+                    params.put("hasOptionCount", answerList.size());
                 }
                 params.remove("userId");
                 resultList.add(params);
             }
         }
         return resultList;
+    }
+
+    /**
+     * 确定投票
+     */
+    @Transactional(readOnly = false)
+    public String submitAnswer(String optionIds) {
+        if (StringUtils.isEmpty(optionIds)) {
+            return "投票失败，未选择参评人";
+        }
+        LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
+        String userId = login.getId();
+        String arry[] = optionIds.split(",");
+        List<ReviewTermAnswer> list = new ArrayList<>();
+        ReviewTermAnswer answer;
+        for (String s : arry) {
+            if (!StringUtils.isEmpty(s)) {
+                answer = new ReviewTermAnswer();
+                answer.setOptionId(s);
+                answer.setUserId(userId);
+                answer.setId(UUID.randomUUID().toString());
+                list.add(answer);
+            }
+        }
+        if (null == list || list.isEmpty() || list.size() == 0) {
+            return "投票失败，未选择参评人";
+        }
+        //先执行删除
+        ReviewTermAnswer del = new ReviewTermAnswer();
+        del.setUserId(userId);
+        reviewTermAnswerDao.deleteByEntity(del);
+        //在执行插入
+        reviewTermAnswerDao.insertBatch(list);
+        return "投票成功";
     }
 
 }

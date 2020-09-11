@@ -25,7 +25,7 @@
     <img src="${ctxStatic}/images/jsq.png" width="153" height="243">
 
     <p id="subButton" style="text-align:center;font-size:14px;background-color:#cc1c1e;font-weight:bold;display:block;width:100px;line-height:26px;margin:0 26px;position:absolute;bottom:22px;border-radius:30px;">
-        <a style=" color:#fff;" href="#" target="_blank">确认投票</a>
+        <a style=" color:#fff;" href="javascript:void(0)" onclick="toSubmit()">确认投票</a>
     </p>
 </div>
 <!--漂浮广告end-->
@@ -53,7 +53,7 @@
       <script>
     function resetTabs(){
         $("#content > div").hide(); //Hide all content
-        $("#tabs a").attr("id",""); //Reset id's      
+        $("#tabs a").attr("id",""); //Reset id's
     }
 
     var myUrl = window.location.href; //get URL
@@ -65,6 +65,8 @@
         getReviewTermList();
         //获取投票信息
         getAnswerInfo();
+        //获取所有投票结果
+        getAllAnswer();
     })()
 
     function initDiv() {
@@ -185,9 +187,16 @@
         ulHtml += '</ul>';
         return ulHtml;
     }
+
     function liHtml(info) {
         //return '<li id="'+info.id+'" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"><a href="javascript:void(0)" target="_blank"><div class="touxiang"><img src=""></div><div class="nr"><p>'+info.option_name+'</p><span>'+info.position+'</span></div></a></li>';
-        return '<li data_isChecked="0" id="'+info.id+'" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"><a href="javascript:void(0)"><div class="touxiang"><img src=""></div><div class="nr"><p>'+info.option_name+'</p><span>'+info.position+'</span></div></a></li>';
+        var styleStr = ""
+        var isChecked = "0";
+        if(info.isAnswer == '1' || isInCheckValues(info.id)){
+            styleStr = 'style=background-color:rgba(234,45,47,0.8);"';
+            isChecked = "1";
+        }
+        return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"><a href="javascript:void(0)"><div class="touxiang"><img src=""></div><div class="nr"><p>'+info.option_name+'</p><span>'+info.position+'</span></div></a></li>';
     }
     //选择的数据
     var checkValues = [];
@@ -212,8 +221,23 @@
             var count = $("#"+tremClass).html();
             $("#"+tremClass).text((parseInt(count)+1));
         }
-
     }
+
+    function isInCheckValues(id){
+        var result = false;
+        if(checkValues && checkValues[0]){
+            $.each(checkValues,function(index,ele){
+                if(ele){
+                    if(ele == id){
+                        result = true;
+                        return;
+                    }
+                }
+            });
+        }
+        return result;
+    }
+
 
     function removeCheckedVal(val) {
         var newCheckVals = [];
@@ -228,7 +252,7 @@
         }
         checkValues = newCheckVals;
     }
-    
+
     function getAnswerInfo() {
         $.ajax({
             type: "POST",
@@ -249,13 +273,50 @@
                 $("#subButton").before(xfHtml);
             }});
     }
-    
+
     function getXfHtml(info,first,second) {
         var xfHtml = '<p style="text-align:center;font-size:14px;color:#333;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+first+'px;">'+info.tremClass+'</p>' +
                       '<p style="text-align:center;font-size:14px;color:#cc1c1e;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+second+'px;border-bottom:1px dashed #333;padding-bottom:4px;"><span id="'+info.tremClass+'">'+info.hasOptionCount+'</span>/'+info.allOptionCount+'票</p>';
         return xfHtml;
     }
 
+    function toSubmit() {
+        var optionIds = "";
+        $.each(checkValues,function(index,ele){
+            if(ele){
+                optionIds += ele+',';
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/submitAnswer",
+            data: {
+                'optionIds':optionIds
+            },
+            dataType: "json",
+            success: function (data) {
+
+            }});
+    }
+
+    function getAllAnswer() {
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/getAllAnswer",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data && data[0]) {
+                    $.each(data, function (index, ele) {
+                        if (ele) {
+                            checkValues.push(ele.optionId);
+                        }
+                    });
+                }
+            }
+        });
+    }
 
   </script>
 </body>
