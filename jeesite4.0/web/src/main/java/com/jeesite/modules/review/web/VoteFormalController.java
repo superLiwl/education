@@ -58,5 +58,13 @@ public class VoteFormalController extends BaseController {
     public List<Map<String, Object>> getReviewTermListByOfficeCode(String officeCode) {
         return voteFormalService.getReviewTermListByOfficeCode(officeCode);
     }
+    /**
+     * 获取投票数据
+     */
+    @RequestMapping(value = "getAnswerInfo")
+    @ResponseBody
+    public List<Map<String, Object>> getAnswerInfo() {
+        return voteFormalService.getAnswerInfo();
+    }
 
 }

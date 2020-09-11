@@ -13,5 +13,19 @@
 	<select id="getReviewTermOptionsListByTermId" resultType="map">
 		SELECT id,option_name,position,term_id FROM `review_term_options` WHERE term_id = #{termId} ORDER BY sort ASC;
 	</select>
-	
+
+
+	<select id="getTremClass" resultType="string">
+		SELECT t.review_name FROM `review_term` t GROUP BY t.review_name;
+	</select>
+
+	<select id="getOptionsCountByClass" resultType="Long">
+		SELECT count(id) FROM review_term_options o WHERE o.term_id in (SELECT t.id FROM `review_term` t WHERE t.review_name = #{tremClass})
+	</select>
+
+	<select id="getAnswerOptionsByClass" resultType="string">
+		SELECT a.option_id FROM review_term_answer a WHERE a.user_id =#{userId} AND a.option_id in
+		(SELECT o.id FROM review_term_options o WHERE o.term_id in (SELECT t.id FROM `review_term` t WHERE t.review_name = #{tremClass}))
+	</select>
+
 </mapper>

@@ -27,4 +27,13 @@ public interface ReviewTermOptionsDao extends CrudDao<ReviewTermOptions> {
 
     //根据参评项目查询参评人
     List<Map<String, Object>> getReviewTermOptionsListByTermId(Map<String, Object> params);
+
+    //查询出投票类别
+    List<String> getTremClass();
+
+    //根据类别获取参选投票的数量
+    Long getOptionsCountByClass(Map<String, Object> params);
+
+    //根据类别、用户 --获取已经投过的票
+    List<String> getAnswerOptionsByClass(Map<String, Object> params);
 }

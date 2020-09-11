@@ -23,20 +23,10 @@
 <!--漂浮广告-->
 <div id="floatright" style="position: absolute; z-index: 10; right: 100px; top: 620px; width:153px;height:243px;">
     <img src="${ctxStatic}/images/jsq.png" width="153" height="243">
-    <p style="text-align:center;font-size:14px;color:#333;width:100px;line-height:18px;margin:0 26px;position:absolute;top:60px;">
-        先进干部已选</p>
-    <p style="text-align:center;font-size:14px;color:#cc1c1e;width:100px;line-height:18px;margin:0 26px;position:absolute;top:78px;border-bottom:1px dashed #333;padding-bottom:4px;">
-        86/500票</p>
-    <p style="text-align:center;font-size:14px;color:#333;width:100px;line-height:18px;margin:0 26px;position:absolute;top:104px;">
-        先进处长已选</p>
-    <p style="text-align:center;font-size:14px;color:#cc1c1e;width:100px;line-height:18px;margin:0 26px;position:absolute;top:122px;border-bottom:1px dashed #333;padding-bottom:4px;">
-        98/200票</p>
-    <p style="text-align:center;font-size:14px;color:#333;width:100px;line-height:18px;margin:0 26px;position:absolute;top:148px;">
-        先进处室已选</p>
-    <p style="text-align:center;font-size:14px;color:#cc1c1e;width:100px;line-height:18px;margin:0 26px;position:absolute;top:166px;padding-bottom:4px;">
-        22/100票</p>
-    <p style="text-align:center;font-size:14px;background-color:#cc1c1e;font-weight:bold;display:block;width:100px;line-height:26px;margin:0 26px;position:absolute;bottom:22px;border-radius:30px;">
-        <a style=" color:#fff;" href="#" target="_blank">确认投票</a></p>
+
+    <p id="subButton" style="text-align:center;font-size:14px;background-color:#cc1c1e;font-weight:bold;display:block;width:100px;line-height:26px;margin:0 26px;position:absolute;bottom:22px;border-radius:30px;">
+        <a style=" color:#fff;" href="#" target="_blank">确认投票</a>
+    </p>
 </div>
 <!--漂浮广告end-->
 <div class="daohang">
@@ -71,7 +61,10 @@
     var myUrlTabName = myUrlTab.substring(0,4); // For the above example, myUrlTabName = #tab
 
     (function () {
+        //获取列表组织
         getReviewTermList();
+        //获取投票信息
+        getAnswerInfo();
     })()
 
     function initDiv() {
@@ -181,7 +174,7 @@
             }});
     }
     function setDiv(info) {
-        var ulHtml = '<ul class="houxuan"><div class="houxuan-title"><p>'+info.office_name+'——'+info.review_name+'</p></div>';
+        var ulHtml = '<ul class="houxuan"><div class="houxuan-title"><p>'+info.office_name+'——省直机关践行“工匠精神”候选<span id="'+info.id+'">'+info.review_name+'</span></p></div>';
         if(info.options && info.options[0]){
             $.each(info.options,function(index,ele){
                 if(ele){
@@ -193,8 +186,76 @@
         return ulHtml;
     }
     function liHtml(info) {
-        return '<li><a href="#" target="_blank"><div class="touxiang"><img src=""></div><div class="nr"><p>'+info.option_name+'</p><span>'+info.position+'</span></div></a></li>';
+        //return '<li id="'+info.id+'" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"><a href="javascript:void(0)" target="_blank"><div class="touxiang"><img src=""></div><div class="nr"><p>'+info.option_name+'</p><span>'+info.position+'</span></div></a></li>';
+        return '<li data_isChecked="0" id="'+info.id+'" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"><a href="javascript:void(0)"><div class="touxiang"><img src=""></div><div class="nr"><p>'+info.option_name+'</p><span>'+info.position+'</span></div></a></li>';
     }
+    //选择的数据
+    var checkValues = [];
+    function selectTouPiao(id,termId) {
+        if( $("#"+id).attr("data_isChecked") == '1'){
+            //已经选中---修改为未选中
+            $("#"+id).removeAttr("style");
+            $("#"+id).attr("data_isChecked","0");
+            //移除选中的数据
+            removeCheckedVal(id,termId);
+            //选中数减1
+            var tremClass = $("#"+termId).html();
+            var count = $("#"+tremClass).html();
+            $("#"+tremClass).text((parseInt(count)-1));
+        }else{
+            //未选中---修改为选中
+            $("#"+id).attr("style","background-color:rgba(234,45,47,0.8);");
+            $("#"+id).attr("data_isChecked","1");
+            checkValues.push(id);
+            //选中数加1
+            var tremClass = $("#"+termId).html();
+            var count = $("#"+tremClass).html();
+            $("#"+tremClass).text((parseInt(count)+1));
+        }
+
+    }
+
+    function removeCheckedVal(val) {
+        var newCheckVals = [];
+        if(checkValues && checkValues[0]){
+            $.each(checkValues,function(index,ele){
+                if(ele){
+                    if(ele != val){
+                        newCheckVals.push(ele);
+                    }
+                }
+            });
+        }
+        checkValues = newCheckVals;
+    }
+    
+    function getAnswerInfo() {
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/getAnswerInfo",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                var xfHtml = '';
+                var first = 60;
+                var second = 78;
+                $.each(data,function(index,ele){
+                    if(ele){
+                        xfHtml += getXfHtml(ele,first,second);
+                        first += 44;
+                        second += 44;
+                    }
+                });
+                $("#subButton").before(xfHtml);
+            }});
+    }
+    
+    function getXfHtml(info,first,second) {
+        var xfHtml = '<p style="text-align:center;font-size:14px;color:#333;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+first+'px;">'+info.tremClass+'</p>' +
+                      '<p style="text-align:center;font-size:14px;color:#cc1c1e;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+second+'px;border-bottom:1px dashed #333;padding-bottom:4px;"><span id="'+info.tremClass+'">'+info.hasOptionCount+'</span>/'+info.allOptionCount+'票</p>';
+        return xfHtml;
+    }
+
 
   </script>
 </body>
