@@ -5,6 +5,7 @@
 	<title>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</title>
     <script type="text/javascript" src="${ctxStatic}/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="${ctxStatic}/js/floatAd.js"></script>
+    <script type="text/javascript" src="${ctxStatic}//layer/3.1/layer.js"></script>
   	<script>
        window.onload = function(){
        	var ad = new FloatAd({
@@ -281,23 +282,33 @@
     }
 
     function toSubmit() {
-        var optionIds = "";
-        $.each(checkValues,function(index,ele){
-            if(ele){
-                optionIds += ele+',';
-            }
+        //询问是否投票
+        layer.confirm('确定投票？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var optionIds = "";
+            $.each(checkValues,function(index,ele){
+                if(ele){
+                    optionIds += ele+',';
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "${ctx}/vote/formal/submitAnswer",
+                data: {
+                    'optionIds':optionIds
+                },
+                dataType: "text",
+                success: function (data) {
+                    layer.alert(data);
+                },
+                fail:function (data) {
+                    layer.alert("投票失败，请再次点击");
+                }
+            });
+        }, function(){
+            layer.msg('取消投票', {time: 2000, });
         });
-
-        $.ajax({
-            type: "POST",
-            url: "${ctx}/vote/formal/submitAnswer",
-            data: {
-                'optionIds':optionIds
-            },
-            dataType: "json",
-            success: function (data) {
-
-            }});
     }
 
     function getAllAnswer() {
