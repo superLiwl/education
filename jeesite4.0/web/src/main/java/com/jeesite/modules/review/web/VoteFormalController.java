@@ -26,7 +26,7 @@ public class VoteFormalController extends BaseController {
     private VoteFormalService voteFormalService;
 
     /**
-     * 查询列表
+     * 公示
      */
     @RequestMapping(value = {"gongshi", ""})
     public String gongshi() {
@@ -34,7 +34,15 @@ public class VoteFormalController extends BaseController {
     }
 
     /**
-     * 查询列表数据
+     * 投票页面
+     */
+    @RequestMapping(value = {"toupiao", ""})
+    public String toupiao() {
+        return "modules/voteformal/toupiao";
+    }
+
+    /**
+     * 查询组织机构
      */
     @RequestMapping(value = "getReviewTermList")
     @ResponseBody
@@ -43,7 +51,7 @@ public class VoteFormalController extends BaseController {
     }
 
     /**
-     * 查询列表数据
+     * 根据机构查询下级数据
      */
     @RequestMapping(value = "getReviewTermListByOfficeCode")
     @ResponseBody
