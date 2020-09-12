@@ -29,4 +29,19 @@
 		(SELECT o.id FROM review_term_options o WHERE o.term_id in (SELECT t.id FROM `review_term` t WHERE t.review_name = #{tremClass}))
 	</select>
 
+	<select id="searchList" resultType="map">
+		SELECT t.office_name,o.option_name,o.term_id,o.id FROM `review_term_options` o LEFT JOIN review_term t ON t.id = o.term_id
+		<where>
+			<if test="officeCode != null and officeCode != '' ">
+				and t.office_code = #{officeCode}
+			</if>
+			<if test="reviewName != null and reviewName != '' ">
+				and review_name =#{reviewName}
+			</if>
+			<if test="optionName != null and optionName != '' ">
+				AND option_name like CONCAT('%',#{optionName},'%')
+			</if>
+		</where>
+	</select>
+
 </mapper>

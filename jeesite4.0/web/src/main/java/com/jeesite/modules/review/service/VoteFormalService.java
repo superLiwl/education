@@ -53,13 +53,12 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
             for (Map<String, Object> m : result) {
                 params = new HashMap<>();
                 params.put("termId", m.get("id"));
-                m.put("review_name",DictUtils.getDictLabel("term_option",String.valueOf(m.get("review_name")),""));
+                m.put("review_name", DictUtils.getDictLabel("term_option", String.valueOf(m.get("review_name")), ""));
                 m.put("options", reviewTermOptionsDao.getReviewTermOptionsListByTermId(params));
             }
         }
         return result;
     }
-
 
 
     /**
@@ -88,7 +87,7 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
                     params.put("hasOptionCount", answerList.size());
                 }
                 params.remove("userId");
-                params.put("tremClass",DictUtils.getDictLabel("term_option",c,""));
+                params.put("tremClass", DictUtils.getDictLabel("term_option", c, ""));
                 resultList.add(params);
             }
         }
@@ -127,6 +126,18 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
         //在执行插入
         reviewTermAnswerDao.insertBatch(list);
         return "投票成功";
+    }
+
+    /**
+     * 确定投票
+     */
+    @Transactional(readOnly = false)
+    public List<Map<String, Object>> searchList(String officeCode, String reviewName, String optionName) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("officeCode", officeCode);
+        params.put("reviewName", reviewName);
+        params.put("optionName", optionName);
+        return reviewTermOptionsDao.searchList(params);
     }
 
 }

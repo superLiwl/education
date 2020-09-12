@@ -8,7 +8,9 @@ import com.jeesite.common.web.BaseController;
 import com.jeesite.modules.review.entity.ReviewTermAnswer;
 import com.jeesite.modules.review.service.ReviewTermAnswerService;
 import com.jeesite.modules.review.service.VoteFormalService;
+import com.jeesite.modules.sys.entity.DictData;
 import com.jeesite.modules.sys.entity.User;
+import com.jeesite.modules.sys.utils.DictUtils;
 import com.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,6 +131,24 @@ public class VoteFormalController extends BaseController {
     @ResponseBody
     public User getUserInfo() {
         return UserUtils.getUser();
+    }
+
+    /**
+     * 获取用户信息
+     */
+    @RequestMapping(value = "getDicInfo")
+    @ResponseBody
+    public List<DictData> getDicInfo() {
+        return DictUtils.getDictList("term_option");
+    }
+
+    /**
+     * 获取用户信息
+     */
+    @RequestMapping(value = "searchList")
+    @ResponseBody
+    public List<Map<String, Object>> searchList(String officeCode, String reviewName, String optionName) {
+        return voteFormalService.searchList(officeCode, reviewName, optionName);
     }
 
 }
