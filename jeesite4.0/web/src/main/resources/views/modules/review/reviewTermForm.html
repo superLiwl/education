@@ -35,7 +35,7 @@
 							<label class="control-label col-sm-2" title="">
 								<span class="required ">*</span> ${text('参评项')}：<i class="fa icon-question hide"></i></label>
 							<div class="col-sm-5">
-								<#form:input path="reviewName" maxlength="100" class="form-control required"/>
+								<#form:select path="reviewName" dictType="term_option" class="form-control required " blankOption="true" blankOptionValue="" blankOptionLabel="请选择&nbsp;&nbsp;&nbsp;&nbsp;"/>
 							</div>
 						</div>
 					</div>

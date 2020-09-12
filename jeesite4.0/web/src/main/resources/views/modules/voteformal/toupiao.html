@@ -20,7 +20,7 @@
            //左侧悬浮
            var search = new FloatAd({
                floatObj: "floatleft",
-               x: 70,
+               x: 120,
                y: initHeight,
                locate: "left"
            });
@@ -32,16 +32,14 @@
 <body style="background-color:#ffefcd;">
 <!--搜索框-->
 <div id="floatleft" style="position: absolute; z-index: 10; left: 100px; top: 520px; width:100px;height:132px;">
-    <img src="${ctxStatic}/images/djcx.png" width="100" height="132">
+    <img src="${ctxStatic}/images/search.png" width="83" height="83" onclick="showRemarks()">
 </div>
 
 <!--漂浮广告-->
-<div id="floatright" style="position: absolute; z-index: 10; right: 100px; top: 520px; width:153px;height:243px;">
+<div id="floatright" style="position: absolute; z-index: 10; right: 100px; top: 520px; width:153px;height:200px;">
     <img src="${ctxStatic}/images/jsq.png" width="153" height="243">
 
-    <p id="subButton" style="text-align:center;font-size:14px;background-color:#cc1c1e;font-weight:bold;display:block;width:100px;line-height:26px;margin:0 26px;position:absolute;bottom:22px;border-radius:30px;">
-        <a style=" color:#fff;" href="javascript:void(0)" onclick="toSubmit()">确认投票</a>
-    </p>
+    <p id="subButton"></p>
 </div>
 <!--漂浮广告end-->
 <div class="daohang">
@@ -63,7 +61,41 @@
     <div class="title02"><p>参评单位</p></div>
 
     <div id="reviewDiv"  class="clear"></div>
+    <p  style="text-align:center;font-size:14px;background-color:#cc1c1e;font-weight:bold;display:block;width:150px;line-height:35px;margin:0 480px;position:absolute;bottom:22px;border-radius:30px;">
+        <a style=" color:#fff;" href="javascript:void(0)" onclick="toSubmit()">确认投票</a>
+    </p>
 </div>
+
+<div id="loadingDiv" style="position:fixed;z-index:2000;top:0px;left:0px;width:100%;height:100%;background-color:rgba(0,0,0,0.5);display: none;" onclick="hideSearch()"></div>
+<div id="loadingDiv_img" style="display: none">
+    <div style="position:absolute;z-index: 2001;">
+        <img src="${ctxStatic}/images/search_bg.png" style="position:absolute" onclick="hideSearch()"/>
+<!--        <img src="${ctxStatic}/images/close.png" style="position:absolute;"/>-->
+
+        <label style="position:absolute;margin-top:120px;margin-left: 250px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">姓名：</label>
+        <input type="text" style="position:absolute;margin-top:120px;margin-left: 300px;width: 150px;height: 28px;border-radius:30px;"/>
+
+
+        <label style="position:absolute;margin-top:120px;margin-left: 550px;width: 120px;height: 30px;z-index:2002;color: #FFFFFF;">所在厅局：</label>
+        <select id="select_office" style="position:absolute;margin-top:120px;margin-left: 630px;width: 150px;height: 30px;border-radius:30px;">
+
+        </select>
+
+        <label style="position:absolute;margin-top:220px;margin-left: 250px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">所属类别：</label>
+
+        <input type="radio" name="termRadio" style="position:absolute;margin-top:220px;margin-left: 300px;width: 100px;height: 30px;"/>
+        <label style="position:absolute;margin-top:220px;margin-left: 370px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">先进干部</label>
+
+        <input type="radio" name="termRadio" style="position:absolute;margin-top:220px;margin-left: 450px;width: 100px;height: 30px;"/>
+        <label style="position:absolute;margin-top:220px;margin-left: 520px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">先进处长</label>
+
+        <input type="radio" name="termRadio" style="position:absolute;margin-top:220px;margin-left: 600px;width: 100px;height: 30px;"/>
+        <label style="position:absolute;margin-top:220px;margin-left: 670px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">先进处室</label>
+
+        <input type="button" style="position:absolute;margin-top:290px;margin-left: 440px;width: 250px;height: 40px;border-radius:30px;background-color: red;color: #FFFFFF;border-style:solid; border-width:2px; border-color:#FFFFFF;font-size: 20px;" value="确定查询"/>
+    </div>
+</div>
+
 <div class="footer01"><p>技术支持：黑龙江东北网络台</p></div>
       <script>
     function resetTabs(){
@@ -118,7 +150,7 @@
                 var ulLi = '<ul id="tabs">';
                 var xh = 1;
                 var divHtml = '';
-
+                var selectHtml = "";
                 if(data && data[0]){
                     $.each(data,function(index,ele){
                         if(ele){
@@ -144,9 +176,11 @@
                                 divHtml += getDiv(ele);
                                 ulLi += getulLi(ele);
                             }
+                            selectHtml += getSelectHtml(ele);
                         }
                         xh++;
                     });
+                    $("#select_office").html(selectHtml);
                     if(xh <= 5){
                         //结尾
                         divHtml += '</div>';
@@ -158,6 +192,10 @@
                 }
                 initDiv();
             }});
+    }
+
+    function getSelectHtml(info) {
+        return '<option value="'+info.office_code+'">'+info.office_name+'</option>';
     }
 
 
@@ -357,6 +395,17 @@
                 }
             }
         });
+    }
+
+    function showRemarks() {
+        var h = $("#floatleft").offset().top;
+        $("#loadingDiv").show();
+        $("#loadingDiv_img").attr("style", 'position:absolute;left:20%; top:' + h*3/4 + 'px;z-index: 2001;');
+    }
+
+    function hideSearch(){
+        $("#loadingDiv").hide();
+        $("#loadingDiv_img").hide();
     }
 
   </script>

@@ -9,6 +9,7 @@ import com.jeesite.common.shiro.realm.LoginInfo;
 import com.jeesite.modules.review.dao.ReviewTermAnswerDao;
 import com.jeesite.modules.review.dao.ReviewTermOptionsDao;
 import com.jeesite.modules.review.entity.ReviewTermAnswer;
+import com.jeesite.modules.sys.utils.DictUtils;
 import com.jeesite.modules.vote.dao.VoteNaireDao;
 import com.jeesite.modules.vote.entity.VoteNaire;
 import org.apache.shiro.SecurityUtils;
@@ -52,11 +53,14 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
             for (Map<String, Object> m : result) {
                 params = new HashMap<>();
                 params.put("termId", m.get("id"));
+                m.put("review_name",DictUtils.getDictLabel("term_option",String.valueOf(m.get("review_name")),""));
                 m.put("options", reviewTermOptionsDao.getReviewTermOptionsListByTermId(params));
             }
         }
         return result;
     }
+
+
 
     /**
      * 获取总投票数，已投票数，当前登陆人已经投过的选项
@@ -84,6 +88,7 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
                     params.put("hasOptionCount", answerList.size());
                 }
                 params.remove("userId");
+                params.put("tremClass",DictUtils.getDictLabel("term_option",c,""));
                 resultList.add(params);
             }
         }
