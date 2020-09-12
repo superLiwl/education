@@ -8,11 +8,12 @@
     <script type="text/javascript" src="${ctxStatic}//layer/3.1/layer.js"></script>
   	<script>
        window.onload = function(){
+           console.log()
+        var initHeight = document.body.clientHeight/2;
        	var ad = new FloatAd({
-			//nodeLink : "<a href='#'><img src='img/weixin_qurode.png' border=0 /></a>" ,
 			floatObj : "floatright",
 			x : 70,
-			y : 580,
+			y : initHeight,
 			locate : "right"
 		});
 		ad.play();
@@ -22,7 +23,7 @@
 </head>
 <body style="background-color:#ffefcd;">
 <!--漂浮广告-->
-<div id="floatright" style="position: absolute; z-index: 10; right: 100px; top: 620px; width:153px;height:243px;">
+<div id="floatright" style="position: absolute; z-index: 10; right: 100px; top: 520px; width:153px;height:243px;">
     <img src="${ctxStatic}/images/jsq.png" width="153" height="243">
 
     <p id="subButton" style="text-align:center;font-size:14px;background-color:#cc1c1e;font-weight:bold;display:block;width:100px;line-height:26px;margin:0 26px;position:absolute;bottom:22px;border-radius:30px;">

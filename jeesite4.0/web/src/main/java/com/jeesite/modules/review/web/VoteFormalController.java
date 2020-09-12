@@ -8,6 +8,8 @@ import com.jeesite.common.web.BaseController;
 import com.jeesite.modules.review.entity.ReviewTermAnswer;
 import com.jeesite.modules.review.service.ReviewTermAnswerService;
 import com.jeesite.modules.review.service.VoteFormalService;
+import com.jeesite.modules.sys.entity.User;
+import com.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -118,6 +120,15 @@ public class VoteFormalController extends BaseController {
         ReviewTermAnswer select = new ReviewTermAnswer();
         select.setUserId(userId);
         return reviewTermAnswerService.findList(select);
+    }
+
+    /**
+     * 获取用户信息
+     */
+    @RequestMapping(value = "getUserInfo")
+    @ResponseBody
+    public User getUserInfo() {
+        return UserUtils.getUser();
     }
 
 }
