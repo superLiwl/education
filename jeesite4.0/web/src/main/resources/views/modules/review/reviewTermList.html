@@ -3,7 +3,7 @@
 	<div class="box box-main">
 		<div class="box-header">
 			<div class="box-title">
-				<i class="fa fa-list-alt"></i> ${text('参评管理管理')}
+				<i class="fa fa-list-alt"></i> ${text('参评单位管理')}
 			</div>
 			<div class="box-tools pull-right">
 				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
@@ -13,22 +13,23 @@
 			</div>
 		</div>
 		<div class="box-body">
-			<#form:form id="searchForm" model="${reviewTerm}" action="${ctx}/review/reviewTerm/listData" method="post" class="form-inline hide"
+			<#form:form id="searchForm" model="${reviewTerm}" action="${ctx}/review/reviewTerm/listData" method="post" class="form-inline"
 					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('参评单位')}：</label>
+					<div class="control-inline width-120" >
+						<#form:treeselect id="officeCode" title="${text('机构选择')}"
+						path="officeCode" labelPath=""
+						url="${ctx}/sys/office/treeData" allowClear="true"/>
+					</div>
+				</div>
 				<div class="form-group">
 					<label class="control-label">${text('参评项')}：</label>
 					<div class="control-inline">
 						<#form:input path="reviewName" maxlength="100" class="form-control width-120"/>
 					</div>
 				</div>
-				<div class="form-group">
-					<label class="control-label">${text('参评单位')}：</label>
-					<div class="control-inline width-120" >
-						<#form:treeselect id="officeCode" title="${text('机构选择')}"
-							path="officeCode" labelPath="" 
-							url="${ctx}/sys/office/treeData" allowClear="true"/>
-					</div>
-				</div>
+
 				<div class="form-group">
 					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
 					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>

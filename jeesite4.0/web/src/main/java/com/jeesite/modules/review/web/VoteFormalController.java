@@ -48,6 +48,30 @@ public class VoteFormalController extends BaseController {
     }
 
     /**
+     * 干部
+     */
+    @RequestMapping(value = {"ganbu", ""})
+    public String ganbu() {
+        return "modules/voteformal/xly001";
+    }
+
+    /**
+     * 处长
+     */
+    @RequestMapping(value = {"chuzhang", ""})
+    public String chuzhang() {
+        return "modules/voteformal/xly002";
+    }
+
+    /**
+     * 处室
+     */
+    @RequestMapping(value = {"chushi", ""})
+    public String chushi() {
+        return "modules/voteformal/xly003";
+    }
+
+    /**
      * 查询组织机构
      */
     @RequestMapping(value = "getReviewTermList")

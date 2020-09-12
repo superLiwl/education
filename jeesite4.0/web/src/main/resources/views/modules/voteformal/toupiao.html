@@ -181,7 +181,7 @@
         if(info.options && info.options[0]){
             $.each(info.options,function(index,ele){
                 if(ele){
-                    ulHtml+=liHtml(ele);
+                    ulHtml+=liHtml(ele,info.review_name);
                 }
             });
         }
@@ -189,15 +189,29 @@
         return ulHtml;
     }
 
-    function liHtml(info) {
+    function liHtml(info,tremClass) {
         //return '<li id="'+info.id+'" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"><a href="javascript:void(0)" target="_blank"><div class="touxiang"><img src=""></div><div class="nr"><p>'+info.option_name+'</p><span>'+info.position+'</span></div></a></li>';
         var styleStr = ""
         var isChecked = "0";
+        var isCheckedStr = ""
         if(info.isAnswer == '1' || isInCheckValues(info.id)){
             styleStr = 'style=background-color:rgba(234,45,47,0.8);"';
             isChecked = "1";
+            isCheckedStr = "checked";
         }
-        return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"><a href="javascript:void(0)"><div class="touxiang"><img src=""></div><div class="nr"><p>'+info.option_name+'</p><span>'+info.position+'</span></div></a></li>';
+        var hrefUrl= 'javascript:void(0)';
+        var target = '';
+        if(tremClass.endsWith("干部")){
+            hrefUrl = '${ctx}/vote/formal/ganbu';
+            target = 'target="_blank"';
+        }else if (tremClass.endsWith("处长")){
+            hrefUrl = '${ctx}/vote/formal/chuzhang';
+            target = 'target="_blank"';
+        }else if (tremClass.endsWith("处室")){
+            hrefUrl = '${ctx}/vote/formal/chushi';
+            target = 'target="_blank"';
+        }
+        return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><img src=""></div><div class="nr"><p>'+info.option_name+'&nbsp;<input '+isCheckedStr+' type="checkbox" style="cursor:pointer;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></p><span>'+info.position+'</span></div></a></li>';
     }
     //选择的数据
     var checkValues = [];
@@ -212,6 +226,7 @@
             var tremClass = $("#"+termId).html();
             var count = $("#"+tremClass).html();
             $("#"+tremClass).text((parseInt(count)-1));
+            layer.msg('取消投票', {time: 1500, });
         }else{
             //未选中---修改为选中
             $("#"+id).attr("style","background-color:rgba(234,45,47,0.8);");
@@ -221,6 +236,7 @@
             var tremClass = $("#"+termId).html();
             var count = $("#"+tremClass).html();
             $("#"+tremClass).text((parseInt(count)+1));
+            layer.msg('选中投票', {time: 1500, });
         }
     }
 
