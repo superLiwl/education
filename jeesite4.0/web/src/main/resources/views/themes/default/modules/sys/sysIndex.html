@@ -37,7 +37,7 @@ var bodyClass = 'fixed noscroll2 sidebar-mini ' + sidebarCollapse;
 			data: {},
 			dataType: "json",
 			success: function (data) {
-				if('system' == data.userCode){
+				if('system' == data.userCode || 'admin' == data.userCode || 'gjjsmain' ==  data.userCode){
 					toToupiao('_blank');
 				}else{
 					toToupiao('_parent');
