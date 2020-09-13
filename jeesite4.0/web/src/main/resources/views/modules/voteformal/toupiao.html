@@ -8,11 +8,11 @@
     <script type="text/javascript" src="${ctxStatic}//layer/3.1/layer.js"></script>
   	<script>
        window.onload = function(){
-           var initHeight = document.body.clientHeight / 2;
+           var initHeight = document.body.clientHeight / 4;
            //右侧悬浮
            var ad = new FloatAd({
                floatObj: "floatright",
-               x: 70,
+               x: 5,
                y: initHeight,
                locate: "right"
            });
@@ -20,7 +20,7 @@
            //左侧悬浮
            var search = new FloatAd({
                floatObj: "floatleft",
-               x: 120,
+               x: 60,
                y: initHeight,
                locate: "left"
            });
@@ -61,29 +61,29 @@
     <div class="title02"><p>参评单位</p></div>
 
     <div id="reviewDiv"  class="clear"></div>
-    <p  style="text-align:center;font-size:14px;background-color:#cc1c1e;font-weight:bold;display:block;width:150px;line-height:35px;margin:0 480px;position:absolute;bottom:22px;border-radius:30px;">
-        <a style=" color:#fff;" href="javascript:void(0)" onclick="toSubmit()">确认投票</a>
+    <p onclick="toSubmit()" style="position:absolute;text-align:center;font-size:14px;background-color:#cc1c1e;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:500px;bottom:22px;border-radius:30px;">
+        <a style=" color:#fff;" href="javascript:void(0)">确认投票</a>
     </p>
 </div>
 
 <div id="loadingDiv" style="position:fixed;z-index:2000;top:0px;left:0px;width:100%;height:100%;background-color:rgba(0,0,0,0.5);display: none;" onclick="hideSearch()"></div>
 <div id="loadingDiv_img" style="display: none">
     <div style="position:absolute;z-index: 2001;">
-        <img src="${ctxStatic}/images/search_bg.png" style="position:absolute" onclick="hideSearch()"/>
-<!--        <img src="${ctxStatic}/images/close.png" style="position:absolute;"/>-->
+        <img src="${ctxStatic}/images/search_bg1.png" style="position:absolute;left: 100px;"/>
+        <img src="${ctxStatic}/images/close1.png" style="position:absolute;left: 755px;top: -20px;" onclick="hideSearch()"/>
 
-        <label style="position:absolute;margin-top:120px;margin-left: 250px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">姓名：</label>
-        <input type="text" id="select_name" style="position:absolute;margin-top:120px;margin-left: 300px;width: 150px;height: 28px;border-radius:30px;"/>
+        <label style="position:absolute;margin-top:50px;margin-left: 150px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">姓名：</label>
+        <input type="text" id="select_name" style="position:absolute;margin-top:50px;margin-left: 200px;width: 150px;height: 28px;border-radius:30px;"/>
 
 
-        <label style="position:absolute;margin-top:120px;margin-left: 550px;width: 120px;height: 30px;z-index:2002;color: #FFFFFF;">所在厅局：</label>
-        <select id="select_office" style="position:absolute;margin-top:120px;margin-left: 630px;width: 150px;height: 30px;border-radius:30px;">
+        <label style="position:absolute;margin-top:50px;margin-left: 450px;width: 120px;height: 30px;z-index:2002;color: #FFFFFF;">所在厅局：</label>
+        <select id="select_office" style="position:absolute;margin-top:50px;margin-left: 530px;width: 150px;height: 30px;border-radius:30px;">
 
         </select>
 
-        <label style="position:absolute;margin-top:220px;margin-left: 250px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">所属类别：</label>
+        <label style="position:absolute;margin-top:120px;margin-left: 150px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">所属类别：</label>
 
-        <input id="searchButton" onclick="toSearch()" type="button" style="position:absolute;margin-top:290px;margin-left: 440px;width: 250px;height: 40px;border-radius:30px;background-color: red;color: #FFFFFF;border-style:solid; border-width:2px; border-color:#FFFFFF;font-size: 20px;" value="确定查询"/>
+        <input id="searchButton" onclick="toSearch()" type="button" style="position:absolute;margin-top:190px;margin-left: 310px;width: 250px;height: 40px;border-radius:30px;background-color: red;color: #FFFFFF;border-style:solid; border-width:2px; border-color:#FFFFFF;font-size: 20px;" value="确定查询"/>
     </div>
 </div>
 
@@ -108,10 +108,12 @@
         // 查询字典信息
         getDicInfo();
     })()
-
+    //用来判断是否可以投票
+    var reviewNameArry = [];
+    var reviewNameCount = [];
     function getDicInfo() {
         var divHtml = "";
-        var left =  300;
+        var left =  200;
         $.ajax({
             type: "POST",
             url: "${ctx}/vote/formal/getDicInfo",
@@ -121,6 +123,8 @@
                 if (data && data[0]) {
                     $.each(data, function (index, ele) {
                         if (ele) {
+                            reviewNameArry.push(ele.dictLabel);
+                            reviewNameCount.push(ele.description);
                             divHtml = getDicGtml(ele,left);
                             left += 150;
                             $("#searchButton").before(divHtml);
@@ -131,8 +135,8 @@
         });
     }
     function getDicGtml(info,left){
-        return '<input type="radio" name="termRadio" value="'+info.dictValue+'" style="position:absolute;margin-top:220px;margin-left: '+left+'px;width: 100px;height: 30px;cursor: pointer;"/>' +
-               '<label style="position:absolute;margin-top:220px;margin-left: '+(left+70)+'px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">'+info.dictLabel+'</label>';
+        return '<input type="radio" name="termRadio" value="'+info.dictValue+'" style="position:absolute;margin-top:120px;margin-left: '+left+'px;width: 100px;height: 30px;cursor: pointer;"/>' +
+               '<label style="position:absolute;margin-top:120px;margin-left: '+(left+70)+'px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">'+info.dictLabel+'</label>';
     }
 
     function initDiv() {
@@ -369,6 +373,24 @@
     }
 
     function toSubmit() {
+        var isToToupiao = true;
+        //用来判断是否可以投票
+        if(reviewNameArry && reviewNameArry[0]){
+            var hasCount = "";
+            for(var i = 0; i< reviewNameArry.length ;i++){
+                if(reviewNameArry[i] && reviewNameCount[i]){
+                    hasCount = $("#"+reviewNameArry[i]).text();
+                    if(hasCount != reviewNameCount[i]){
+                        layer.alert(reviewNameArry[i] + '的投票数应为 ' + reviewNameCount[i]);
+                        isToToupiao = false;
+                        break;
+                    }
+                }
+            }
+        }
+        if(!isToToupiao){
+            return;
+        }
         //询问是否投票
         layer.confirm('确定投票？', {
             btn: ['确定','取消'] //按钮
@@ -419,7 +441,7 @@
     function showRemarks() {
         var h = $("#floatleft").offset().top;
         $("#loadingDiv").show();
-        $("#loadingDiv_img").attr("style", 'position:absolute;left:20%; top:' + h*3/4 + 'px;z-index: 2001;');
+        $("#loadingDiv_img").attr("style", 'position:absolute;left:20%; top:' + h + 'px;z-index: 2001;');
     }
 
     function hideSearch(){
@@ -467,28 +489,25 @@
                     if(tsMsg.endsWith(",")){
                         tsMsg = tsMsg.substr(0,tsMsg.length -1);
                     }
-                    layer.alert(tsMsg, function(){
-                        //---跳转到组织
-                        $("a[name='#"+select_office+"']").click();
-                        hideSearch();
-                        //延时跳转
-                        setTimeout(function () {
-                            try{
-                                var h = $("#"+toIndex).offset().top;
-                                $('html,body').animate({scrollTop:h/3*4},500);//回到顶端
-                            }catch(e){
-                                console.log(e)
-                            }
-                        },1000);
-                    });
+                    layer.load();
+                    setTimeout(function(){
+                        layer.closeAll('loading');
+                    }, 1500);
+
+                    //---打开组织
+                    $("a[name='#"+select_office+"']").click();
+                    hideSearch();
+                    //延时跳转
+                    setTimeout(function () {
+                        var h = $("#"+toIndex).offset().top;
+                        $('html,body').animate({scrollTop:h},500);//回到顶端
+                    },1500);
                 }else{
                     layer.alert("未查询到符合条件的人");
                 }
             }
         });
-
     }
-
   </script>
 </body>
 </html>
