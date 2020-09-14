@@ -7,7 +7,11 @@
 	</select>
 
 	<select id="getReviewTermListByOfficeCode" resultType="map">
-		SELECT DISTINCT id,review_name,office_code,office_name FROM `review_term` WHERE office_code = #{officeCode} ORDER BY sort ASC ;
+		SELECT DISTINCT id,review_name,office_code,office_name FROM `review_term` WHERE office_code = #{officeCode}
+		<if test="termType != null and termType != '' ">
+			and review_name =#{termType}
+		</if>
+		ORDER BY sort ASC ;
 	</select>
 
 	<select id="getReviewTermOptionsListByTermId" resultType="map">
@@ -17,7 +21,13 @@
 
 
 	<select id="getTremClass" resultType="string">
-		SELECT t.review_name FROM `review_term` t GROUP BY t.review_name ORDER BY t.sort ASC;
+		SELECT t.review_name FROM `review_term` t
+		<where>
+			<if test="termType != null and termType != '' ">
+				and review_name =#{termType}
+			</if>
+		</where>
+		GROUP BY t.review_name ORDER BY t.sort ASC;
 	</select>
 
 	<select id="getOptionsCountByClass" resultType="Long">

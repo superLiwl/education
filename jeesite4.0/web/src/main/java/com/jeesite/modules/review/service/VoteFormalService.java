@@ -45,9 +45,10 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
      * 根据组织编码获取下边的投票项与参评人
      */
     @Transactional(readOnly = false)
-    public List<Map<String, Object>> getReviewTermListByOfficeCode(String officeCode) {
+    public List<Map<String, Object>> getReviewTermListByOfficeCode(String officeCode,String termType) {
         Map<String, Object> params = new HashMap<>();
         params.put("officeCode", officeCode);
+        params.put("termType", termType);
         List<Map<String, Object>> result = reviewTermOptionsDao.getReviewTermListByOfficeCode(params);
         if (null != result && !result.isEmpty() && result.size() > 0) {
             for (Map<String, Object> m : result) {
@@ -65,11 +66,13 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
      * 获取总投票数，已投票数，当前登陆人已经投过的选项
      */
     @Transactional(readOnly = false)
-    public List<Map<String, Object>> getAnswerInfo() {
+    public List<Map<String, Object>> getAnswerInfo(String termType) {
         LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
         String userId = login.getId();
         List<Map<String, Object>> resultList = new ArrayList<>();
-        List<String> classList = reviewTermOptionsDao.getTremClass();
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("termType",termType);
+        List<String> classList = reviewTermOptionsDao.getTremClass(paramsMap);
         if (null != classList && !classList.isEmpty() && classList.size() > 0) {
             Map<String, Object> params;
             Long allOptionCount;
@@ -98,12 +101,21 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
      * 确定投票
      */
     @Transactional(readOnly = false)
-    public String submitAnswer(String optionIds) {
+    public String submitAnswer(String optionIds,String termType) {
         if (StringUtils.isEmpty(optionIds)) {
             return "投票失败，未选择参评人";
         }
         LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
         String userId = login.getId();
+        //查询当前项目下是否投过票。
+        ReviewTermAnswer select = new ReviewTermAnswer();
+        select.setUserId(userId);
+        select.setReviewName(termType);
+        Long count = reviewTermAnswerDao.findCount(select);
+        if(count > 0){
+            return "已经投过票了";
+        }
+
         String arry[] = optionIds.split(",");
         List<ReviewTermAnswer> list = new ArrayList<>();
         ReviewTermAnswer answer;
@@ -112,6 +124,7 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
                 answer = new ReviewTermAnswer();
                 answer.setOptionId(s);
                 answer.setUserId(userId);
+                answer.setReviewName(termType);
                 answer.setId(UUID.randomUUID().toString());
                 list.add(answer);
             }
@@ -122,6 +135,7 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
         //先执行删除
         ReviewTermAnswer del = new ReviewTermAnswer();
         del.setUserId(userId);
+        del.setReviewName(termType);
         reviewTermAnswerDao.deleteByEntity(del);
         //在执行插入
         reviewTermAnswerDao.insertBatch(list);

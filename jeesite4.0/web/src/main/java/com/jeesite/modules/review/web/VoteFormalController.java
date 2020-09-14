@@ -40,7 +40,7 @@ public class VoteFormalController extends BaseController {
      */
     @RequestMapping(value = {"gongshi", ""})
     public String gongshi() {
-        return "modules/voteformal/gongshi";
+        return "modules/voteformal/gongshi01";
     }
 
     /**
@@ -89,8 +89,8 @@ public class VoteFormalController extends BaseController {
      */
     @RequestMapping(value = "getReviewTermListByOfficeCode")
     @ResponseBody
-    public List<Map<String, Object>> getReviewTermListByOfficeCode(String officeCode) {
-        return voteFormalService.getReviewTermListByOfficeCode(officeCode);
+    public List<Map<String, Object>> getReviewTermListByOfficeCode(String officeCode,String termType) {
+        return voteFormalService.getReviewTermListByOfficeCode(officeCode,termType);
     }
 
     /**
@@ -98,8 +98,8 @@ public class VoteFormalController extends BaseController {
      */
     @RequestMapping(value = "getAnswerInfo")
     @ResponseBody
-    public List<Map<String, Object>> getAnswerInfo() {
-        return voteFormalService.getAnswerInfo();
+    public List<Map<String, Object>> getAnswerInfo(String termType) {
+        return voteFormalService.getAnswerInfo(termType);
     }
 
     /**
@@ -107,8 +107,8 @@ public class VoteFormalController extends BaseController {
      */
     @RequestMapping(value = "submitAnswer")
     @ResponseBody
-    public String submitAnswer(String optionIds) {
-        return voteFormalService.submitAnswer(optionIds);
+    public String submitAnswer(String optionIds,String termType) {
+        return voteFormalService.submitAnswer(optionIds,termType);
     }
 
     /**
@@ -116,11 +116,12 @@ public class VoteFormalController extends BaseController {
      */
     @RequestMapping(value = "getAllAnswer")
     @ResponseBody
-    public List<ReviewTermAnswer> getAllAnswer() {
+    public List<ReviewTermAnswer> getAllAnswer(String termType) {
         LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
         String userId = login.getId();
         ReviewTermAnswer select = new ReviewTermAnswer();
         select.setUserId(userId);
+        select.setReviewName(termType);
         return reviewTermAnswerService.findList(select);
     }
 

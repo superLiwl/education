@@ -5,7 +5,7 @@
 	<title>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</title>
     <script type="text/javascript" src="${ctxStatic}/js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="${ctxStatic}/js/floatAd.js"></script>
-    <script type="text/javascript" src="${ctxStatic}//layer/3.1/layer.js"></script>
+    <script type="text/javascript" src="${ctxStatic}/layer/3.1/layer.js"></script>
   	<script>
        window.onload = function(){
            var initHeight = document.body.clientHeight / 4;
@@ -28,6 +28,32 @@
        }
 	</script>
     <link rel="stylesheet" href="${ctxStatic}/css/dianxing01.css">
+    <style type="text/css">
+        table.gridtable {
+            width: 400px;
+            font-family: verdana, arial, sans-serif;
+            font-size: 11px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+        }
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #dedede;
+        }
+        table.gridtable td {
+            text-align: center;
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+        }
+    </style>
 </head>
 <body style="background-color:#ffefcd;">
 <!--搜索框-->
@@ -72,18 +98,28 @@
         <img src="${ctxStatic}/images/search_bg1.png" style="position:absolute;left: 100px;"/>
         <img src="${ctxStatic}/images/close1.png" style="position:absolute;left: 755px;top: -20px;" onclick="hideSearch()"/>
 
-        <label style="position:absolute;margin-top:50px;margin-left: 150px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">姓名：</label>
-        <input type="text" id="select_name" style="position:absolute;margin-top:50px;margin-left: 200px;width: 150px;height: 28px;border-radius:30px;"/>
+<!--        <label style="position:absolute;margin-top:50px;margin-left: 150px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">姓名：</label>-->
+<!--        <input type="text" id="select_name" style="position:absolute;margin-top:50px;margin-left: 200px;width: 150px;height: 28px;border-radius:30px;"/>-->
 
 
-        <label style="position:absolute;margin-top:50px;margin-left: 450px;width: 120px;height: 30px;z-index:2002;color: #FFFFFF;">所在厅局：</label>
-        <select id="select_office" style="position:absolute;margin-top:50px;margin-left: 530px;width: 150px;height: 30px;border-radius:30px;">
+<!--        <label style="position:absolute;margin-top:50px;margin-left: 450px;width: 120px;height: 30px;z-index:2002;color: #FFFFFF;">所在厅局：</label>-->
+<!--        <select id="select_office" style="position:absolute;margin-top:50px;margin-left: 530px;width: 150px;height: 30px;border-radius:30px;">-->
+
+<!--        </select>-->
+
+        <label style="position:absolute;margin-top:70px;margin-left: 150px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">姓名：</label>
+        <input type="text" id="select_name" style="position:absolute;margin-top:70px;margin-left: 200px;width: 150px;height: 28px;border-radius:30px;"/>
+
+
+        <label style="position:absolute;margin-top:70px;margin-left: 450px;width: 120px;height: 30px;z-index:2002;color: #FFFFFF;">所在厅局：</label>
+        <select id="select_office" style="position:absolute;margin-top:70px;margin-left: 530px;width: 150px;height: 30px;border-radius:30px;">
 
         </select>
 
-        <label style="position:absolute;margin-top:120px;margin-left: 150px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">所属类别：</label>
+        <label style="position:absolute;margin-top:120px;margin-left: 150px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;display: none;">所属类别：</label>
 
-        <input id="searchButton" onclick="toSearch()" type="button" style="position:absolute;margin-top:190px;margin-left: 310px;width: 250px;height: 40px;border-radius:30px;background-color: red;color: #FFFFFF;border-style:solid; border-width:2px; border-color:#FFFFFF;font-size: 20px;" value="确定查询"/>
+        <input id="searchButton" onclick="toSearch()" type="button" style="position:absolute;margin-top:160px;margin-left: 310px;width: 250px;height: 40px;border-radius:30px;background-color: red;color: #FFFFFF;border-style:solid; border-width:2px; border-color:#FFFFFF;font-size: 20px;" value="确定查询"/>
+<!--        <input id="searchButton" onclick="toSearch()" type="button" style="position:absolute;margin-top:190px;margin-left: 310px;width: 250px;height: 40px;border-radius:30px;background-color: red;color: #FFFFFF;border-style:solid; border-width:2px; border-color:#FFFFFF;font-size: 20px;" value="确定查询"/>-->
     </div>
 </div>
 
@@ -112,6 +148,7 @@
     var reviewNameArry = [];
     var reviewNameCount = [];
     function getDicInfo() {
+        var termType = getSearchType();
         var divHtml = "";
         var left =  200;
         $.ajax({
@@ -122,7 +159,7 @@
             success: function (data) {
                 if (data && data[0]) {
                     $.each(data, function (index, ele) {
-                        if (ele) {
+                        if (ele && ele.dictValue == termType) {
                             reviewNameArry.push(ele.dictLabel);
                             reviewNameCount.push(ele.description);
                             divHtml = getDicGtml(ele,left);
@@ -135,8 +172,8 @@
         });
     }
     function getDicGtml(info,left){
-        return '<input type="radio" name="termRadio" value="'+info.dictValue+'" style="position:absolute;margin-top:120px;margin-left: '+left+'px;width: 100px;height: 30px;cursor: pointer;"/>' +
-               '<label style="position:absolute;margin-top:120px;margin-left: '+(left+70)+'px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">'+info.dictLabel+'</label>';
+        return '<input type="radio" name="termRadio" checked value="'+info.dictValue+'" style="position:absolute;margin-top:120px;margin-left: '+left+'px;width: 100px;height: 30px;cursor: pointer;display: none;"/>' +
+               '<label style="position:absolute;margin-top:120px;margin-left: '+(left+70)+'px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;display: none;">'+info.dictLabel+'</label>';
     }
 
     function initDiv() {
@@ -231,12 +268,24 @@
         return '<div id="'+ele.office_code+'"></div>';
     }
 
+    function getSearchType() {
+        //获取url中参数
+        var type = window.location.search.replace("?type=","");
+        var termType = 1;
+        if(type != null && type != '' && type != undefined && type !="undefined"){
+            termType = type;
+        }
+        return termType;
+    }
+
     function getReviewTermListByOfficeCode(office_code) {
+        var termType = getSearchType();
         $.ajax({
             type: "POST",
             url: "${ctx}/vote/formal/getReviewTermListByOfficeCode",
             data: {
-                'officeCode':office_code
+                'officeCode':office_code,
+                'termType':termType
             },
             dataType: "json",
             success: function (data) {
@@ -286,7 +335,7 @@
             hrefUrl = '${ctx}/vote/formal/chushi';
             target = 'target="_blank"';
         }
-        return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><img src=""></div><div class="nr"><p>'+info.option_name+'&nbsp;<input '+isCheckedStr+' type="checkbox" style="cursor:pointer;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></p><span>'+info.position+'</span></div></a></li>';
+        return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p>'+info.option_name+'&nbsp;</p><span title="'+info.position+'">'+info.position+'</span></div></a></li>';
     }
     //选择的数据
     var checkValues = [];
@@ -346,10 +395,13 @@
     }
 
     function getAnswerInfo() {
+        // var termType = getSearchType();
         $.ajax({
             type: "POST",
             url: "${ctx}/vote/formal/getAnswerInfo",
-            data: {},
+            data: {
+                // 'termType':termType
+            },
             dataType: "json",
             success: function (data) {
                 var xfHtml = '';
@@ -373,6 +425,7 @@
     }
 
     function toSubmit() {
+        var termType = getSearchType();
         var isToToupiao = true;
         //用来判断是否可以投票
         if(reviewNameArry && reviewNameArry[0]){
@@ -392,7 +445,7 @@
             return;
         }
         //询问是否投票
-        layer.confirm('确定投票？', {
+        layer.confirm('慎重选择，提交后不可更改!', {
             btn: ['确定','取消'] //按钮
         }, function(){
             var optionIds = "";
@@ -405,11 +458,28 @@
                 type: "POST",
                 url: "${ctx}/vote/formal/submitAnswer",
                 data: {
-                    'optionIds':optionIds
+                    'optionIds':optionIds,
+                    'termType':termType
                 },
                 dataType: "text",
                 success: function (data) {
-                    layer.alert(data);
+                    if(data == '投票成功'){
+                        layer.alert(data+'并退出登录', function () {
+                            var a = document.createElement('a');
+                            a.setAttribute('href', '${ctx}/logout');
+                            a.setAttribute('target', "_top");
+                            a.setAttribute('id', 'js_a');
+                            //防止反复添加
+                            if(document.getElementById('js_a')) {
+                                document.body.removeChild(document.getElementById('js_a'));
+                            }
+                            document.body.appendChild(a);
+                            a.click();
+                        });
+                    }else{
+                        layer.alert(data);
+                    }
+
                 },
                 fail:function (data) {
                     layer.alert("投票失败，请再次点击");
@@ -421,10 +491,13 @@
     }
 
     function getAllAnswer() {
+        var termType = getSearchType();
         $.ajax({
             type: "POST",
             url: "${ctx}/vote/formal/getAllAnswer",
-            data: {},
+            data: {
+                'termType':termType
+            },
             dataType: "json",
             success: function (data) {
                 if (data && data[0]) {
@@ -476,37 +549,56 @@
             dataType: "json",
             success: function (data) {
                 if(data && data[0]){
-                    var tsMsg = "";
+                    var tsMsg = '<h2>查询结果</h2>'
+                              + '<table class="gridtable">'
+                              + '<tr><th>姓名</th><th>定位</th></tr>';
                     var toIndex = '';
                     $.each(data, function (index, ele) {
                         if (ele) {
                             if(index == 0){
                                 toIndex = ele.term_id;
                             }
-                            tsMsg += ele.office_name + ele.option_name + ",";
+                            tsMsg +='<tr><td>'+ele.option_name+'</td><td style="cursor: pointer;" onclick="dingwei(\''+select_office+'\',\''+ele.term_id+'\')">定位</td></tr>';
                         }
                     });
-                    if(tsMsg.endsWith(",")){
-                        tsMsg = tsMsg.substr(0,tsMsg.length -1);
-                    }
-                    layer.load();
-                    setTimeout(function(){
-                        layer.closeAll('loading');
-                    }, 1500);
+                    tsMsg +="</table>"
+                    if(data.length > 1){
+                        if(tsMsg.endsWith(",")){
+                            tsMsg = tsMsg.substr(0,tsMsg.length -1);
+                        }
 
-                    //---打开组织
-                    $("a[name='#"+select_office+"']").click();
-                    hideSearch();
-                    //延时跳转
-                    setTimeout(function () {
-                        var h = $("#"+toIndex).offset().top;
-                        $('html,body').animate({scrollTop:h},500);//回到顶端
-                    },1500);
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            closeBtn: 0,
+                            shadeClose: true,
+                            skin: 'yourclass',
+                            content: tsMsg
+                        });
+                        return;
+                    }else{
+                        dingwei(select_office,toIndex);
+                    }
                 }else{
                     layer.alert("未查询到符合条件的人");
                 }
             }
         });
+    }
+    function dingwei(select_office,toIndex) {
+        layer.load();
+        setTimeout(function(){
+            layer.closeAll();
+        }, 1500);
+
+        //---打开组织
+        $("a[name='#"+select_office+"']").click();
+        hideSearch();
+        //延时跳转
+        setTimeout(function () {
+            var h = $("#"+toIndex).offset().top;
+            $('html,body').animate({scrollTop:h},500);//回到顶端
+        },1500);
     }
   </script>
 </body>

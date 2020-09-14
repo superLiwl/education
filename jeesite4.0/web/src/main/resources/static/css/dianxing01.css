@@ -700,11 +700,11 @@ z-index: 99999;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8p
 .houxuan-title p{font-size:18px;color:#e31f2d;font-weight:bold;line-height:22px;padding-left:10px;}
 .houxuan li {width:253px;height:52px;display:block;float:left; overflow:hidden;border-radius: 60px;margin:4px 6px;background-color:#94a0ac;}
 .houxuan li:hover {background-color:rgba(234,45,47,0.8);}
-.houxuan li .touxiang {height:48px;width:48px;margin:2px;float:left;overflow: hidden;border-radius: 60px;}
-.houxuan li .touxiang img{width:48px;}
-.houxuan li .nr {height:38px;padding:7px 0;float:left;margin-left:10px;width:168px;overflow:hidden;}
-.houxuan li .nr p{font-size:16px;color:#fff;line-height:20px;}
-.houxuan li .nr span{font-size:14px;color:#fff;line-height:18px;display:block}
+.houxuan li .touxiang {margin:5%;float:right;overflow: hidden;}
+.houxuan li .touxiang input{float:right;}
+.houxuan li .nr {height:38px;padding:7px 0;float:left;margin-left:12%;width:168px;overflow:hidden;white-space: nowrap;text-overflow: ellipsis;}
+.houxuan li .nr p{font-size:16px;color:#fff;line-height:20px;white-space: nowrap;text-overflow: ellipsis;}
+.houxuan li .nr span{font-size:14px;color:#fff;line-height:18px;display:blockoverflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
 
 .houxuan01 {overflow: hidden;width:1060px;margin: 12px auto 12px auto;padding-bottom:15px;border-bottom: 1px dashed #94a0ac;}
 .houxuan01-title{overflow: hidden;width:1052px;margin: 0 auto 8px auto;padding: 0;height:22px;border-left:4px solid #e31f2d;margin-left:8px;}
@@ -716,3 +716,16 @@ z-index: 99999;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8p
 .xly-jianjie-r01-wz{width:540px;overflow:hidden;}
 .xly-jianjie-r01-wz p{width:420px;line-height:25px;padding:5px 0;font-size:21px;color:#6d6d6d;float:left;font-weight:bold;}
 .xly-jianjie-r01-wz span{line-height:35px;font-size:21px;width:120px;color:#cc1c1e;float:left;font-weight:bold;}
+.buju{width:840px;margin:20px auto;overflow:hidden;}
+.jinru01{width:250px;height:42px;display:block; border-radius:60px;margin:0 15px;float:left;background:url(../images/gb.png) no-repeat;}
+.jinru01 a{width:225px;padding-left:25px;font-size:17px;line-height:42px;display:block;color:#fff;text-align:center;font-weight:bold;text-decoration: none;}
+.jinru01:hover{color:#fff;text-decoration: none;background:url(../images/gb01.png) no-repeat;}
+.jinru01 a:hover{color:#fff;text-decoration: none;}
+.jinru02{width:250px;height:42px;display:block; border-radius:60px;margin:0 15px;float:left;background:url(../images/cz.png) no-repeat;}
+.jinru02 a{width:225px;padding-left:25px;font-size:17px;line-height:42px;display:block;color:#fff;text-align:center;font-weight:bold;text-decoration: none;}
+.jinru02:hover{color:#fff;text-decoration: none;background:url(../images/cz01.png) no-repeat;}
+.jinru02 a:hover{color:#fff;text-decoration: none;}
+.jinru03{width:250px;height:42px;display:block; border-radius:60px;margin:0 15px;float:left;background:url(../images/cs.png) no-repeat;}
+.jinru03 a{width:225px;padding-left:25px;font-size:17px;line-height:42px;display:block;color:#fff;text-align:center;font-weight:bold;text-decoration: none;}
+.jinru03:hover{color:#fff;text-decoration: none;background:url(../images/cs01.png) no-repeat;}
+.jinru03 a:hover{color:#fff;text-decoration: none;}

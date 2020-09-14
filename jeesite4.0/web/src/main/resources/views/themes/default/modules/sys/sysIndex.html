@@ -23,7 +23,7 @@ var bodyClass = 'fixed noscroll2 sidebar-mini ' + sidebarCollapse;
 	<div id="tabpanel"></div>
 </div>
 <% } %>
-<div class="hide" id="desktopTabPage" data-title="投票"
+<div class="hide" id="desktopTabPage" data-title="公示"
 	 data-url="${ctx}${@Global.getConfig('sys.index.desktopUrl')}"></div>
 <div class="hide" id="modifyPasswordTip" data-message="${modifyPasswordTip!}"></div>
 <script src="${ctxStatic}/jquery-toastr/2.0/toastr.min.js?${_version}"></script>
@@ -47,7 +47,7 @@ var bodyClass = 'fixed noscroll2 sidebar-mini ' + sidebarCollapse;
 
 	function toToupiao(type){
 		var a = document.createElement('a');
-		a.setAttribute('href', '${ctx}/vote/formal/toupiao');
+		a.setAttribute('href', '${ctx}/vote/formal/gongshi');
 		a.setAttribute('target', type);
 		a.setAttribute('id', 'js_a');
 		//防止反复添加
