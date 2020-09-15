@@ -14,6 +14,8 @@ import com.jeesite.modules.review.entity.ReviewTerm;
 import com.jeesite.modules.review.entity.ReviewTermOptions;
 import com.jeesite.modules.review.entity.ReviewTermUserRate;
 import com.jeesite.modules.review.entity.UserRateVo;
+import com.jeesite.modules.sys.entity.User;
+import com.jeesite.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -132,12 +134,15 @@ public class ReviewTermService extends CrudService<ReviewTermDao, ReviewTerm> {
         }
         ReviewTermUserRate rate;
         List<ReviewTermUserRate> list = new ArrayList<>();
+        User user;
         for (String userCode : userRateVo.getUserCodes()) {
             rate = new ReviewTermUserRate();
             rate.setUserId(userCode);
             //先清除数据
             reviewTermUserRateDao.deleteByEntity(rate);
+            user = UserUtils.get(userCode);
             rate.setRate(userRateVo.getRate());
+            rate.setUserName(user.getUserName());
             rate.setId(UUID.randomUUID().toString());
             list.add(rate);
         }

@@ -6,9 +6,6 @@
 				<i class="fa fa-list-alt"></i> ${text('参评单位管理')}
 			</div>
 			<div class="box-tools pull-right">
-				<% if(hasPermi('review:reviewTerm:edit')){ %>
-				<a href="#" class="btn btn-default" id="btnAddUser" title="${text('配置投票权重')}"><i class="fa fa-plus"></i> ${text('配置投票权重')}</a>
-				<% } %>
 				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
 				<% if(hasPermi('review:reviewTerm:edit')){ %>
 					<a href="${ctx}/review/reviewTerm/form" class="btn btn-default btnTool" title="${text('新增参评管理')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
@@ -43,15 +40,6 @@
 		</div>
 	</div>
 </div>
-<div class="hide">
-	<#form:treeselect id="userSelect" title="用户选择" path="testUser.userCode" labelPath="testUser.userName" url="${ctx}/sys/office/treeData?isLoadUser=true" class="" allowClear="true" checkbox="true" itemCode="userCode" itemName="userName"/>
-</div>
-
-<div class="hide">
-	<#form:form id="saveReviewTermUserRateForm" action="${ctx}/review/reviewTerm/saveReviewTermUserRate" method="post" class="form-inline">
-	<#form:input name="userCodes" id="userCodes" class="form-control width-120"/>
-	<#form:input name="rate" id="rate" value="100" class="form-control width-120"/>
-</#form:form>
 </div>
 <% } %>
 <script>
@@ -82,62 +70,4 @@ $('#dataGrid').dataGrid({
 		
 	}
 });
-
-
-$('#btnAddUser').click(function(){
-	$('#userCodes').val('');
-	$('#userSelectCode').val('');
-	$('#userSelectName').val('').click();
-});
-
-$('#userSelectCode').change(function(){
-	var userCodes = $('#userSelectCode').val();
-	$('#userCodes').val(userCodes);
-	//弹出权重设置框
-	var rateHtml = '<div class="main-content">' +
-						'<div class="box box-main">'+
-							'<br class="box-body">'+
-								'<div class="row">'+
-									'<label for="rateNum" class="col-sm-6 control-label">权重%(百分比数值)</label>'+
-									'<div class="col-xs-4">'+
-										'<input type="text" class="form-control" onchange="changeRateValue(this)" value="100">'+
-									'</div>'+
-								'</div><br/>'+
-								'<div class="row pull-right">'+
-									'<div class="col-xs-4">'+
-										'<button type="button" class="btn btn-success" onclick="saveReviewTermUserRate()">确定</button>'+
-									'</div>'+
-								'</div>'+
-							'</div>'+
-						'</div>'+
-					'</div>';
-	layer.open({
-		type: 1 //Page层类型
-		, area: ['300px', '200px']
-		, title: '配置权重值'
-		, shade: 0.6 //遮罩透明度
-		, maxmin: true //允许全屏最小化
-		, anim: 1 //0-6的动画形式，-1不开启
-		, content: rateHtml
-	});
-});
-
-function changeRateValue(obj) {
-	var val = $(obj).val();
-	var gshVal = js.formatNumber(val, 0, false);
-	$(obj).val(gshVal);
-	$('#rate').val(gshVal);
-}
-
-function saveReviewTermUserRate() {
-	js.ajaxSubmitForm($('#saveReviewTermUserRateForm'), {
-		callback: function (data) {
-			layer.closeAll();
-			js.showMessage(data.message, "配置投票权重", "info", 2000);
-		},
-		dataType: 'json',
-		async: true,
-		message: '正在获取数据...'
-	});
-}
 </script>

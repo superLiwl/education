@@ -19,6 +19,7 @@ import com.jeesite.common.mybatis.mapper.query.QueryType;
 		@Column(name="id", attrName="id", label="主键", isPK=true),
 		@Column(name="user_id", attrName="userId", label="用户id"),
 		@Column(name="rate", attrName="rate", label="权重"),
+		@Column(name="user_name", attrName="userName", label="用户名", queryType=QueryType.LIKE),
 	}, orderBy="a.id DESC"
 )
 public class ReviewTermUserRate extends DataEntity<ReviewTermUserRate> {
@@ -26,6 +27,7 @@ public class ReviewTermUserRate extends DataEntity<ReviewTermUserRate> {
 	private static final long serialVersionUID = 1L;
 	private String userId;		// 用户id
 	private String rate;		// 权重
+	private String userName;		// 用户名
 	
 	public ReviewTermUserRate() {
 		this(null);
@@ -51,6 +53,15 @@ public class ReviewTermUserRate extends DataEntity<ReviewTermUserRate> {
 
 	public void setRate(String rate) {
 		this.rate = rate;
+	}
+	
+	@Length(min=0, max=255, message="用户名长度不能超过 255 个字符")
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 }
