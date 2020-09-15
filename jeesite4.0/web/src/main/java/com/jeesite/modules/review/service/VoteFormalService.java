@@ -101,16 +101,17 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
      * 确定投票
      */
     @Transactional(readOnly = false)
-    public String submitAnswer(String optionIds,String termType) {
+    public String submitAnswer(String optionIds,String termType,String voteStatus) {
         if (StringUtils.isEmpty(optionIds)) {
             return "投票失败，未选择参评人";
         }
         LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
         String userId = login.getId();
-        //查询当前项目下是否投过票。
+        //查询当前项目下是否投过票。 0:草稿可多次保存   1:已投票-每项只能保存一次
         ReviewTermAnswer select = new ReviewTermAnswer();
         select.setUserId(userId);
         select.setReviewName(termType);
+        select.setVoteStatus("1");//已投票
         Long count = reviewTermAnswerDao.findCount(select);
         if(count > 0){
             return "已经投过票了";
@@ -125,6 +126,7 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
                 answer.setOptionId(s);
                 answer.setUserId(userId);
                 answer.setReviewName(termType);
+                answer.setVoteStatus(voteStatus);
                 answer.setId(UUID.randomUUID().toString());
                 list.add(answer);
             }

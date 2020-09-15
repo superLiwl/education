@@ -40,7 +40,7 @@
 	</select>
 
 	<select id="searchList" resultType="map">
-		SELECT t.office_name,o.option_name,o.term_id,o.id FROM `review_term_options` o LEFT JOIN review_term t ON t.id = o.term_id
+		SELECT t.office_name,o.option_name,o.term_id,o.id,o.position FROM `review_term_options` o LEFT JOIN review_term t ON t.id = o.term_id
 		<where>
 			<if test="officeCode != null and officeCode != '' ">
 				and t.office_code = #{officeCode}

@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="${ctxStatic}/css/dianxing01.css">
     <style type="text/css">
         table.gridtable {
-            width: 400px;
+            width: 360px;
             font-family: verdana, arial, sans-serif;
             font-size: 11px;
             color: #333333;
@@ -87,7 +87,10 @@
     <div class="title02"><p>参评单位</p></div>
 
     <div id="reviewDiv"  class="clear"></div>
-    <p onclick="toSubmit()" style="position:absolute;text-align:center;font-size:14px;background-color:#cc1c1e;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:500px;bottom:22px;border-radius:30px;">
+    <p onclick="toStorage()" style="position:absolute;text-align:center;font-size:14px;background-color:#cc1c1e;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:350px;bottom:22px;border-radius:30px;">
+        <a style=" color:#fff;" href="javascript:void(0)">暂存</a>
+    </p>
+    <p onclick="toSubmit()" style="position:absolute;text-align:center;font-size:14px;background-color:#cc1c1e;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:650px;bottom:22px;border-radius:30px;">
         <a style=" color:#fff;" href="javascript:void(0)">确认投票</a>
     </p>
 </div>
@@ -459,22 +462,18 @@
                 url: "${ctx}/vote/formal/submitAnswer",
                 data: {
                     'optionIds':optionIds,
-                    'termType':termType
+                    'termType':termType,
+                    'voteStatus':'1'
                 },
                 dataType: "text",
                 success: function (data) {
                     if(data == '投票成功'){
-                        layer.alert(data+'并退出登录', function () {
-                            var a = document.createElement('a');
-                            a.setAttribute('href', '${ctx}/logout');
-                            a.setAttribute('target', "_top");
-                            a.setAttribute('id', 'js_a');
-                            //防止反复添加
-                            if(document.getElementById('js_a')) {
-                                document.body.removeChild(document.getElementById('js_a'));
-                            }
-                            document.body.appendChild(a);
-                            a.click();
+                        layer.confirm(data, {
+                            btn: ['继续投票','退出登录'] //按钮
+                        }, function(){
+                            toUrlAction('${ctx}/vote/formal/gongshi');
+                        }, function(){
+                            toUrlAction('${ctx}/logout');
                         });
                     }else{
                         layer.alert(data);
@@ -488,6 +487,59 @@
         }, function(){
             layer.msg('取消投票', {time: 2000, });
         });
+    }
+
+    function toUrlAction(url) {
+        var a = document.createElement('a');
+        a.setAttribute('href', url);
+        a.setAttribute('target', "_top");
+        a.setAttribute('id', 'js_a');
+        //防止反复添加
+        if(document.getElementById('js_a')) {
+            document.body.removeChild(document.getElementById('js_a'));
+        }
+        document.body.appendChild(a);
+        a.click();
+    }
+
+    function toStorage() {
+        var termType = getSearchType();
+        //询问是否投票
+        layer.confirm('暂存信息，投票不会生效!', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var optionIds = "";
+            $.each(checkValues,function(index,ele){
+                if(ele){
+                    optionIds += ele+',';
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "${ctx}/vote/formal/submitAnswer",
+                data: {
+                    'optionIds':optionIds,
+                    'termType':termType,
+                    'voteStatus':'0'
+                },
+                dataType: "text",
+                success: function (data) {
+                    if(data == '投票成功'){
+                       layer.alert("暂存成功");
+                    }else{
+                        var alertMsg = data.replace('投票','暂存');
+                        layer.alert(alertMsg);
+                    }
+
+                },
+                fail:function (data) {
+                    layer.alert("暂存失败，请再次点击");
+                }
+            });
+        }, function(){
+            layer.msg('取消暂存', {time: 2000, });
+        });
+
     }
 
     function getAllAnswer() {
@@ -551,14 +603,14 @@
                 if(data && data[0]){
                     var tsMsg = '<h2>查询结果</h2>'
                               + '<table class="gridtable">'
-                              + '<tr><th>姓名</th><th>定位</th></tr>';
+                              + '<tr><th>姓名</th><th>组织</th><th>职位</th><th>定位</th></tr>';
                     var toIndex = '';
                     $.each(data, function (index, ele) {
                         if (ele) {
                             if(index == 0){
                                 toIndex = ele.term_id;
                             }
-                            tsMsg +='<tr><td>'+ele.option_name+'</td><td style="cursor: pointer;" onclick="dingwei(\''+select_office+'\',\''+ele.term_id+'\')">定位</td></tr>';
+                            tsMsg +='<tr><td>'+ele.option_name+'</td><td>'+ele.office_name+'</td><td>'+ele.position+'</td><td style="cursor: pointer;" onclick="dingwei(\''+select_office+'\',\''+ele.term_id+'\')">定位</td></tr>';
                         }
                     });
                     tsMsg +="</table>"
