@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</title>
     <script type="text/javascript" src="${ctxStatic}/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="${ctxStatic}/layer/3.1/layer.js"></script>
     <link rel="stylesheet" href="${ctxStatic}/css/dianxing01.css">
     <style type="text/css">
         table.gridtable {
@@ -54,15 +55,15 @@
 </div>
 <div class="footer01"><p>技术支持：黑龙江东北网络台</p></div>
 <script>
+    var termType = getSearchType();
     $(document).ready(function(){
-        var termType = getSearchType();
-        getNames(termType);
+        getNames();
     });
 
-    function getNames(termType) {
+    function getNames() {
+        var tableHtml = "<tr><th>单位</th><th>姓名</th><th>职务</th><th></th></tr>";
         var cart = localStorage.getItem("select_answer_" + termType);
         if(!cart){
-            var tableHtml = "<tr><th>单位</th><th>姓名</th><th>职务</th><th>是否选中</th></tr>";
             $("#hacChecked").html(tableHtml);
             return;
         }
@@ -74,17 +75,32 @@
             },
             dataType: "json",
             success: function (data) {
-                var tableHtml = "<tr><th>单位</th><th>姓名</th><th>职务</th><th>是否选中</th></tr>";
                 if(data && data[0]){
                     $.each(data, function (index, ele) {
                         if (ele) {
-                            tableHtml += '<tr><td>'+ele.office_name+'</td><td>'+ele.option_name+'</td><td>'+ele.position+'</td><td>是</td></tr>';
+                            tableHtml += '<tr><td>'+ele.office_name+'</td><td>'+ele.option_name+'</td><td>'+ele.position+'</td><td style="cursor: pointer; color: #ffa200;" onclick="toDelOption(\''+ele.id+'\',\''+ele.office_code+'\',\''+ele.term_id+'\')">取消</td></tr>';
                         }
                     });
                 }
                 $("#hacChecked").html(tableHtml);
             }
         });
+    }
+
+    function toDelOption(id, office_code, term_id) {
+        layer.load();
+        var key = "select_answer_del_" + termType;
+        localStorage.setItem(key, id + "_" + office_code + "_" + term_id);
+        setTimeout(function () {
+            layer.closeAll();
+            var delInfo = localStorage.getItem(key);
+            if(delInfo){
+                layer.msg('取消失败,请确认投票页面是否关闭', {time: 1500, });
+            }else{
+                layer.msg('取消成功', {time: 1500, });
+                getNames();
+            }
+        }, 2600);
     }
 
     function getSearchType() {
@@ -96,6 +112,12 @@
         }
         return termType;
     }
+
+    // $(window).unload(function(){
+    //     //清空缓存
+    //     localStorage.removeItem("select_answer_" + termType);
+    //     localStorage.removeItem("select_answer_del_" + termType);
+    // });
 </script>
 </body>
 </html>

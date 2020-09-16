@@ -138,6 +138,10 @@
     var myUrlTabName = myUrlTab.substring(0,4); // For the above example, myUrlTabName = #tab
 
     (function () {
+        layer.load();
+        setTimeout(function () {
+            layer.closeAll();
+        },2000);
         //获取列表组织
         getReviewTermList();
         //获取投票信息
@@ -146,6 +150,8 @@
         getAllAnswer();
         // 查询字典信息
         getDicInfo();
+        //定时执行
+        delTimer();
     })()
     //用来判断是否可以投票
     var reviewNameArry = [];
@@ -339,7 +345,7 @@
             hrefUrl = '${ctx}/vote/formal/chushi';
             target = 'target="_blank"';
         }
-        return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p>'+info.option_name+'&nbsp;</p><span title="'+info.position+'">'+info.position+'</span></div></a></li>';
+        return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p>'+info.option_name+'&nbsp;</p><span title="'+info.position+'">'+info.position+'</span></div></a></li>';
     }
     //选择的数据
     var checkValues = [];
@@ -585,7 +591,6 @@
 
     function setHc(termType) {
         localStorage.setItem("select_answer_" + termType, checkValues);
-        console.log(localStorage.getItem("select_answer_" + termType));
     }
 
     function showRemarks() {
@@ -676,6 +681,41 @@
             $('html,body').animate({scrollTop:h},500);//回到顶端
         },1500);
     }
-  </script>
+
+    var termType = getSearchType();
+    function delTimer() {
+        var key = "select_answer_del_" + termType;
+        var delInfo = localStorage.getItem(key);
+        if(delInfo){
+            var arry = delInfo.split('_');
+            var delId = arry[0];
+            var officeCode = arry[1];
+            var termId = arry[2];
+            //先调一下定位-展开列表之后在取消选择
+            dingwei(officeCode,termId);
+            setTimeout(function () {
+                $("#"+delId+"_box").click();
+                localStorage.removeItem(key);
+                var cart = localStorage.getItem("select_answer_" + termType);
+                cart = cart.replace(delId+',',"");
+                cart = cart.replace(delId,"");
+                localStorage.setItem("select_answer_" + termType,cart);
+                setTimeout(function () {
+                    delTimer();
+                },1000);
+            },1500);
+        }else{
+            setTimeout(function () {
+                delTimer();
+            },1000);
+        }
+    }
+
+    // $(window).unload(function(){
+    //     //清空缓存
+    //     localStorage.removeItem("select_answer_" + termType);
+    //     localStorage.removeItem("select_answer_del_" + termType);
+    // });
+      </script>
 </body>
 </html>
