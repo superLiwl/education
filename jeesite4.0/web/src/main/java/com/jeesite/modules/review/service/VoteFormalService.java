@@ -156,4 +156,26 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
         return reviewTermOptionsDao.searchList(params);
     }
 
+    /**
+     * 获取已投票结果
+     */
+    @Transactional(readOnly = false)
+    public List<Map<String, Object>> getHasChecked(String optionIds) {
+        if(null == optionIds || "".equals(optionIds) || "undefined".equals(optionIds)){
+            return null;
+        }
+        List<String> list = new ArrayList<>();
+        if(optionIds.contains(",")){
+            String arry[] = optionIds.split(",");
+            for (String s : arry){
+                list.add(s);
+            }
+        }else{
+            list.add(optionIds);
+        }
+        Map<String, Object> params = new HashMap<>();
+        params.put("optionIds",list);
+        return reviewTermOptionsDao.getHasChecked(params);
+    }
+
 }

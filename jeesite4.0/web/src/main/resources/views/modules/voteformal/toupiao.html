@@ -355,6 +355,8 @@
             var count = $("#"+tremClass).html();
             $("#"+tremClass).text((parseInt(count)-1));
             layer.msg('取消投票', {time: 1500, });
+            var termType = getSearchType();
+            setHc(termType);
         }else{
             //未选中---修改为选中
             $("#"+id).attr("style","background-color:rgba(234,45,47,0.8);");
@@ -365,6 +367,8 @@
             var count = $("#"+tremClass).html();
             $("#"+tremClass).text((parseInt(count)+1));
             layer.msg('选中投票', {time: 1500, });
+            var termType = getSearchType();
+            setHc(termType);
         }
     }
 
@@ -422,9 +426,23 @@
             }});
     }
 
+    function openCart() {
+        var termType = getSearchType();
+        var a = document.createElement('a');
+        a.setAttribute('href', "${ctx}/vote/formal/toupiaocart?type="+termType);
+        a.setAttribute('target', "_blank");
+        a.setAttribute('id', 'js_a');
+        //防止反复添加
+        if(document.getElementById('js_a')) {
+            document.body.removeChild(document.getElementById('js_a'));
+        }
+        document.body.appendChild(a);
+        a.click();
+    }
+
     function getXfHtml(info,first,second) {
-        var xfHtml = '<p style="text-align:center;font-size:14px;color:#333;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+first+'px;">'+info.tremClass+'</p>' +
-                      '<p style="text-align:center;font-size:14px;color:#cc1c1e;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+second+'px;border-bottom:1px dashed #333;padding-bottom:4px;"><span id="'+info.tremClass+'">'+info.hasOptionCount+'</span>/'+info.allOptionCount+'票</p>';
+        var xfHtml = '<p onclick="openCart()" style="text-align:center;font-size:14px;color:#333;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+first+'px;">'+info.tremClass+'</p>' +
+                      '<p onclick="openCart()" style="text-align:center;font-size:14px;color:#cc1c1e;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+second+'px;border-bottom:1px dashed #333;padding-bottom:4px;"><span id="'+info.tremClass+'">'+info.hasOptionCount+'</span>/'+info.allOptionCount+'票</p>';
         return xfHtml;
     }
 
@@ -559,9 +577,15 @@
                             checkValues.push(ele.optionId);
                         }
                     });
+                    setHc(termType);
                 }
             }
         });
+    }
+
+    function setHc(termType) {
+        localStorage.setItem("select_answer_" + termType, checkValues);
+        console.log(localStorage.getItem("select_answer_" + termType));
     }
 
     function showRemarks() {
@@ -602,8 +626,7 @@
             dataType: "json",
             success: function (data) {
                 if(data && data[0]){
-                    var tsMsg = '<h2>查询结果</h2>'
-                              + '<table class="gridtable">'
+                    var tsMsg = '<table class="gridtable">'
                               + '<tr><th>姓名</th><th>组织</th><th>职位</th><th>定位</th></tr>';
                     var toIndex = '';
                     $.each(data, function (index, ele) {
@@ -611,7 +634,7 @@
                             if(index == 0){
                                 toIndex = ele.term_id;
                             }
-                            tsMsg +='<tr><td>'+ele.option_name+'</td><td>'+ele.office_name+'</td><td>'+ele.position+'</td><td style="cursor: pointer;" onclick="dingwei(\''+select_office+'\',\''+ele.term_id+'\')">定位</td></tr>';
+                            tsMsg +='<tr><td>'+ele.option_name+'</td><td>'+ele.office_name+'</td><td>'+ele.position+'</td><td style="cursor: pointer; color: #ffa200;" onclick="dingwei(\''+select_office+'\',\''+ele.term_id+'\')">定位</td></tr>';
                         }
                     });
                     tsMsg +="</table>"

@@ -54,4 +54,12 @@
 		</where>
 	</select>
 
+	<select id="getHasChecked" resultType="map">
+		SELECT o.id,o.term_id,o.option_name,o.position,t.office_code,t.office_name FROM `review_term_options` o LEFT JOIN review_term t ON t.id = o.term_id
+		WHERE o.id in
+		<foreach collection="optionIds" item="id" index="index" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</select>
+
 </mapper>

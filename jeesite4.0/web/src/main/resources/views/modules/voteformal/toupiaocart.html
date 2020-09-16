@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</title>
+    <script type="text/javascript" src="${ctxStatic}/js/jquery-1.8.3.min.js"></script>
+    <link rel="stylesheet" href="${ctxStatic}/css/dianxing01.css">
+    <style type="text/css">
+        table.gridtable {
+            width: 1000px;
+            font-family: verdana, arial, sans-serif;
+            font-size: 11px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #E6E6E6;
+            border-collapse: collapse;
+        }
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #E6E6E6;
+            background-color: #F2F2F2;
+        }
+        table.gridtable td {
+            text-align: center;
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #E6E6E6;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body style="background-color:#ffefcd;">
+<div class="daohang">
+    <div class="wenzi"><p>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</p></div>
+    <div class="wenzi01"><p>主办单位：中共黑龙江省直属机关工作委员会</p></div>
+
+</div>
+<div class="top"><img src="${ctxStatic}/images/ttt.jpg" width="100%"></div>
+<div class="content">
+    <div class="title02"><p>已选投票</p></div>
+    <div class="buju" style="width: 1000px;">
+        <table class="gridtable" id="hacChecked">
+
+        </table>
+    </div>
+</div>
+
+<div class="clear"></div>
+
+</div>
+<div class="footer01"><p>技术支持：黑龙江东北网络台</p></div>
+<script>
+    $(document).ready(function(){
+        var termType = getSearchType();
+        getNames(termType);
+    });
+
+    function getNames(termType) {
+        var cart = localStorage.getItem("select_answer_" + termType);
+        if(!cart){
+            var tableHtml = "<tr><th>单位</th><th>姓名</th><th>职务</th><th>是否选中</th></tr>";
+            $("#hacChecked").html(tableHtml);
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/getHasChecked",
+            data: {
+                'optionIds': cart
+            },
+            dataType: "json",
+            success: function (data) {
+                var tableHtml = "<tr><th>单位</th><th>姓名</th><th>职务</th><th>是否选中</th></tr>";
+                if(data && data[0]){
+                    $.each(data, function (index, ele) {
+                        if (ele) {
+                            tableHtml += '<tr><td>'+ele.office_name+'</td><td>'+ele.option_name+'</td><td>'+ele.position+'</td><td>是</td></tr>';
+                        }
+                    });
+                }
+                $("#hacChecked").html(tableHtml);
+            }
+        });
+    }
+
+    function getSearchType() {
+        //获取url中参数
+        var type = window.location.search.replace("?type=","");
+        var termType = 1;
+        if(type != null && type != '' && type != undefined && type !="undefined"){
+            termType = type;
+        }
+        return termType;
+    }
+</script>
+</body>
+</html>

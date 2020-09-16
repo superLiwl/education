@@ -76,6 +76,14 @@ public class VoteFormalController extends BaseController {
     }
 
     /**
+     * 已投票结果
+     */
+    @RequestMapping(value = {"toupiaocart", ""})
+    public String toupiaocart() {
+        return "modules/voteformal/toupiaocart";
+    }
+
+    /**
      * 查询组织机构
      */
     @RequestMapping(value = "getReviewTermList")
@@ -89,8 +97,8 @@ public class VoteFormalController extends BaseController {
      */
     @RequestMapping(value = "getReviewTermListByOfficeCode")
     @ResponseBody
-    public List<Map<String, Object>> getReviewTermListByOfficeCode(String officeCode,String termType) {
-        return voteFormalService.getReviewTermListByOfficeCode(officeCode,termType);
+    public List<Map<String, Object>> getReviewTermListByOfficeCode(String officeCode, String termType) {
+        return voteFormalService.getReviewTermListByOfficeCode(officeCode, termType);
     }
 
     /**
@@ -107,8 +115,8 @@ public class VoteFormalController extends BaseController {
      */
     @RequestMapping(value = "submitAnswer")
     @ResponseBody
-    public String submitAnswer(String optionIds,String termType,String voteStatus) {
-        return voteFormalService.submitAnswer(optionIds,termType,voteStatus);
+    public String submitAnswer(String optionIds, String termType, String voteStatus) {
+        return voteFormalService.submitAnswer(optionIds, termType, voteStatus);
     }
 
     /**
@@ -150,6 +158,15 @@ public class VoteFormalController extends BaseController {
     @ResponseBody
     public List<Map<String, Object>> searchList(String officeCode, String reviewName, String optionName) {
         return voteFormalService.searchList(officeCode, reviewName, optionName);
+    }
+
+    /**
+     * 获取已投票结果
+     */
+    @RequestMapping(value = "getHasChecked")
+    @ResponseBody
+    public List<Map<String, Object>> getHasChecked(String optionIds) {
+        return voteFormalService.getHasChecked(optionIds);
     }
 
 }
