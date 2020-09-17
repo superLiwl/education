@@ -4,7 +4,7 @@
 
 	<select id="listRankData" resultType="map">
 		SELECT o.id,o.option_name,o.position,t.office_name,t.review_name,
-		(SELECT count(a.id) FROM review_term_answer a WHERE a.option_id = o.id AND a.vote_status = '1') answerCount
+		(SELECT IFNULL(sum(IFNULL((SELECT r.rate FROM review_term_user_rate r WHERE r.user_id = a.user_id),100))/100,0) FROM review_term_answer a WHERE a.option_id = o.id AND a.vote_status = '1') answerCount
 		FROM `review_term_options` o LEFT JOIN review_term t ON t.id = o.term_id
 		<where>
 			<if test="termType != null and termType != '' ">
@@ -35,4 +35,64 @@
 			</if>
 		</where>
 	</select>
+
+
+	<select id="listVoteData" resultType="map">
+		SELECT * FROM(
+		SELECT u.user_code,u.user_name,e.office_name,
+		(SELECT count(id) FROM review_term_answer WHERE user_id = u.user_code AND review_name = '1' AND vote_status ='1') ganbu,
+		(SELECT count(id) FROM review_term_answer WHERE user_id = u.user_code AND review_name = '2' AND vote_status ='1') chuzhang,
+		(SELECT count(id) FROM review_term_answer WHERE user_id = u.user_code AND review_name = '3' AND vote_status ='1') chushi
+		FROM `js_sys_user` u LEFT JOIN js_sys_employee e ON u.user_code = e.emp_code
+		WHERE u.user_code NOT IN ('system','admin','gjjsmain')
+		<if test="officeCode != null and officeCode != '' ">
+			and e.office_code = #{officeCode}
+		</if>
+		ORDER BY e.office_code,u.user_name ASC) a
+		<where>
+			<if test="hasVote != null and hasVote != '' ">
+				<if test="hasVote == 0 ">
+					<![CDATA[ AND (a.ganbu = 0  or a.chuzhang = 0 OR a.chushi = 0) ]]>
+				</if>
+				<if test="hasVote == 1 ">
+					<![CDATA[ AND a.ganbu > 0  and a.chuzhang > 0 and a.chushi > 0 ]]>
+				</if>
+			</if>
+			<if test="userName != null and userName != '' ">
+				AND a.user_name like CONCAT('%',#{userName},'%')
+			</if>
+		</where>
+		LIMIT ${start},${end}
+	</select>
+
+	<select id="listVoteDataCount" resultType="long">
+		SELECT count(a.user_code) FROM(
+		SELECT u.user_code,u.user_name,e.office_name,
+		(SELECT count(id) FROM review_term_answer WHERE user_id = u.user_code AND review_name = '1' AND vote_status ='1') ganbu,
+		(SELECT count(id) FROM review_term_answer WHERE user_id = u.user_code AND review_name = '2' AND vote_status ='1') chuzhang,
+		(SELECT count(id) FROM review_term_answer WHERE user_id = u.user_code AND review_name = '3' AND vote_status ='1') chushi
+		FROM `js_sys_user` u LEFT JOIN js_sys_employee e ON u.user_code = e.emp_code
+		WHERE u.user_code NOT IN ('system','admin','gjjsmain')
+		<if test="officeCode != null and officeCode != '' ">
+			and e.office_code = #{officeCode}
+		</if>
+		ORDER BY e.office_code,u.user_name ASC) a
+		<where>
+			<if test="hasVote != null and hasVote != '' ">
+				<if test="hasVote == '0' ">
+					<![CDATA[ AND (a.ganbu = 0  or a.chuzhang = 0 OR a.chushi = 0) ]]>
+				</if>
+				<if test="hasVote == '1' ">
+					<![CDATA[ AND a.ganbu > 0  and a.chuzhang > 0 and a.chushi > 0) ]]>
+				</if>
+			</if>
+			<if test="userName != null and userName != '' ">
+				AND a.user_name like CONCAT('%',#{userName},'%')
+			</if>
+		</where>
+	</select>
+
+
+
+
 </mapper>

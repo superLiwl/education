@@ -159,11 +159,27 @@ public class ReviewTermService extends CrudService<ReviewTermDao, ReviewTerm> {
     }
 
     /**
-     * 查询投票结果数据
+     * 查询投票结果数据--count
      */
     @Transactional(readOnly = false)
     public Long listRankDataCount(RankVo rankVo) {
         return reviewTermDao.listRankDataCount(rankVo);
+    }
+
+    /**
+     * 查询个人投票情况
+     */
+    @Transactional(readOnly = false)
+    public List<Map<String, Object>> listVoteData(VoteInfoVo voteInfoVo) {
+        return reviewTermDao.listVoteData(voteInfoVo);
+    }
+
+    /**
+     * 查询个人投票情况--count
+     */
+    @Transactional(readOnly = false)
+    public Long listVoteDataCount(VoteInfoVo voteInfoVo) {
+        return reviewTermDao.listVoteDataCount(voteInfoVo);
     }
 
 }

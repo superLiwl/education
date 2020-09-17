@@ -5,13 +5,17 @@ DELETE FROM js_sys_employee;
 DELETE FROM js_sys_employee_post;
 DELETE FROM js_sys_role WHERE role_code NOT IN ('corpAdmin','default');
 DELETE FROM js_sys_role_data_scope;
-DELETE FROM js_sys_user WHERE user_code NOT IN ('system','admin');
+DELETE FROM js_sys_user WHERE user_code NOT IN ('system','admin','gjjsmain');
 DELETE FROM js_sys_user_data_scope;
 DELETE FROM js_sys_user_role;
 DELETE FROM js_sys_log;
 
+DELETE FROM `review_term_answer`;
+
 DELETE FROM `js_gen_table_column`;
 DELETE FROM `js_gen_table`;
+
+
 
 //同步用户脚本
 INSERT INTO js_sys_user(user_code,login_code,user_name,password,user_type,ref_code,ref_name,mgr_type,pwd_security_level,pwd_update_date,user_weight,status,create_by,create_date,update_by,update_date,corp_code,corp_name)

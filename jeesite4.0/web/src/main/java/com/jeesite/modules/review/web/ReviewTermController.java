@@ -3,12 +3,15 @@
  */
 package com.jeesite.modules.review.web;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.jeesite.common.config.Global;
+import com.jeesite.common.entity.Page;
 import com.jeesite.common.lang.StringUtils;
+import com.jeesite.common.web.BaseController;
 import com.jeesite.modules.review.entity.RankVo;
+import com.jeesite.modules.review.entity.ReviewTerm;
 import com.jeesite.modules.review.entity.UserRateVo;
+import com.jeesite.modules.review.entity.VoteInfoVo;
+import com.jeesite.modules.review.service.ReviewTermService;
 import com.jeesite.modules.sys.entity.Office;
 import com.jeesite.modules.sys.utils.EmpUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -21,12 +24,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jeesite.common.config.Global;
-import com.jeesite.common.entity.Page;
-import com.jeesite.common.web.BaseController;
-import com.jeesite.modules.review.entity.ReviewTerm;
-import com.jeesite.modules.review.service.ReviewTermService;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
 
@@ -72,8 +71,6 @@ public class ReviewTermController extends BaseController {
         return page;
     }
 
-
-
     /**
      * 投票结果
      */
@@ -90,14 +87,42 @@ public class ReviewTermController extends BaseController {
     @RequiresPermissions("review:reviewTerm:view")
     @RequestMapping(value = "listRankData")
     @ResponseBody
-    public Page<Map<String,Object>> listRankData(RankVo rankVo, HttpServletRequest request, HttpServletResponse response) {
-        Page<Map<String,Object>> page = new Page<Map<String,Object>>(request, response);
+    public Page<Map<String, Object>> listRankData(RankVo rankVo, HttpServletRequest request, HttpServletResponse response) {
+        Page<Map<String, Object>> page = new Page<Map<String, Object>>(request, response);
         rankVo.setPageNo(page.getPageNo());
         rankVo.setPageSize(page.getPageSize());
-        rankVo.setStart((page.getPageNo() -1) * page.getPageSize());
+        rankVo.setStart((page.getPageNo() - 1) * page.getPageSize());
         rankVo.setEnd(page.getPageNo() * page.getPageSize());
         page.setList(reviewTermService.listRankData(rankVo));
         page.setCount(reviewTermService.listRankDataCount(rankVo));
+        return page;
+    }
+
+
+    /**
+     * 查询个人投票情况
+     */
+    @RequiresPermissions("review:reviewTerm:view")
+    @RequestMapping(value = {"listVote", ""})
+    public String listVote(RankVo rankVo, Model model) {
+        model.addAttribute("rankVo", rankVo);
+        return "modules/review/reviewTermVote";
+    }
+
+    /**
+     * 查询个人投票情况数据
+     */
+    @RequiresPermissions("review:reviewTerm:view")
+    @RequestMapping(value = "listVoteData")
+    @ResponseBody
+    public Page<Map<String, Object>> listVoteData(VoteInfoVo voteInfoVo, HttpServletRequest request, HttpServletResponse response) {
+        Page<Map<String, Object>> page = new Page<Map<String, Object>>(request, response);
+        voteInfoVo.setPageNo(page.getPageNo());
+        voteInfoVo.setPageSize(page.getPageSize());
+        voteInfoVo.setStart((page.getPageNo() - 1) * page.getPageSize());
+        voteInfoVo.setEnd(page.getPageNo() * page.getPageSize());
+        page.setList(reviewTermService.listVoteData(voteInfoVo));
+        page.setCount(reviewTermService.listVoteDataCount(voteInfoVo));
         return page;
     }
 
