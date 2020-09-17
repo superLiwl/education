@@ -17,7 +17,7 @@
 				AND o.option_name like CONCAT('%',#{optionName},'%')
 			</if>
 		</where>
-		ORDER BY answerCount DESC LIMIT 0,20
+		ORDER BY answerCount DESC LIMIT ${start},${end}
 	</select>
 
 	<select id="listRankDataCount" resultType="long">
