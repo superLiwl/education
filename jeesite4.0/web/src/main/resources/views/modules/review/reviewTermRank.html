@@ -1,0 +1,67 @@
+<% layout('/layouts/default.html', {title: '参评管理管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa fa-list-alt"></i> ${text('投票结果')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${reviewTerm}" action="${ctx}/review/reviewTerm/listRankData" method="post" class="form-inline"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}">
+				<div class="form-group">
+					<label class="control-label">${text('参评单位')}：</label>
+					<div class="control-inline width-120" >
+						<#form:treeselect id="officeCode" title="${text('机构选择')}"
+						path="officeCode" labelPath=""
+						url="${ctx}/sys/office/treeData" allowClear="true"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('参评项')}：</label>
+					<div class="control-inline">
+						<#form:select path="termType" dictType="term_option" class="form-control required " blankOption="true" blankOptionValue="" blankOptionLabel="请选择&nbsp;&nbsp;&nbsp;&nbsp;"/>
+					</div>
+				</div>
+
+			<div class="form-group">
+				<label class="control-label">${text('参评人')}：</label>
+				<div class="control-inline">
+					<#form:input path="optionName" maxlength="255" class="form-control width-120"/>
+				</div>
+			</div>
+
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	sortableColumn : false,
+	columnModel: [
+		{header:'${text('参评单位')}', name:'office_name', index:'a.office_name', width:150, align:"center"},
+		{header:'${text("参评项")}', name:'review_name', index:'a.review_name', width:150, align:"center", formatter: function(val, obj, row, act){
+				return js.getDictLabel(${@DictUtils.getDictListJson('term_option')}, val, '未知', true);
+			}},
+		{header:'${text('参评人')}', name:'option_name', index:'a.option_name', width:150, align:"center"},
+		{header:'${text('票数')}', name:'answerCount', index:'a.answerCount', width:150, align:"center"}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

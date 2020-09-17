@@ -1,15 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jeesite.modules.review.dao.ReviewTermDao">
-	
-	<!-- 查询数据
-	<select id="findList" resultType="ReviewTerm">
-		SELECT ${sqlMap.column.toSql()}
-		FROM ${sqlMap.table.toSql()}
+
+	<select id="listRankData" resultType="map">
+		SELECT o.id,o.option_name,o.position,t.office_name,t.review_name,
+		(SELECT count(a.id) FROM review_term_answer a WHERE a.option_id = o.id AND a.vote_status = '1') answerCount
+		FROM `review_term_options` o LEFT JOIN review_term t ON t.id = o.term_id
 		<where>
-			${sqlMap.where.toSql()}
+			<if test="termType != null and termType != '' ">
+				and t.review_name =#{termType}
+			</if>
+			<if test="officeCode != null and officeCode != '' ">
+				and t.office_code = #{officeCode}
+			</if>
+			<if test="optionName != null and optionName != '' ">
+				AND o.option_name like CONCAT('%',#{optionName},'%')
+			</if>
 		</where>
-		ORDER BY ${sqlMap.order.toSql()}
-	</select> -->
-	
+		ORDER BY answerCount DESC LIMIT 0,20
+	</select>
+
+	<select id="listRankDataCount" resultType="long">
+		SELECT count(o.id)
+		FROM `review_term_options` o LEFT JOIN review_term t ON t.id = o.term_id
+		<where>
+			<if test="termType != null and termType != '' ">
+				and t.review_name =#{termType}
+			</if>
+			<if test="officeCode != null and officeCode != '' ">
+				and t.office_code = #{officeCode}
+			</if>
+			<if test="optionName != null and optionName != '' ">
+				AND o.option_name like CONCAT('%',#{optionName},'%')
+			</if>
+		</where>
+	</select>
 </mapper>

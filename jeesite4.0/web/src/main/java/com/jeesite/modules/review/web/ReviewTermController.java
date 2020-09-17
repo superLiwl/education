@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jeesite.common.lang.StringUtils;
+import com.jeesite.modules.review.entity.RankVo;
 import com.jeesite.modules.review.entity.UserRateVo;
 import com.jeesite.modules.sys.entity.Office;
 import com.jeesite.modules.sys.utils.EmpUtils;
@@ -27,6 +28,7 @@ import com.jeesite.modules.review.entity.ReviewTerm;
 import com.jeesite.modules.review.service.ReviewTermService;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * 参评管理Controller
@@ -67,6 +69,33 @@ public class ReviewTermController extends BaseController {
     @ResponseBody
     public Page<ReviewTerm> listData(ReviewTerm reviewTerm, HttpServletRequest request, HttpServletResponse response) {
         Page<ReviewTerm> page = reviewTermService.findPage(new Page<ReviewTerm>(request, response), reviewTerm);
+        return page;
+    }
+
+
+
+    /**
+     * 投票结果
+     */
+    @RequiresPermissions("review:reviewTerm:view")
+    @RequestMapping(value = {"listRank", ""})
+    public String listRank(RankVo rankVo, Model model) {
+        model.addAttribute("rankVo", rankVo);
+        return "modules/review/reviewTermRank";
+    }
+
+    /**
+     * 查询投票结果数据
+     */
+    @RequiresPermissions("review:reviewTerm:view")
+    @RequestMapping(value = "listRankData")
+    @ResponseBody
+    public Page<Map<String,Object>> listRankData(RankVo rankVo, HttpServletRequest request, HttpServletResponse response) {
+        Page<Map<String,Object>> page = new Page<Map<String,Object>>(request, response);
+        rankVo.setPageNo(page.getPageNo());
+        rankVo.setPageSize(page.getPageSize());
+        page.setList(reviewTermService.listRankData(rankVo));
+        page.setCount(reviewTermService.listRankDataCount(rankVo));
         return page;
     }
 

@@ -10,10 +10,7 @@ import com.jeesite.modules.file.utils.FileUploadUtils;
 import com.jeesite.modules.review.dao.ReviewTermDao;
 import com.jeesite.modules.review.dao.ReviewTermOptionsDao;
 import com.jeesite.modules.review.dao.ReviewTermUserRateDao;
-import com.jeesite.modules.review.entity.ReviewTerm;
-import com.jeesite.modules.review.entity.ReviewTermOptions;
-import com.jeesite.modules.review.entity.ReviewTermUserRate;
-import com.jeesite.modules.review.entity.UserRateVo;
+import com.jeesite.modules.review.entity.*;
 import com.jeesite.modules.sys.entity.User;
 import com.jeesite.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -35,10 +33,12 @@ import java.util.UUID;
 public class ReviewTermService extends CrudService<ReviewTermDao, ReviewTerm> {
 
     @Autowired
+    private ReviewTermDao reviewTermDao;
+    @Autowired
     private ReviewTermOptionsDao reviewTermOptionsDao;
-
     @Autowired
     private ReviewTermUserRateDao reviewTermUserRateDao;
+
 
     /**
      * 获取单条数据
@@ -150,5 +150,20 @@ public class ReviewTermService extends CrudService<ReviewTermDao, ReviewTerm> {
         return "配置成功";
     }
 
+    /**
+     * 查询投票结果数据
+     */
+    @Transactional(readOnly = false)
+    public List<Map<String, Object>> listRankData(RankVo rankVo) {
+        return reviewTermDao.listRankData(rankVo);
+    }
+
+    /**
+     * 查询投票结果数据
+     */
+    @Transactional(readOnly = false)
+    public Long listRankDataCount(RankVo rankVo) {
+        return reviewTermDao.listRankDataCount(rankVo);
+    }
 
 }
