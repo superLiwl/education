@@ -44,11 +44,19 @@ public class VoteFormalController extends BaseController {
     }
 
     /**
-     * 投票页面
+     * 投票页面--红色
      */
     @RequestMapping(value = {"toupiao", ""})
     public String toupiao() {
         return "modules/voteformal/toupiao";
+    }
+
+    /**
+     * 投票页面--蓝色
+     */
+    @RequestMapping(value = {"toupiaoblue", ""})
+    public String toupiaoblue() {
+        return "modules/voteformal/toupiaoblue";
     }
 
     /**
