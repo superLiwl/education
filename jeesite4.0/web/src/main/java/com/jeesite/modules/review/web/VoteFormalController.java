@@ -93,6 +93,14 @@ public class VoteFormalController extends BaseController {
     }
 
     /**
+     * 已投票结果--blue
+     */
+    @RequestMapping(value = {"toupiaocartblue", ""})
+    public String toupiaocartblue() {
+        return "modules/voteformal/cxjg";
+    }
+
+    /**
      * 查询组织机构
      */
     @RequestMapping(value = "getReviewTermList")

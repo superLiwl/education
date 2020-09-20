@@ -569,7 +569,9 @@
     function openCart() {
         var termType = getSearchType();
         var a = document.createElement('a');
-        a.setAttribute('href', "${ctx}/vote/formal/toupiaocart?type="+termType);
+        // a.setAttribute('href', "${ctx}/vote/formal/toupiaocart?type="+termType);
+        //blue
+        a.setAttribute('href', "${ctx}/vote/formal/toupiaocartblue?type="+termType);
         a.setAttribute('target', "_blank");
         a.setAttribute('id', 'js_a');
         //防止反复添加
