@@ -351,8 +351,8 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     -webkit-border-radius: 30px;border-radius:30px;color:#fff;background:rgba(255, 255, 255, 0)}
 
 .fangda01{ width:50px; height:43px;float:left;margin-left:2px;}
-.reveal-modal-bg { position: fixed; height: 100%; width: 100%; z-index: 200; display: none; top: 0; left: 0; background:rgba(00, 00, 00, 0.8) }		
-.reveal-modal { padding-top:24px;visibility: hidden;top: 180px; width:1050px;position: absolute; z-index: 300;  -moz-border-radius:15px; -webkit-border-radius:15px; border-radius: 15px; background:rgba(0,89,171,0.85);left: 50%;margin-left:-525px;}	
+.reveal-modal-bg { position: fixed; height: 100%; width: 100%; z-index: 200; display: none; top: 0; left: 0; background:rgba(00, 00, 00, 0.8) ;}
+.reveal-modal { padding-top:24px;visibility: hidden;top: 180px; width:1050px;position: absolute; z-index: 3000;  -moz-border-radius:15px; -webkit-border-radius:15px; border-radius: 15px; background:rgba(0,89,171,0.85);left: 50%;margin-left:-525px;}
 .reveal-modal h2{font-size:24px;line-height:36px;font-weight:bold;text-align:center;display:block;	padding-bottom:15px;margin-bottom:20px;border-bottom:1px dashed #c7c7c7;}	
 
 .reveal-modal a:hover{color:#cc1c1e;}	
@@ -704,8 +704,8 @@ z-index: 99999;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8p
 .houxuan-title p{font-size:18px;color:#0059ab;font-weight:bold;line-height:22px;padding-left:10px;}
 .houxuan li {width:253px;height:52px;display:block;float:left; overflow:hidden;border-radius: 60px;margin:4px 6px;background-color:#94a0ac;}
 .houxuan li:hover {background-color:#0059ab;}
-.houxuan li .touxiang {height:48px;width:48px;margin:2px;float:left;overflow: hidden;border-radius: 60px;}
-.houxuan li .touxiang img{width:48px;}
+.houxuan li .touxiang {margin:5%;float:right;overflow: hidden;}
+.houxuan li .touxiang input{float:right;}
 .houxuan li .nr {height:38px;padding:7px 0;float:left;margin-left:10px;width:168px;overflow:hidden;}
 .houxuan li .nr p{font-size:16px;color:#fff;line-height:20px;}
 .houxuan li .nr span{font-size:14px;color:#fff;line-height:18px;display:block}

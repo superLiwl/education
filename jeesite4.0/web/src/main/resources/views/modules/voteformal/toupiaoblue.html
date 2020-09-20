@@ -60,6 +60,7 @@
 <!--搜索框-->
 <div id="floatleft" style="position: absolute; z-index: 10; left: 100px; top: 520px; width:100px;height:132px;">
     <img src="${ctxStatic}/images/cx.png" width="90" height="90" onclick="showRemarks()">
+<!--    <a href="#" data-reveal-id="myModal01" data-animation="fade"><img src="${ctxStatic}/images/cx.png" width="90" height="90"></a>-->
 </div>
 
 <!--漂浮广告-->
@@ -68,6 +69,49 @@
 
     <p id="subButton"></p>
 </div>
+
+
+<div id="myModal01" class="reveal-modal">
+    <div class="bd-jz">
+        <div class="biaodan">
+            <div class="bd-wz01"> 姓名：</div>
+            <input name="keywords" type="text" id="select_name" placeholder="请输入姓名" class="input001" size="18"/>
+        </div>
+        <div class="biaodan">
+            <div class="bd-wz01"> 所在厅局：</div>
+            <div class="nice-select" name="nice-select">
+<!--                <input type="text" placeholder="请选择您所在的厅局" readonly>-->
+<!--                <ul>-->
+<!--                    <li data-value="1">教师</li>-->
+<!--                    <li data-value="2">医生</li>-->
+<!--                    <li data-value="3">自由职业</li>-->
+<!--                </ul>-->
+                <select id="select_office" style="position:absolute;margin-top:1px;margin-left: 0px;border: 1px solid #fff;font-size: 18px; border-radius: 30px;color: #fff; background: rgba(255, 255, 255, 0);padding:0 25px;height: 40px;">
+                </select>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="biaodan">
+            <div class="bd-wz01"> 所属类别：</div>
+            <div class="wrapper">
+                <ul>
+                    <li><p>全部</p><div class="radio-btn" id="all"><i onclick="clickThisBox('all')"><input id="all_box" type="radio" name="radio-btn" name="termRadio" value=""/></i></div></li>
+                    <li><p>先进干部</p><div class="radio-btn" id="all_ganbu"><i onclick="clickThisBox('all_ganbu')"><input id="all_ganbu_box" type="radio" name="termRadio" value="1"/></i></div></li>
+                    <li><p>先进处长</p><div class="radio-btn" id="all_chuzhang"><i onclick="clickThisBox('all_chuzhang')"><input id="all_chuzhang_box" type="radio" name="termRadio" value="2"/></i></div></li>
+                    <li><p>先进处室</p><div class="radio-btn" id="all_chushi"><i onclick="clickThisBox('all_chushi')"><input id="all_chushi_box" type="radio" name="termRadio" value="3"/></i></div></li>
+                </ul>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+    <div class="yanzheng">
+        <div style="text-align:center;" onclick="toSearch()"><a href="javascript:void(0)">确认查询</a></div>
+    </div>
+    <a class="close-reveal-modal" onclick="hideSearch()">&#215;</a>
+</div>
+</div>
+<div class="sy-title"><p id="p_name"></p> </div>
 <!--&lt;!&ndash;漂浮广告end&ndash;&gt;-->
 <!--<div class="daohang">-->
 <!--    <div class="wenzi"><p>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</p></div>-->
@@ -85,56 +129,75 @@
 <!--            进个人候选人的先进事迹进行集中公示，供省直机关广大干部学习借鉴并接受监督。</p>-->
 <!--        <p>联系电话：53609475、18903660110</p>-->
 <!--    </div>-->
-    <div class="title02"><p>参评单位</p></div>
 
     <div id="reviewDiv"  class="clear"></div>
-    <p onclick="toStorage()" style="position:absolute;text-align:center;font-size:14px;background-color:#cc1c1e;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:350px;bottom:22px;border-radius:30px;">
+    <p onclick="toStorage()" style="position:absolute;text-align:center;font-size:14px;background-color:#0059ab;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:350px;bottom:22px;border-radius:30px;cursor: pointer;">
         <a style=" color:#fff;" href="javascript:void(0)">暂存</a>
     </p>
-    <p onclick="toSubmit()" style="position:absolute;text-align:center;font-size:14px;background-color:#cc1c1e;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:650px;bottom:22px;border-radius:30px;">
+    <p onclick="toSubmit()" style="position:absolute;text-align:center;font-size:14px;background-color:#0059ab;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:650px;bottom:22px;border-radius:30px;cursor: pointer;">
         <a style=" color:#fff;" href="javascript:void(0)">确认投票</a>
     </p>
+
+    <div class="san">
+        <div class="san-annu"> <a href="${ctx}/vote/formal/toupiaoblue?type=1" target="_blank">候选先进干部</a></div>
+        <div class="san-annu"> <a href="${ctx}/vote/formal/toupiaoblue?type=2" target="_blank">候选先进处长</a></div>
+        <div class="san-annu"> <a href="${ctx}/vote/formal/toupiaoblue?type=3" target="_blank">候选先进处室</a></div>
+    </div>
 </div>
 
 <div id="loadingDiv" style="position:fixed;z-index:2000;top:0px;left:0px;width:100%;height:100%;background-color:rgba(0,0,0,0.5);display: none;" onclick="hideSearch()"></div>
 <div id="loadingDiv_img" style="display: none">
-    <div style="position:absolute;z-index: 2001;">
-        <img src="${ctxStatic}/images/search_bg1.png" style="position:absolute;left: 100px;"/>
-        <img src="${ctxStatic}/images/close1.png" style="position:absolute;left: 755px;top: -20px;" onclick="hideSearch()"/>
+<!--    <div style="position:absolute;z-index: 2001;">-->
+<!--        <img src="${ctxStatic}/images/search_bg1.png" style="position:absolute;left: 100px;"/>-->
+<!--        <img src="${ctxStatic}/images/close1.png" style="position:absolute;left: 755px;top: -20px;" onclick="hideSearch()"/>-->
 
-<!--        <label style="position:absolute;margin-top:50px;margin-left: 150px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">姓名：</label>-->
-<!--        <input type="text" id="select_name" style="position:absolute;margin-top:50px;margin-left: 200px;width: 150px;height: 28px;border-radius:30px;"/>-->
+<!--        <label style="position:absolute;margin-top:70px;margin-left: 150px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">姓名：</label>-->
+<!--        <input type="text" id="select_name" style="position:absolute;margin-top:70px;margin-left: 200px;width: 150px;height: 28px;border-radius:30px;"/>-->
 
 
-<!--        <label style="position:absolute;margin-top:50px;margin-left: 450px;width: 120px;height: 30px;z-index:2002;color: #FFFFFF;">所在厅局：</label>-->
-<!--        <select id="select_office" style="position:absolute;margin-top:50px;margin-left: 530px;width: 150px;height: 30px;border-radius:30px;">-->
+<!--        <label style="position:absolute;margin-top:70px;margin-left: 450px;width: 120px;height: 30px;z-index:2002;color: #FFFFFF;">所在厅局：</label>-->
+<!--        <select id="select_office" style="position:absolute;margin-top:70px;margin-left: 530px;width: 150px;height: 30px;border-radius:30px;">-->
 
 <!--        </select>-->
 
-        <label style="position:absolute;margin-top:70px;margin-left: 150px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">姓名：</label>
-        <input type="text" id="select_name" style="position:absolute;margin-top:70px;margin-left: 200px;width: 150px;height: 28px;border-radius:30px;"/>
+<!--        <label style="position:absolute;margin-top:120px;margin-left: 150px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;display: none;">所属类别：</label>-->
 
-
-        <label style="position:absolute;margin-top:70px;margin-left: 450px;width: 120px;height: 30px;z-index:2002;color: #FFFFFF;">所在厅局：</label>
-        <select id="select_office" style="position:absolute;margin-top:70px;margin-left: 530px;width: 150px;height: 30px;border-radius:30px;">
-
-        </select>
-
-        <label style="position:absolute;margin-top:120px;margin-left: 150px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;display: none;">所属类别：</label>
-
-        <input id="searchButton" onclick="toSearch()" type="button" style="position:absolute;margin-top:160px;margin-left: 310px;width: 250px;height: 40px;border-radius:30px;background-color: red;color: #FFFFFF;border-style:solid; border-width:2px; border-color:#FFFFFF;font-size: 20px;" value="确定查询"/>
-<!--        <input id="searchButton" onclick="toSearch()" type="button" style="position:absolute;margin-top:190px;margin-left: 310px;width: 250px;height: 40px;border-radius:30px;background-color: red;color: #FFFFFF;border-style:solid; border-width:2px; border-color:#FFFFFF;font-size: 20px;" value="确定查询"/>-->
-    </div>
-
-    <div class="san">
-        <div class="san-annu"> <a href="#" target="_blank">候选先进处室</a></div>
-        <div class="san-annu"> <a href="#" target="_blank">候选先进处长</a></div>
-        <div class="san-annu"> <a href="#" target="_blank">候选先进干部</a></div>
-    </div>
+<!--        <input id="searchButton" onclick="toSearch()" type="button" style="position:absolute;margin-top:160px;margin-left: 310px;width: 250px;height: 40px;border-radius:30px;background-color: red;color: #FFFFFF;border-style:solid; border-width:2px; border-color:#FFFFFF;font-size: 20px;" value="确定查询"/>-->
+<!--    </div>-->
 </div>
 
 <div class="footer01"><p>技术支持：黑龙江东北网络台</p></div>
       <script>
+      function clickThisBox(id) {
+          if ($("#" + id + "_box").is(':checked')) {
+              $("#" + id).attr("class", "radio-btn");
+              $("#" + id + "_box").removeAttr('checked');
+          } else {
+
+              //将其他已经选中的重置成未选中
+              reSetOther(id);
+          }
+      }
+
+      function reSetOther(id) {
+          //all
+          $("#all").attr("class", "radio-btn");
+          $("#all_box").removeAttr('checked');
+          //1
+          $("#all_ganbu").attr("class", "radio-btn");
+          $("#all_ganbu_box").removeAttr('checked');
+          //2
+          $("#all_chuzhang").attr("class", "radio-btn");
+          $("#all_chuzhang_box").removeAttr('checked');
+          //3
+          $("#all_chushi").attr("class", "radio-btn");
+          $("#all_chushi_box").removeAttr('checked');
+
+          //将传入的id设置成选中
+          $("#" + id).attr("class", "radio-btn checkedRadio");
+          $("#" + id + "_box").attr('checked', 'checked');
+      }
+
     function resetTabs(){
         $("#content > div").hide(); //Hide all content
         $("#tabs a").attr("id",""); //Reset id's
@@ -159,7 +222,25 @@
         getDicInfo();
         //定时执行
         delTimer();
+        //获取标题名称
+        getTitle();
     })()
+     function getTitle() {
+         var termType = getSearchType();
+         if(termType == '1'){
+             $("#p_name").html('候选先进干部事迹');
+             $("#all_ganbu").attr("class", "radio-btn checkedRadio");
+             $("#all_ganbu_box").attr('checked', 'checked');
+         }else if (termType == '2'){
+             $("#p_name").html('候选先进处长事迹');
+             $("#all_chuzhang").attr("class", "radio-btn checkedRadio");
+             $("#all_chuzhang_box").attr('checked', 'checked');
+         }else {
+             $("#p_name").html('候选先处室部事迹');
+             $("#all_chushi").attr("class", "radio-btn checkedRadio");
+             $("#all_chushi_box").attr('checked', 'checked');
+         }
+     }
     //用来判断是否可以投票
     var reviewNameArry = [];
     var reviewNameCount = [];
@@ -228,11 +309,45 @@
                 var divHtml = '';
                 // var selectHtml = '<option value="">请选择</option>';
                 var selectHtml = '';
+                var titleHtml = '';
                 if(data && data[0]){
                     $.each(data,function(index,ele){
                         if(ele){
-                            //5个一循环
-                            if(xh > 5){
+                            var cssStr = '';
+                            //增加机关列的判断
+                            if(ele.office_name == '省纪委监委'){
+                                titleHtml ='<div class="title04"><p>省委机关</p></div>';
+                            }else if(ele.office_name == '省人大机关'){
+                                titleHtml ='<div class="title04"><p>省人大机关</p></div>';
+                            }else if(ele.office_name == '省政府办公厅'){
+                                titleHtml ='<div class="title04"><p>省政府机关</p></div>';
+                            }else if(ele.office_name == '省政协机关'){
+                                titleHtml ='<div class="title04"><p>省政协机关</p></div>';
+                            }else if(ele.office_name == '省法院'){
+                                titleHtml ='<div class="title04"><p>法检两院机关</p></div>';
+                                cssStr = 'style="width:424px;"';
+                            }else if(ele.office_name == '省总工会'){
+                                titleHtml ='<div class="title04"><p>组织团体</p></div>';
+                            }else if(ele.office_name == '省供销社'){
+                                titleHtml ='<div class="title04"><p>事业单位</p></div>';
+                            }else{
+                                titleHtml='';
+                            }
+                            if(titleHtml){
+                                //5个一循环
+                                xh = 1;
+                                if(ele.office_name != '省纪委监委'){
+                                    //结尾
+                                    divHtml += '</div>';
+                                    ulLi += '</ul>';
+                                    //输出
+                                    $("#reviewDiv").before(ulLi);
+                                    $("#reviewDiv").before(divHtml);
+                                }
+
+                                $("#reviewDiv").before(titleHtml);
+                            }else if(xh > 5){
+                                //5个一循环
                                 xh = 1;
                                 //结尾
                                 divHtml += '</div>';
@@ -244,7 +359,7 @@
                             if(xh == 1){
                                 //初始化
                                 divHtml = '<div id="content">';
-                                ulLi = '<ul id="tabs">';
+                                ulLi = '<ul id="tabs" '+cssStr+'>';
                                 //拼接子元素
                                 divHtml += getDiv(ele);
                                 ulLi += getulLi(ele);
@@ -272,13 +387,17 @@
     }
 
     function getSelectHtml(info) {
-        return '<option value="'+info.office_code+'">'+info.office_name+'</option>';
+        return '<option style="color: #000000" value="'+info.office_code+'">'+info.office_name+'</option>';
     }
 
 
 
     function getulLi(ele){
-        return '<li><a href="#" onclick="getReviewTermListByOfficeCode(\''+ele.office_code+'\')" name="#'+ele.office_code+'">'+ele.office_name+'</a></li>';
+        var cssStr ="";
+        if(ele.office_name == '省人大机关' || ele.office_name == '省政协机关' ){
+            cssStr='style="margin:9px auto;width:198px;float:none;"';
+        }
+        return '<li '+cssStr+'><a href="javascript:void(0)" onclick="getReviewTermListByOfficeCode(\''+ele.office_code+'\')" name="#'+ele.office_code+'">'+ele.office_name+'</a></li>';
     }
 
     function getDiv(ele) {
@@ -372,7 +491,7 @@
             setHc(termType);
         }else{
             //未选中---修改为选中
-            $("#"+id).attr("style","background-color:rgba(234,45,47,0.8);");
+            $("#"+id).attr("style","background-color:#0059ab;");
             $("#"+id).attr("data_isChecked","1");
             checkValues.push(id);
             //选中数加1
@@ -601,14 +720,17 @@
     }
 
     function showRemarks() {
-        var h = $("#floatleft").offset().top;
+        // var h = $("#floatleft").offset().top;
         $("#loadingDiv").show();
-        $("#loadingDiv_img").attr("style", 'position:absolute;left:20%; top:' + h + 'px;z-index: 2001;');
+        // $("#loadingDiv_img").attr("style", 'position:absolute;left:20%; top:' + h + 'px;z-index: 2001;');
+        $("#myModal01").css("visibility","visible");
+
     }
 
     function hideSearch(){
+        $("#myModal01").css("visibility","hidden");
         $("#loadingDiv").hide();
-        $("#loadingDiv_img").hide();
+        // $("#loadingDiv_img").hide();
     }
 
     function toSearch() {

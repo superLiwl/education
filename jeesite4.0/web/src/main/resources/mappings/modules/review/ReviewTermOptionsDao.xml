@@ -3,7 +3,7 @@
 <mapper namespace="com.jeesite.modules.review.dao.ReviewTermOptionsDao">
 
 	<select id="getReviewTermList" resultType="map">
-		SELECT DISTINCT office_code,office_name FROM `review_term` ORDER BY office_code ASC;
+		SELECT DISTINCT t.office_code,t.office_name,o.tree_sort FROM `review_term` t LEFT JOIN js_sys_office o ON o.office_code = t.office_code  ORDER BY o.tree_sort ASC;
 	</select>
 
 	<select id="getReviewTermListByOfficeCode" resultType="map">
