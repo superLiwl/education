@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="${ctxStatic}/modules/sys/sysLogin.css?${_version}">
 <div class="login-box">
 	<div class="login-logo">
-		<a href="${ctx}/login"><b>${@Global.getConfig('productName')}</b></a>
+		<a href="${ctx}/login"><b style="color:#ffffff">${@Global.getConfig('productName')}</b></a>
 	</div>
 	<div class="login-box-body">
 		<#form:form id="loginForm" model="${user!}" action="${ctx}/login" method="post">
@@ -75,7 +75,7 @@
 		</div>
 	</div>
 </div>
-<div class="login-copyright">
+<div class="login-copyright" style="color:#ffffff">
 	&copy; ${@DateUtils.getYear()} ${@Global.getConfig('productName')} - 问卷技术支持-国家统计局黑龙江调查总队 <a
 		href="http://jeesite.com"></a>
 </div>
@@ -87,6 +87,7 @@
 <script src="${ctxStatic}/modules/sys/sysLogin.js?${_version}"></script>
 <script>
 	$(document).ready(function(){
-		$("body").attr("style","background-image:url(${ctxStatic}/login_bg.jpg); background-size:100% 100%; background-repeat:no-repeat");
+		// $("body").attr("style","background-image:url(${ctxStatic}/login_bg.jpg); background-size:100% 100%; background-repeat:no-repeat");
+		$("body").attr("style","background-color:#0059ab;");
 	});
 </script>
