@@ -1,7 +1,7 @@
 @charset "utf-8";
 /* CSS Document */
 
-html,body{background-color:#fff;font-family:"微软雅黑";min-width:1200px;color:#333;}
+html,body{font-family:"微软雅黑";min-width:1200px;color:#333;}
 		body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl, dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td,iframe{margin:0; padding:0;}
 		h1,h2,h3,h4,h5,h6{font-size:100%;}
 		ol,ul{list-style:none;}
@@ -28,13 +28,13 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
         .lb-title01 p{width:1130px;line-height:56px;color:#e31f2d;text-align:center;font-weight:bold;font-size:24px;}
 		
         .title01{width:1130px;margin:0 auto 20px auto;height:56px;background:url(../images/di.png) no-repeat center;}
-        .title01 p{width:1130px;line-height:56px;color:#e31f2d;text-align:center;font-weight:bold;font-size:32px;}
+        .title01 p{width:1130px;line-height:56px;color:#0059ab;text-align:center;font-weight:bold;font-size:32px;}
 		.xly-title01{width:1000px;margin:0 auto 6px auto;height:56px;background:url(../images/dixly.png) no-repeat center;}
-        .xly-title01 p{width:1000px;line-height:56px;color:#e31f2d;text-align:center;font-weight:bold;font-size:28px;}
+        .xly-title01 p{width:1000px;line-height:56px;color:#0059ab;text-align:center;font-weight:bold;font-size:28px;}
 		.xly-title02{width:1000px;margin:0 auto;height:56px;background:url(../images/dixly01.png) no-repeat center;}
-        .xly-title02 p{width:1000px;line-height:56px;color:#e31f2d;text-align:center;font-weight:bold;font-size:28px;}
+        .xly-title02 p{width:1000px;line-height:56px;color:#0059ab;text-align:center;font-weight:bold;font-size:28px;}
 		.xly-title03{width:1000px;margin:0 auto;height:56px;background:url(../images/dixly02.png) no-repeat center;}
-        .xly-title03 p{width:1000px;line-height:56px;color:#e31f2d;text-align:center;font-weight:bold;font-size:28px;}
+        .xly-title03 p{width:1000px;line-height:56px;color:#0059ab;text-align:center;font-weight:bold;font-size:28px;}
 	    .title02{width:1060px;margin:0 auto 5px auto;height:56px;background:url(../images/title-bg.jpg) no-repeat center;}
         .title02 p{width:1060px;line-height:56px;color:#0059ab;text-align:center;font-weight:bold;font-size:32px;}
 		.title04{width:1060px;margin:0 auto 5px auto;height:56px;background:url(../images/title-bg01.jpg) no-repeat center;}
@@ -45,7 +45,7 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
         .title03 p{width:1240px;line-height:56px;color:#e31f2d;text-align:center;font-weight:bold;font-size:36px;}
         .section-1{ background:url(../images/bg.jpg) no-repeat center;height:860px;position:relative;z-index:99;margin-bottom:30px;}
 		.daohang{ width:100%;height:56px;background-color:#7f0001;overflow:hidden;}
-		.daohang01{ width:100%;height:56px;background-color:#cc1c1e;overflow:hidden;}
+		.daohang01{ width:100%;height:56px;background-color:#0059ab;overflow:hidden;}
 		.biaoti{ width:880px;height:140px;margin:0 auto;padding-top:80px;}
 		.wenzi{ height:56px;float:left;overflow:hidden;display:block;padding-left:80px;}
 		.wenzi p{color:#fff;font-size:18px;font-weight:bold;line-height:56px;float:left;}
@@ -318,7 +318,7 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
 .gengduo{ font-size:18px;text-align:right;overflow:hidden;margin-top:15px;}
 .gengduo a{color:#fff;font-weight:bold;}
 .gengduo a:hover{color:#ffea00;}
-.footer{ height:60px;background-color:#cc1c1e;}
+.footer{ height:60px;background-color:#0059ab;}
 .footer p{text-align:center; line-height:60px;color:#fff;font-size:16px;}
 .footer01{ height:60px;}
 .footer01 p{text-align:center; line-height:60px;color:#fff;font-size:16px;}
@@ -351,8 +351,8 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     -webkit-border-radius: 30px;border-radius:30px;color:#fff;background:rgba(255, 255, 255, 0)}
 
 .fangda01{ width:50px; height:43px;float:left;margin-left:2px;}
-.reveal-modal-bg { position: fixed; height: 100%; width: 100%; z-index: 200; display: none; top: 0; left: 0; background:rgba(00, 00, 00, 0.8) ;}
-.reveal-modal { padding-top:24px;visibility: hidden;top: 180px; width:1050px;position: absolute; z-index: 3000;  -moz-border-radius:15px; -webkit-border-radius:15px; border-radius: 15px; background:rgba(0,89,171,0.85);left: 50%;margin-left:-525px;}
+.reveal-modal-bg { position: fixed; height: 100%; width: 100%; z-index: 200; display: none; top: 0; left: 0; background:rgba(00, 00, 00, 0.8) }		
+.reveal-modal { padding-top:24px;visibility: hidden;top: 180px; width:1050px;position: absolute; z-index: 300;  -moz-border-radius:15px; -webkit-border-radius:15px; border-radius: 15px; background:rgba(0,89,171,0.85);left: 50%;margin-left:-525px;}	
 .reveal-modal h2{font-size:24px;line-height:36px;font-weight:bold;text-align:center;display:block;	padding-bottom:15px;margin-bottom:20px;border-bottom:1px dashed #c7c7c7;}	
 
 .reveal-modal a:hover{color:#cc1c1e;}	
@@ -591,7 +591,7 @@ z-index: 99999;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8p
 
 
 .xly01{width:1000px; margin:30px auto 0 auto;overflow:hidden;min-height:780px;}
-.xly-bt01{ width:1000px;overflow:hidden;margin:15px 0 30px 0;border-bottom:1px solid #cc1c1e;padding-bottom:18px;}
+.xly-bt01{ width:1000px;overflow:hidden;margin:15px 0 30px 0;border-bottom:1px solid #0059ab;padding-bottom:18px;}
 .xly-bt01 h2{ width:1000px;font-size:32px;line-height:48px;font-family:"微软雅黑"; font-weight:bold;text-align:center;}
 .xly-bt02{ width:1000px;overflow:hidden;margin:15px 0 15px 0;}
 .xly-bt02 h2{ width:1000px;font-size:32px;line-height:48px;font-family:"微软雅黑"; font-weight:bold;text-align:center;}
@@ -645,7 +645,7 @@ z-index: 99999;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8p
 .xly-jianjie-r{width:540px;margin:6px 0 6px 50px;float:left;}
 .xly-jianjie-r-wz{width:540px;overflow:hidden;}
 .xly-jianjie-r-wz p{width:420px;line-height:28px;padding:6px 0;font-size:21px;color:#6d6d6d;float:left;font-weight:bold;}
-.xly-jianjie-r-wz span{line-height:40px;font-size:21px;width:120px;color:#cc1c1e;float:left;font-weight:bold;}
+.xly-jianjie-r-wz span{line-height:40px;font-size:21px;width:120px;color:#0059ab;float:left;font-weight:bold;}
 .xly-yj{width:1000px;overflow:hidden;margin-bottom:10px;}
 .tingju-title{height:44px;border-radius: 100px;background-color:#cc1c1e;margin:2px auto 16px auto;overflow:hidden;width:280px;text-align:center;}
 .tingju-title p{font-size:22px;line-height:44px;color:#fff;font-weight:bold;text-align:center;}
@@ -719,7 +719,7 @@ z-index: 99999;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8p
 .xly-jianjie-r01{width:540px;margin:3.5px 0 3.5px 50px;float:left;}
 .xly-jianjie-r01-wz{width:540px;overflow:hidden;}
 .xly-jianjie-r01-wz p{width:420px;line-height:25px;padding:5px 0;font-size:21px;color:#6d6d6d;float:left;font-weight:bold;}
-.xly-jianjie-r01-wz span{line-height:35px;font-size:21px;width:120px;color:#cc1c1e;float:left;font-weight:bold;}
+.xly-jianjie-r01-wz span{line-height:35px;font-size:21px;width:120px;color:#0059ab;float:left;font-weight:bold;}
 .buju{width:870px;margin:20px auto;overflow:hidden;}
 .jinru01{width:250px;height:42px;display:block; border-radius:60px;margin:0 15px;float:left;background:url(../images/gb.png) no-repeat;}
 .jinru01 a{width:225px;padding-left:25px;font-size:17px;line-height:42px;display:block;color:#fff;text-align:center;font-weight:bold;text-decoration: none;}
@@ -738,3 +738,11 @@ z-index: 99999;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8p
 .san-annu{width:270px;height:42px;display:block;margin:0 15px;background-color:#0059ab;float:left;border-radius: 60px;}
 .san-annu a{width:270px;line-height:42px;color:#fff;font-size:21px;text-align:center;font-weight:bold;display:block;}
 .san-annu a:hover{text-decoration:underline;}
+
+.fanhui{overflow:hidden;width:90px;height:18px;float:right;border-radius:28px;-webkit-border-radius:28px;border:1px solid #0059ab;margin-top:10px;}
+.fanhui a{font-size:14px;line-height:18px;color:#0059ab;text-align:center;width:90px;display:block;}
+.datou{width:100%;position:relative;}
+.datou-annu{width:66%;position:absolute;bottom:16%;left:17%;}
+.datou-b{width:29.3%;float:left;margin:0 2%;}
+.datou-annu01{width:22%;position:absolute;bottom:12%;left:39%;}
+

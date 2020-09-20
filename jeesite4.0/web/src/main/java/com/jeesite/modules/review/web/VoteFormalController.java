@@ -40,7 +40,8 @@ public class VoteFormalController extends BaseController {
      */
     @RequestMapping(value = {"gongshi", ""})
     public String gongshi() {
-        return "modules/voteformal/gongshi01";
+//        return "modules/voteformal/gongshi01";
+        return "modules/voteformal/gongshiblue";
     }
 
     /**
@@ -64,7 +65,7 @@ public class VoteFormalController extends BaseController {
      */
     @RequestMapping(value = {"ganbu", ""})
     public String ganbu() {
-        return "modules/voteformal/xly001";
+        return "modules/voteformal/xly001blue";
     }
 
     /**
@@ -72,7 +73,7 @@ public class VoteFormalController extends BaseController {
      */
     @RequestMapping(value = {"chuzhang", ""})
     public String chuzhang() {
-        return "modules/voteformal/xly002";
+        return "modules/voteformal/xly002blue";
     }
 
     /**
@@ -80,7 +81,7 @@ public class VoteFormalController extends BaseController {
      */
     @RequestMapping(value = {"chushi", ""})
     public String chushi() {
-        return "modules/voteformal/xly003";
+        return "modules/voteformal/xly003blue";
     }
 
     /**

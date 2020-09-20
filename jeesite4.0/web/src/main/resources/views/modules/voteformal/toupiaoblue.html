@@ -65,7 +65,7 @@
 
 <!--漂浮广告-->
 <div id="floatright" style="position: absolute; z-index: 10; right: 100px; top: 520px; width:153px;height:200px;">
-    <img src="${ctxStatic}/images/jsq.png" width="153" height="243">
+    <img src="${ctxStatic}/images/cartblue.png" width="148" height="130">
 
     <p id="subButton"></p>
 </div>
@@ -455,7 +455,7 @@
         var isChecked = "0";
         var isCheckedStr = ""
         if(info.isAnswer == '1' || isInCheckValues(info.id)){
-            styleStr = 'style=background-color:rgba(234,45,47,0.8);"';
+            styleStr = 'style=background-color:#0059ab;"';
             isChecked = "1";
             isCheckedStr = "checked";
         }
@@ -535,7 +535,13 @@
     }
 
     function getAnswerInfo() {
-        // var termType = getSearchType();
+        var termType = getSearchType();
+        var termDesc = '先进干部';
+        if(termType == '3'){
+            termDesc = '先进处室';
+        }else if(termType == '2'){
+            termDesc = '先进处长';
+        }
         $.ajax({
             type: "POST",
             url: "${ctx}/vote/formal/getAnswerInfo",
@@ -549,9 +555,11 @@
                 var second = 78;
                 $.each(data,function(index,ele){
                     if(ele){
-                        xfHtml += getXfHtml(ele,first,second);
-                        first += 44;
-                        second += 44;
+                        if(ele.tremClass == termDesc){
+                            xfHtml += getXfHtml(ele,first,second);
+                            first += 44;
+                            second += 44;
+                        }
                     }
                 });
                 $("#subButton").before(xfHtml);
