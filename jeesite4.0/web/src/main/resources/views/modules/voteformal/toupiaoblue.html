@@ -91,7 +91,7 @@
             </div>
         </div>
         <div class="clear"></div>
-        <div class="biaodan">
+        <div class="biaodan" style="display: none">
             <div class="bd-wz01"> 所属类别：</div>
             <div class="wrapper">
                 <ul>
@@ -728,10 +728,12 @@
     }
 
     function showRemarks() {
-        // var h = $("#floatleft").offset().top;
+        var h = $("#floatleft").offset().top;
         $("#loadingDiv").show();
         // $("#loadingDiv_img").attr("style", 'position:absolute;left:20%; top:' + h + 'px;z-index: 2001;');
         $("#myModal01").css("visibility","visible");
+        $("#myModal01").css("top",h+"px");
+
 
     }
 
