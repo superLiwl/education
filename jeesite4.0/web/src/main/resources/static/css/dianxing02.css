@@ -706,8 +706,8 @@ z-index: 99999;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8p
 .houxuan li:hover {background-color:#0059ab;}
 .houxuan li .touxiang {margin:5%;float:right;overflow: hidden;}
 .houxuan li .touxiang input{float:right;}
-.houxuan li .nr {height:38px;padding:7px 0;float:left;margin-left:10px;width:168px;overflow:hidden;}
-.houxuan li .nr p{font-size:16px;color:#fff;line-height:20px;}
+.houxuan li .nr {height:38px;padding:7px 0;float:left;margin-left:10px;width:190px;overflow:hidden;}
+.houxuan li .nr p{font-size:24px;color:#fff;line-height:32px;padding-left: 6px;}
 .houxuan li .nr span{font-size:14px;color:#fff;line-height:18px;display:block}
 
 .houxuan01 {overflow: hidden;width:1060px;margin: 12px auto 12px auto;padding-bottom:15px;border-bottom: 1px dashed #94a0ac;}

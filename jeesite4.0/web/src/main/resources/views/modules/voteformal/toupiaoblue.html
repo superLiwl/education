@@ -234,7 +234,7 @@
              $("#all_chuzhang").attr("class", "radio-btn checkedRadio");
              $("#all_chuzhang_box").attr('checked', 'checked');
          }else {
-             $("#p_name").html('候选先处室部事迹');
+             $("#p_name").html('候选先进处室事迹');
              $("#all_chushi").attr("class", "radio-btn checkedRadio");
              $("#all_chushi_box").attr('checked', 'checked');
          }
@@ -471,7 +471,7 @@
             target = 'target="_blank"';
         }
         // return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p>'+info.option_name+'&nbsp;</p><span title="'+info.position+'">'+info.position+'</span></div></a></li>';
-        return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p>'+info.option_name+'&nbsp;</p></div></a></li>';
+        return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr" align="center"><p>'+info.option_name+'&nbsp;</p></div></a></li>';
     }
     //选择的数据
     var checkValues = [];
