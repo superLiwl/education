@@ -218,8 +218,6 @@
         getAnswerInfo();
         //获取所有投票结果
         getAllAnswer();
-        // 查询字典信息
-        getDicInfo();
         //定时执行
         delTimer();
         //获取标题名称
@@ -262,6 +260,7 @@
                             divHtml = getDicGtml(ele,left);
                             left += 150;
                             $("#searchButton").before(divHtml);
+                            $("#"+ele.dictLabel+"_gd").html(ele.description+"票");
                         }
                     });
                 }
@@ -471,7 +470,8 @@
             hrefUrl = '${ctx}/vote/formal/chushi';
             target = 'target="_blank"';
         }
-        return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p>'+info.option_name+'&nbsp;</p><span title="'+info.position+'">'+info.position+'</span></div></a></li>';
+        // return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p>'+info.option_name+'&nbsp;</p><span title="'+info.position+'">'+info.position+'</span></div></a></li>';
+        return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p>'+info.option_name+'&nbsp;</p></div></a></li>';
     }
     //选择的数据
     var checkValues = [];
@@ -563,6 +563,8 @@
                     }
                 });
                 $("#subButton").before(xfHtml);
+                // 查询字典信息
+                getDicInfo();
             }});
     }
 
@@ -584,7 +586,7 @@
 
     function getXfHtml(info,first,second) {
         var xfHtml = '<p onclick="openCart()" style="text-align:center;font-size:14px;color:#333;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+first+'px;">'+info.tremClass+'</p>' +
-                      '<p onclick="openCart()" style="text-align:center;font-size:14px;color:#cc1c1e;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+second+'px;border-bottom:1px dashed #333;padding-bottom:4px;"><span id="'+info.tremClass+'">'+info.hasOptionCount+'</span>/'+info.allOptionCount+'票</p>';
+                      '<p onclick="openCart()" style="text-align:center;font-size:14px;color:#cc1c1e;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+second+'px;border-bottom:1px dashed #333;padding-bottom:4px;"><span id="'+info.tremClass+'">'+info.hasOptionCount+'</span>/<span id="'+info.tremClass+'_gd">'+info.allOptionCount+'票</span></p>';
         return xfHtml;
     }
 

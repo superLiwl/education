@@ -9,8 +9,10 @@ import com.jeesite.modules.review.entity.ReviewTermAnswer;
 import com.jeesite.modules.review.service.ReviewTermAnswerService;
 import com.jeesite.modules.review.service.VoteFormalService;
 import com.jeesite.modules.sys.entity.DictData;
+import com.jeesite.modules.sys.entity.Office;
 import com.jeesite.modules.sys.entity.User;
 import com.jeesite.modules.sys.utils.DictUtils;
+import com.jeesite.modules.sys.utils.EmpUtils;
 import com.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,6 +159,15 @@ public class VoteFormalController extends BaseController {
     @ResponseBody
     public User getUserInfo() {
         return UserUtils.getUser();
+    }
+
+    /**
+     * 获取用户组织信息
+     */
+    @RequestMapping(value = "getOfficeInfo")
+    @ResponseBody
+    public Office getOfficeInfo() {
+        return EmpUtils.getOffice();
     }
 
     /**
