@@ -132,17 +132,17 @@
 
     <div id="reviewDiv"  class="clear"></div>
     <p onclick="toStorage()" style="position:absolute;text-align:center;font-size:14px;background-color:#0059ab;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:350px;bottom:22px;border-radius:30px;cursor: pointer;">
-        <a style=" color:#fff;" href="javascript:void(0)">暂存</a>
+        <a style=" color:#fff;" href="javascript:void(0)">预选</a>
     </p>
     <p onclick="toSubmit()" style="position:absolute;text-align:center;font-size:14px;background-color:#0059ab;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:650px;bottom:22px;border-radius:30px;cursor: pointer;">
         <a style=" color:#fff;" href="javascript:void(0)">确认投票</a>
     </p>
 
-    <div class="san">
-        <div class="san-annu"> <a href="${ctx}/vote/formal/toupiaoblue?type=1" target="_blank">候选先进干部</a></div>
-        <div class="san-annu"> <a href="${ctx}/vote/formal/toupiaoblue?type=2" target="_blank">候选先进处长</a></div>
-        <div class="san-annu"> <a href="${ctx}/vote/formal/toupiaoblue?type=3" target="_blank">候选先进处室</a></div>
-    </div>
+<!--    <div class="san">-->
+<!--        <div class="san-annu"> <a href="${ctx}/vote/formal/toupiaoblue?type=1" target="_blank">候选先进干部</a></div>-->
+<!--        <div class="san-annu"> <a href="${ctx}/vote/formal/toupiaoblue?type=2" target="_blank">候选先进处长</a></div>-->
+<!--        <div class="san-annu"> <a href="${ctx}/vote/formal/toupiaoblue?type=3" target="_blank">候选先进处室</a></div>-->
+<!--    </div>-->
 </div>
 
 <div id="loadingDiv" style="position:fixed;z-index:2000;top:0px;left:0px;width:100%;height:100%;background-color:rgba(0,0,0,0.5);display: none;" onclick="hideSearch()"></div>
@@ -666,7 +666,7 @@
     function toStorage() {
         var termType = getSearchType();
         //询问是否投票
-        layer.confirm('暂存信息，投票不会生效!', {
+        layer.confirm('预选信息，投票不会生效!', {
             btn: ['确定','取消'] //按钮
         }, function(){
             var optionIds = "";
@@ -686,19 +686,19 @@
                 dataType: "text",
                 success: function (data) {
                     if(data == '投票成功'){
-                       layer.alert("暂存成功");
+                       layer.alert("预选成功");
                     }else{
-                        var alertMsg = data.replace('投票','暂存');
+                        var alertMsg = data.replace('投票','预选');
                         layer.alert(alertMsg);
                     }
 
                 },
                 fail:function (data) {
-                    layer.alert("暂存失败，请再次点击");
+                    layer.alert("预选失败，请再次点击");
                 }
             });
         }, function(){
-            layer.msg('取消暂存', {time: 2000, });
+            layer.msg('取消预选', {time: 2000, });
         });
 
     }
