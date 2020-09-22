@@ -8,12 +8,12 @@
     <script type="text/javascript" src="${ctxStatic}/layer/3.1/layer.js"></script>
   	<script>
        window.onload = function(){
-           var initHeight = document.body.clientHeight / 4;
+           var initHeight = document.body.clientHeight / 3;
            //右侧悬浮
            var ad = new FloatAd({
                floatObj: "floatright",
                x: 5,
-               y: initHeight,
+               y: 200,
                locate: "right"
            });
            ad.play();
@@ -21,7 +21,7 @@
            var search = new FloatAd({
                floatObj: "floatleft",
                x: 60,
-               y: initHeight,
+               y: 200,
                locate: "left"
            });
            search.play();
@@ -58,13 +58,13 @@
 </head>
 <<body style="background:url(${ctxStatic}/images/bg.jpg) repeat-y center;">
 <!--搜索框-->
-<div id="floatleft" style="position: absolute; z-index: 10; left: 100px; top: 520px; width:100px;height:132px;">
+<div id="floatleft" style="position: absolute; z-index: 10; left: 100px; width:100px;height:132px;">
     <img src="${ctxStatic}/images/cx.png" width="90" height="90" onclick="showRemarks()">
 <!--    <a href="#" data-reveal-id="myModal01" data-animation="fade"><img src="${ctxStatic}/images/cx.png" width="90" height="90"></a>-->
 </div>
 
 <!--漂浮广告-->
-<div id="floatright" style="position: absolute; z-index: 10; right: 100px; top: 520px; width:153px;height:200px;">
+<div id="floatright" style="position: absolute; z-index: 10; right: 100px;  width:153px;height:200px;">
     <img src="${ctxStatic}/images/cartblue.png" width="148" height="130">
 
     <p id="subButton"></p>
@@ -477,8 +477,11 @@
             hrefUrl = '${ctx}/vote/formal/chushi';
             target = 'target="_blank"';
         }
-        // return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p>'+info.option_name+'&nbsp;</p><span title="'+info.position+'">'+info.position+'</span></div></a></li>';
-        return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr" align="center"><p>'+info.option_name+'&nbsp;</p></div></a></li>';
+        if(tremClass.endsWith("处室")){
+            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr" align="center"><p>'+info.option_name+'&nbsp;</p></div></a></li>';
+        }else{
+            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size:18px;line-height:18px">'+info.option_name+'&nbsp;</p><span title="'+info.position+'" style="padding-left:6px;">'+info.position+'</span></div></a></li>';
+        }
     }
     //选择的数据
     var checkValues = [];
