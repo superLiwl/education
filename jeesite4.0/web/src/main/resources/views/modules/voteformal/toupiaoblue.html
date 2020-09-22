@@ -260,7 +260,14 @@
                             divHtml = getDicGtml(ele,left);
                             left += 150;
                             $("#searchButton").before(divHtml);
-                            $("#"+ele.dictLabel+"_gd").html(ele.description+"票");
+                            // $("#"+ele.dictLabel+"_gd").html(ele.description+"票");
+                            if(termType =='1'){
+                                $("#"+ele.dictLabel+"_gd").html("500票");
+                            }else if(termType =='2'){
+                                $("#"+ele.dictLabel+"_gd").html("200票");
+                            }else {
+                                $("#"+ele.dictLabel+"_gd").html("100票");
+                            }
                         }
                     });
                 }
