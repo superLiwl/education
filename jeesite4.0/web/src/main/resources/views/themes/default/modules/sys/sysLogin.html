@@ -36,7 +36,7 @@
 		<div class="form-group has-feedback" id="isValidCodeLogin" style="display:${isValidCodeLogin?'blank':'none'}">
 			<#form:validcode name="validCode" isRequired="true" isRemote="true" isLazy="false"/>
 		</div>
-		<div class="form-group">
+		<div class="form-group hide">
 			<div class="mt5 icheck">
 				<label title="${text('公共场所慎用,下次不需要再填写帐号')}"><input type="checkbox"
 																   name="rememberUserCode"${isNotBlank(cookie('rememberUserCode'))?' checked':''}
@@ -48,7 +48,7 @@
 		</div>
 		<div class="form-group">
 			<button type="submit" class="btn btn-primary btn-block btn-flat"
-					id="btnSubmit" data-loading="${text('登录验证成功，正在进入...')}"
+					id="btnSubmit" data-loading="${text('登录验证成功，正在进入...')}" onclick="changeVC()"
 					data-login-valid="${text('正在验证登录，请稍后...')}">${text('立即登录')}</button>
 		</div>
 	</#form:form>
@@ -93,4 +93,10 @@
 		//设置验证码不缓存
 		$("#validCode").attr("autocomplete","off");
 	});
+	//切换验证码
+	function changeVC() {
+		setTimeout(function () {
+			$("#validCodeImg").click();
+		},1000)
+	}
 </script>
