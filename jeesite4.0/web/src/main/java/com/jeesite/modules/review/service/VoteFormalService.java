@@ -50,10 +50,13 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
         params.put("officeCode", officeCode);
         params.put("termType", termType);
         List<Map<String, Object>> result = reviewTermOptionsDao.getReviewTermListByOfficeCode(params);
+        LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
+        String userId = login.getId();
         if (null != result && !result.isEmpty() && result.size() > 0) {
             for (Map<String, Object> m : result) {
                 params = new HashMap<>();
                 params.put("termId", m.get("id"));
+                params.put("userId", userId);
                 m.put("review_name", DictUtils.getDictLabel("term_option", String.valueOf(m.get("review_name")), ""));
                 m.put("options", reviewTermOptionsDao.getReviewTermOptionsListByTermId(params));
             }

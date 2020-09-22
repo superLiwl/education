@@ -208,10 +208,14 @@
     var myUrlTabName = myUrlTab.substring(0,4); // For the above example, myUrlTabName = #tab
 
     (function () {
+        //判断是否可以投票
+        getUserType();
         layer.load();
         setTimeout(function () {
             layer.closeAll();
         },2000);
+        //查询我是否投过票
+        isTouPiaoByUser();
         //获取列表组织
         getReviewTermList();
         //获取投票信息
@@ -223,6 +227,70 @@
         //获取标题名称
         getTitle();
     })()
+      function getUserType() {
+          var termType = getSearchType();
+          if(termType == '1'){
+              //判断当前要不过户是否可以进行干部投票
+              $.ajax({
+                  type: "POST",
+                  url: "${ctx}/vote/formal/getOfficeInfo",
+                  data: {},
+                  dataType: "json",
+                  success: function (data) {
+                      if(data.officeType == '2'){
+                          // layer.alert('不能进行干部投票', function(){
+                          //     var a = document.createElement('a');
+                          //     a.setAttribute('href', '${ctx}/vote/formal/gongshi');
+                          //     a.setAttribute('target', "_top");
+                          //     a.setAttribute('id', 'js_a');
+                          //     //防止反复添加
+                          //     if(document.getElementById('js_a')) {
+                          //         document.body.removeChild(document.getElementById('js_a'));
+                          //     }
+                          //     document.body.appendChild(a);
+                          //     a.click();
+                          // });
+                          layer.msg('不能进行干部投票', {time: 1500, });
+                          setTimeout(function(){
+                                  var a = document.createElement('a');
+                                  a.setAttribute('href', '${ctx}/vote/formal/gongshi');
+                                  a.setAttribute('target', "_top");
+                                  a.setAttribute('id', 'js_a');
+                                  //防止反复添加
+                                  if(document.getElementById('js_a')) {
+                                      document.body.removeChild(document.getElementById('js_a'));
+                                  }
+                                  document.body.appendChild(a);
+                                  a.click();
+                          }, 1501);
+
+                      }
+                  }
+              });
+          }
+
+      }
+      var isisTouPiao = '';
+      function isTouPiaoByUser() {
+          var termType = getSearchType();
+          $.ajax({
+              type: "POST",
+              url: "${ctx}/vote/formal/isTouPiaoByUser",
+              data: {
+                  'termType':termType
+              },
+              dataType: "text",
+              success: function (data) {
+                  if(data == '0'){
+                      //可以继续投票
+                      isisTouPiao = '';
+                  }else{
+                      //不可以继续投票
+                      isisTouPiao = 'disabled';
+                  }
+              }
+          });
+      }
      function getTitle() {
          var termType = getSearchType();
          if(termType == '1'){
@@ -478,9 +546,9 @@
             target = 'target="_blank"';
         }
         if(tremClass.endsWith("处室")){
-            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr" align="center"><p>'+info.option_name+'&nbsp;</p></div></a></li>';
+            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+'  id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr" align="center"><p>'+info.option_name+'&nbsp;</p></div></a></li>';
         }else{
-            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size:18px;line-height:18px">'+info.option_name+'&nbsp;</p><span title="'+info.position+'" style="padding-left:6px;">'+info.position+'</span></div></a></li>';
+            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+' id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size:18px;line-height:18px">'+info.option_name+'&nbsp;</p><span title="'+info.position+'" style="padding-left:6px;">'+info.position+'</span></div></a></li>';
         }
     }
     //选择的数据
@@ -747,8 +815,6 @@
         // $("#loadingDiv_img").attr("style", 'position:absolute;left:20%; top:' + h + 'px;z-index: 2001;');
         $("#myModal01").css("visibility","visible");
         $("#myModal01").css("top",h+"px");
-
-
     }
 
     function hideSearch(){

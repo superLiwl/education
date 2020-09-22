@@ -153,6 +153,21 @@ public class VoteFormalController extends BaseController {
     }
 
     /**
+     * 查询我是否投过票
+     */
+    @RequestMapping(value = "isTouPiaoByUser")
+    @ResponseBody
+    public Long isTouPiaoByUser(String termType) {
+        LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
+        String userId = login.getId();
+        ReviewTermAnswer select = new ReviewTermAnswer();
+        select.setUserId(userId);
+        select.setReviewName(termType);
+        select.setVoteStatus("1");//已投票状态
+        return reviewTermAnswerService.findCount(select);
+    }
+
+    /**
      * 获取用户信息
      */
     @RequestMapping(value = "getUserInfo")
