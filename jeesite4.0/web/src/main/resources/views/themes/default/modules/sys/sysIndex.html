@@ -31,6 +31,11 @@ var bodyClass = 'fixed noscroll2 sidebar-mini ' + sidebarCollapse;
 <script src="${ctxStatic}/modules/sys/sysIndex.js?${_version}"></script>
 <script>
 	(function () {
+		//获取url中参数
+		var url = window.location.href;
+		if(url.endsWith('pwd')){
+			return;
+		}
 		$.ajax({
 			type: "POST",
 			url: "${ctx}/vote/formal/getUserInfo",
