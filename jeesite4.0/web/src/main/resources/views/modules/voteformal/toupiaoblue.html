@@ -76,8 +76,8 @@
 <div id="myModal01" class="reveal-modal">
     <div class="bd-jz">
         <div class="biaodan">
-            <div class="bd-wz01"> 姓名：</div>
-            <input name="keywords" type="text" id="select_name" placeholder="请输入姓名" class="input001" size="18"/>
+            <div class="bd-wz01" id="name_div"> 姓名：</div>
+            <input name="keywords" id="name_input" type="text" id="select_name" placeholder="请输入姓名" class="input001" size="18"/>
         </div>
         <div class="biaodan">
             <div class="bd-wz01"> 所在厅局：</div>
@@ -507,7 +507,7 @@
         if(tremClass.endsWith("处室")){
             return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+'  id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr" align="center"><p>'+info.option_name+'&nbsp;</p></div></a></li>';
         }else{
-            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+' id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size:18px;line-height:18px">'+info.option_name+'&nbsp;</p><span title="'+info.position+'" style="padding-left:6px;">'+info.position+'</span></div></a></li>';
+            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+' id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size:18px;line-height:18px;padding-left:15px;">'+info.option_name+'&nbsp;</p><span title="'+info.position+'" style="padding-left:15px;">'+info.position+'</span></div></a></li>';
         }
     }
     //选择的数据
@@ -807,6 +807,14 @@
     }
 
     function showRemarks() {
+        var termType = getSearchType();
+        if('3' == termType){
+            $("#name_div").html("处室名称：");
+            $("#name_input").attr("placeholder","请输入处室名称");
+        }else{
+            $("#name_div").html("姓名：");
+            $("#name_input").attr("placeholder","请输入姓名");
+        }
         var h = $("#floatleft").offset().top;
         $("#loadingDiv").show();
         // $("#loadingDiv_img").attr("style", 'position:absolute;left:20%; top:' + h + 'px;z-index: 2001;');

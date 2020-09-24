@@ -105,11 +105,14 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
      */
     @Transactional(readOnly = false)
     public String submitAnswer(String optionIds,String termType,String voteStatus) {
+        LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
+        String userId = login.getId();
+        if(userId.equals("system") || userId.equals("admin") || userId.equals("gjjsmain")){
+            return "管理员不能进行投票";
+        }
         if (StringUtils.isEmpty(optionIds)) {
             return "投票失败，未选择参评人";
         }
-        LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
-        String userId = login.getId();
         //查询当前项目下是否投过票。 0:草稿可多次保存   1:已投票-每项只能保存一次
         ReviewTermAnswer select = new ReviewTermAnswer();
         select.setUserId(userId);

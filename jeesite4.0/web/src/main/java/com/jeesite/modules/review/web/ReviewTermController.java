@@ -5,14 +5,14 @@ package com.jeesite.modules.review.web;
 
 import com.jeesite.common.config.Global;
 import com.jeesite.common.entity.Page;
+import com.jeesite.common.lang.DateUtils;
 import com.jeesite.common.lang.StringUtils;
+import com.jeesite.common.utils.excel.ExcelExport;
 import com.jeesite.common.web.BaseController;
-import com.jeesite.modules.review.entity.RankVo;
-import com.jeesite.modules.review.entity.ReviewTerm;
-import com.jeesite.modules.review.entity.UserRateVo;
-import com.jeesite.modules.review.entity.VoteInfoVo;
+import com.jeesite.modules.review.entity.*;
 import com.jeesite.modules.review.service.ReviewTermService;
 import com.jeesite.modules.sys.entity.Office;
+import com.jeesite.modules.sys.utils.DictUtils;
 import com.jeesite.modules.sys.utils.EmpUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -120,10 +121,39 @@ public class ReviewTermController extends BaseController {
         voteInfoVo.setPageNo(page.getPageNo());
         voteInfoVo.setPageSize(page.getPageSize());
         voteInfoVo.setStart((page.getPageNo() - 1) * page.getPageSize());
-        voteInfoVo.setEnd(page.getPageNo() * page.getPageSize());
+//        voteInfoVo.setEnd(page.getPageNo() * page.getPageSize());
+        voteInfoVo.setEnd(Integer.MAX_VALUE);
         page.setList(reviewTermService.listVoteData(voteInfoVo));
         page.setCount(reviewTermService.listVoteDataCount(voteInfoVo));
         return page;
+    }
+
+    /**
+     * 导出个人投票情况数据
+     */
+    @RequiresPermissions({"review:reviewTerm:view"})
+    @RequestMapping({"exportListVoteData"})
+    public void exportData(VoteInfoVo voteInfoVo, HttpServletResponse response){
+        voteInfoVo.setStart(0);
+        voteInfoVo.setEnd(Integer.MAX_VALUE);
+        List<Map<String, Object>> list =reviewTermService.listVoteData(voteInfoVo);
+        VoteInfoExportVo vo;
+        for(Map<String,Object> m: list){
+            vo = new VoteInfoExportVo();
+            vo.setOfficeName(String.valueOf(m.get("office_name")));
+            vo.setUserName(String.valueOf(m.get("user_name")));
+            vo.setGanbu(DictUtils.getDictLabel("term_option",String.valueOf(m.get("ganbu")),"已投票"));
+
+        }
+        String fileName = "投票情况" + DateUtils.getDate("yyyyMMddHHmmss") + ".xlsx";
+        ExcelExport ee = new ExcelExport("用户数据", VoteInfoExportVo.class); Throwable localThrowable3 = null;
+        try { ee.setDataList(list).write(response, fileName); }
+        catch (Throwable localThrowable1)
+        {
+            localThrowable3 = localThrowable1; throw localThrowable1;
+        } finally {
+            if (ee != null) if (localThrowable3 != null) try { ee.close(); } catch (Throwable localThrowable2) { localThrowable3.addSuppressed(localThrowable2); } else ee.close();
+        }
     }
 
     /**
