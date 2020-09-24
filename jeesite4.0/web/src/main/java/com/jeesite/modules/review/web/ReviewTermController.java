@@ -3,6 +3,7 @@
  */
 package com.jeesite.modules.review.web;
 
+import com.jeesite.common.collect.ListUtils;
 import com.jeesite.common.config.Global;
 import com.jeesite.common.entity.Page;
 import com.jeesite.common.lang.DateUtils;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -137,17 +139,23 @@ public class ReviewTermController extends BaseController {
         voteInfoVo.setStart(0);
         voteInfoVo.setEnd(Integer.MAX_VALUE);
         List<Map<String, Object>> list =reviewTermService.listVoteData(voteInfoVo);
+        List<VoteInfoExportVo> exportList = new ArrayList<>();
         VoteInfoExportVo vo;
         for(Map<String,Object> m: list){
             vo = new VoteInfoExportVo();
             vo.setOfficeName(String.valueOf(m.get("office_name")));
             vo.setUserName(String.valueOf(m.get("user_name")));
             vo.setGanbu(DictUtils.getDictLabel("term_option",String.valueOf(m.get("ganbu")),"已投票"));
-
+            vo.setChuzhang(DictUtils.getDictLabel("term_option",String.valueOf(m.get("chuzhang")),"已投票"));
+            vo.setChushi(DictUtils.getDictLabel("term_option",String.valueOf(m.get("chushi")),"已投票"));
+            exportList.add(vo);
         }
+        List elist = ListUtils.newArrayList(exportList);
+
         String fileName = "投票情况" + DateUtils.getDate("yyyyMMddHHmmss") + ".xlsx";
-        ExcelExport ee = new ExcelExport("用户数据", VoteInfoExportVo.class); Throwable localThrowable3 = null;
-        try { ee.setDataList(list).write(response, fileName); }
+        ExcelExport ee = new ExcelExport("投票情况", VoteInfoExportVo.class);
+        Throwable localThrowable3 = null;
+        try { ee.setDataList(elist).write(response, fileName); }
         catch (Throwable localThrowable1)
         {
             localThrowable3 = localThrowable1; throw localThrowable1;

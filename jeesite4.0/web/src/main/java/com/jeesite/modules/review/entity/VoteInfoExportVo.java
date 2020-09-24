@@ -3,7 +3,21 @@
  */
 package com.jeesite.modules.review.entity;
 
+import com.jeesite.common.utils.excel.annotation.ExcelFields;
+
 public class VoteInfoExportVo {
+
+    @ExcelFields({@com.jeesite.common.utils.excel.annotation.ExcelField(title = "参评单位", attrName = "officeName", align = com.jeesite.common.utils.excel.annotation.ExcelField.Align.CENTER, sort = 30),
+            @com.jeesite.common.utils.excel.annotation.ExcelField(title = "投票人", attrName = "userName", align = com.jeesite.common.utils.excel.annotation.ExcelField.Align.CENTER, sort = 40),
+            @com.jeesite.common.utils.excel.annotation.ExcelField(title = "先进干部", attrName = "ganbu", align = com.jeesite.common.utils.excel.annotation.ExcelField.Align.LEFT, sort = 50),
+            @com.jeesite.common.utils.excel.annotation.ExcelField(title = "先进处长", attrName = "chuzhang", align = com.jeesite.common.utils.excel.annotation.ExcelField.Align.CENTER, sort = 60),
+            @com.jeesite.common.utils.excel.annotation.ExcelField(title = "先进处室", attrName = "chushi", align = com.jeesite.common.utils.excel.annotation.ExcelField.Align.CENTER, sort = 70)})
+    public VoteInfoExportVo getVoteInfoExportVo(VoteInfoExportVo vo) {
+        return vo;
+    }
+
+
+    private static final long serialVersionUID = 1L;
 
     private String officeName;// 参评单位
     private String userName;// 投票人
