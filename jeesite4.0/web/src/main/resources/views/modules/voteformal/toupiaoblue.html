@@ -31,27 +31,27 @@
     <link rel="stylesheet" href="${ctxStatic}/css/dianxing02.css">
     <style type="text/css">
         table.gridtable {
-            width: 360px;
+            width: 100%;
             font-family: verdana, arial, sans-serif;
             font-size: 11px;
             color: #333333;
             border-width: 1px;
-            border-color: #666666;
+            border-color: #E6E6E6;
             border-collapse: collapse;
         }
         table.gridtable th {
             border-width: 1px;
             padding: 8px;
             border-style: solid;
-            border-color: #666666;
-            background-color: #dedede;
+            border-color: #E6E6E6;
+            background-color: #F2F2F2;
         }
         table.gridtable td {
             text-align: center;
             border-width: 1px;
             padding: 8px;
             border-style: solid;
-            border-color: #666666;
+            border-color: #E6E6E6;
             background-color: #ffffff;
         }
     </style>
@@ -77,7 +77,7 @@
     <div class="bd-jz">
         <div class="biaodan">
             <div class="bd-wz01" id="name_div"> 姓名：</div>
-            <input name="keywords" id="name_input" type="text" id="select_name" placeholder="请输入姓名" class="input001" size="18"/>
+            <input name="keywords" type="text" id="select_name" placeholder="请输入姓名" class="input001" size="18"/>
         </div>
         <div class="biaodan">
             <div class="bd-wz01"> 所在厅局：</div>
@@ -124,20 +124,28 @@
 
 </div>
 <!--查看结果-->
-<div id="result_div" style="display: none;">
-    <div style="position:absolute;right: 1%;top: 1%;" align="right">
-        <a href="javascript:void(0)" onclick="goBack()" style="color: #ffffff">返回上一页</a>
-    </div>
-    <div class="sy-title"><p>预选票</p></div>
-    <div class="content">
-        <div id="content">
-            <ul class="houxuan" id="hacChecked">
+<div id="result_div" style="display: none;margin-top: -22px;">
+<!--    <div class="sy-title"><p>预选票</p></div>-->
+<!--    <div class="content">-->
+<!--        <div id="content">-->
+<!--            <ul class="houxuan" id="hacChecked">-->
 
-            </ul>
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
+    <div class="content" style="width: 100%;">
+        <div class="title02"><p>已选投票</p></div>
+        <div class="buju" style="width: 1000px;">
+            <table class="gridtable" id="hacChecked">
+
+            </table>
         </div>
     </div>
+    <div style="position:absolute;right: 2%;font-size: 15px;" align="right">
+        <a href="javascript:void(0)" onclick="goBack()" style="color: #ffffff">返回上一页</a>
+    </div>
 </div>
-<div class="footer01"><p>技术支持：黑龙江东北网络台</p></div>
+<div class="footer01"><p>技术支持：国家统计局黑龙江调查总队</p></div>
       <script>
       function clickThisBox(id) {
           if ($("#" + id + "_box").is(':checked')) {
@@ -615,7 +623,8 @@
     }
 
       function getNames() {
-          var tableHtml = "";
+          var tableHtml = "<tr><th>单位</th><th>姓名</th><th>职务</th><th></th></tr>";
+          // var tableHtml = "";
           var cart = '';
           if(checkValues && checkValues[0]){
               for(var i = 0 ; i< checkValues.length ; i++){
@@ -631,6 +640,28 @@
           if(cart.endsWith(",")){
               cart.substr(0,cart.length-1);
           }
+          // $.ajax({
+          //     type: "POST",
+          //     url: "${ctx}/vote/formal/getHasChecked",
+          //     data: {
+          //         'optionIds': cart
+          //     },
+          //     dataType: "json",
+          //     success: function (data) {
+          //         if(data && data[0]){
+          //             $.each(data, function (index, ele) {
+          //                 if (ele) {
+          //                     if(termType == '3'){
+          //                         tableHtml += '<li style="background-color:#0059ab;"><a href="javascript:void(0)" target="_blank"><div class="touxiang"><input type="checkbox" '+isisTouPiao+' checked onclick="toDelOption(\''+ele.id+'\',\''+ele.office_code+'\',\''+ele.term_id+'\')" style="cursor:pointer;zoom:200%;"/></div><div class="nr" align="center"><p>'+ele.option_name+'</p></div></a></li>';
+          //                     }else{
+          //                         tableHtml += '<li style="background-color:#0059ab;"><a href="javascript:void(0)" target="_blank"><div class="touxiang"><input type="checkbox" '+isisTouPiao+' checked onclick="toDelOption(\''+ele.id+'\',\''+ele.office_code+'\',\''+ele.term_id+'\')" style="cursor:pointer;zoom:200%;"/></div><div class="nr"><p style="font-size:18px;line-height:18px">'+ele.option_name+'</p><span style="padding-left:6px;">'+ele.office_name+'</span></div></a></li>';
+          //                     }
+          //                 }
+          //             });
+          //         }
+          //         $("#hacChecked").html(tableHtml);
+          //     }
+          // });
           $.ajax({
               type: "POST",
               url: "${ctx}/vote/formal/getHasChecked",
@@ -642,11 +673,7 @@
                   if(data && data[0]){
                       $.each(data, function (index, ele) {
                           if (ele) {
-                              if(termType == '3'){
-                                  tableHtml += '<li style="background-color:#0059ab;"><a href="javascript:void(0)" target="_blank"><div class="touxiang"><input type="checkbox" '+isisTouPiao+' checked onclick="toDelOption(\''+ele.id+'\',\''+ele.office_code+'\',\''+ele.term_id+'\')" style="cursor:pointer;zoom:200%;"/></div><div class="nr" align="center"><p>'+ele.option_name+'</p></div></a></li>';
-                              }else{
-                                  tableHtml += '<li style="background-color:#0059ab;"><a href="javascript:void(0)" target="_blank"><div class="touxiang"><input type="checkbox" '+isisTouPiao+' checked onclick="toDelOption(\''+ele.id+'\',\''+ele.office_code+'\',\''+ele.term_id+'\')" style="cursor:pointer;zoom:200%;"/></div><div class="nr"><p style="font-size:18px;line-height:18px">'+ele.option_name+'</p><span style="padding-left:6px;">'+ele.office_name+'</span></div></a></li>';
-                              }
+                              tableHtml += '<tr><td>'+ele.office_name+'</td><td>'+ele.option_name+'</td><td>'+ele.position+'</td><td style="cursor: pointer; color: #ffa200;" onclick="toDelOption(\''+ele.id+'\',\''+ele.office_code+'\',\''+ele.term_id+'\',this)">取消</td></tr>';
                           }
                       });
                   }
@@ -655,12 +682,22 @@
           });
       }
 
-      function toDelOption(delId,officeCode,termId) {
+      function toDelOption(delId,officeCode,termId,obj) {
+        if(isisTouPiao == "disabled"){
+            layer.msg('取消投票', {time: 2000, });
+            return "已经投过票了，不能取消";
+        }
           //先调一下定位-展开列表之后在取消选择
           dingwei(officeCode,termId);
           setTimeout(function () {
               $("#"+delId+"_box").click();
-          },1500);
+              var textDesc = $(obj).text();
+              if(textDesc == '取消'){
+                  $(obj).text("投票");
+              }else{
+                  $(obj).text("取消");
+              }
+          },1600);
       }
 
     function getXfHtml(info,first,second) {
@@ -810,10 +847,10 @@
         var termType = getSearchType();
         if('3' == termType){
             $("#name_div").html("处室名称：");
-            $("#name_input").attr("placeholder","请输入处室名称");
+            $("#select_name").attr("placeholder","请输入处室名称");
         }else{
             $("#name_div").html("姓名：");
-            $("#name_input").attr("placeholder","请输入姓名");
+            $("#select_name").attr("placeholder","请输入姓名");
         }
         var h = $("#floatleft").offset().top;
         $("#loadingDiv").show();

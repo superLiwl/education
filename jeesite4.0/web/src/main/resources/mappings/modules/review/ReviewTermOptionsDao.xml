@@ -55,11 +55,14 @@
 	</select>
 
 	<select id="getHasChecked" resultType="map">
-		SELECT o.id,o.term_id,o.option_name,o.position,t.office_code,t.office_name FROM `review_term_options` o LEFT JOIN review_term t ON t.id = o.term_id
+		SELECT o.id,o.term_id,o.option_name,o.position,t.office_code,t.office_name FROM `review_term_options` o
+		LEFT JOIN review_term t ON t.id = o.term_id
+		LEFT JOIN js_sys_office s ON s.office_code = t.office_code
 		WHERE o.id in
 		<foreach collection="optionIds" item="id" index="index" open="(" close=")" separator=",">
 			#{id}
 		</foreach>
+		ORDER BY s.tree_sort ASC
 	</select>
 
 </mapper>

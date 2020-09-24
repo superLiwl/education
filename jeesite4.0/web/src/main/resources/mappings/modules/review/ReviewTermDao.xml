@@ -4,7 +4,11 @@
 
 	<select id="listRankData" resultType="map">
 		SELECT o.id,o.option_name,o.position,t.office_name,t.review_name,
-		(SELECT IFNULL(sum(IFNULL((SELECT r.rate FROM review_term_user_rate r WHERE r.user_id = a.user_id),100))/100,0) FROM review_term_answer a WHERE a.option_id = o.id AND a.vote_status = '1') answerCount
+		(SELECT IFNULL(sum(IFNULL((SELECT r.rate FROM review_term_user_rate r WHERE r.user_id = a.user_id),100))/100,0) FROM review_term_answer a WHERE a.option_id = o.id AND a.vote_status = '1') answerCount,
+		(SELECT IFNULL(sum(IFNULL((SELECT r.rate FROM review_term_user_rate r WHERE r.user_id = a.user_id),100))/100,0) FROM review_term_answer a WHERE a.option_id = o.id AND a.vote_status = '1'
+			and a.user_id in (SELECT u.user_code FROM `js_sys_employee`e LEFT JOIN js_sys_user u ON u.ref_code = e.emp_code LEFT JOIN js_sys_office o ON o.office_code = e.office_code WHERE o.office_type = '2')) xsCount,
+		(SELECT IFNULL(sum(IFNULL((SELECT r.rate FROM review_term_user_rate r WHERE r.user_id = a.user_id),100))/100,0) FROM review_term_answer a WHERE a.option_id = o.id AND a.vote_status = '1'
+			and a.user_id in (SELECT u.user_code FROM `js_sys_employee`e LEFT JOIN js_sys_user u ON u.ref_code = e.emp_code LEFT JOIN js_sys_office o ON o.office_code = e.office_code WHERE o.office_type = '1')) tjCount
 		FROM `review_term_options` o LEFT JOIN review_term t ON t.id = o.term_id
 		<where>
 			<if test="termType != null and termType != '' ">
