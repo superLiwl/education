@@ -33,7 +33,7 @@
         table.gridtable {
             width: 100%;
             font-family: verdana, arial, sans-serif;
-            font-size: 11px;
+            font-size: 16px;
             color: #333333;
             border-width: 1px;
             border-color: #E6E6E6;
@@ -59,6 +59,7 @@
 <body style="background:url(${ctxStatic}/images/bg.jpg) repeat-y center;">
 <div id="toupiao_div">
 <div style="position:absolute;right: 1%;top: 1%" align="right">
+    <a href="${ctx}/vote/formal/gongshi" style="color: #ffffff;font-size: 12px;">返回</a>
     <a href="javascript:void(0)"  style="color: #ffffff;font-size: 12px;" id="userName_div"></a>
     <a href="${ctx}/index#/vote/a/sys/user/info?op=pwd" style="color: #ffffff;font-size: 12px;">修改密码</a>
     <a href="${ctx}/logout" style="color: #ffffff;font-size: 12px;">退出登录</a>
@@ -133,9 +134,9 @@
 <!--            </ul>-->
 <!--        </div>-->
 <!--    </div>-->
-    <div style="position:absolute;right: 1%;top: 1%" align="right">
-        <a href="javascript:void(0)" onclick="goBack()" style="color: #ffffff;font-size: 12px;">返回上一页</a>
-    </div>
+<!--    <div style="position:absolute;right: 1%;top: 1%" align="center">-->
+<!--        <a href="javascript:void(0)" onclick="goBack()" style="color: #ffffff;font-size: 12px;">返回上一页</a>-->
+<!--    </div>-->
     <div class="content" style="width: 1200px;margin-top:5%;">
         <div class="title02"><p>已选投票</p></div>
         <div class="buju" style="width: 1000px;">
@@ -143,10 +144,10 @@
 
             </table>
         </div>
+        <div align="center">
+            <a href="javascript:void(0)" onclick="goBack()" style="color: red;font-size: 18px;">返回上一页</a>
+        </div>
     </div>
-<!--    <div style="position:absolute;right: 2%;font-size: 15px;" align="right">-->
-<!--        <a href="javascript:void(0)" onclick="goBack()" style="color: #ffffff">返回上一页</a>-->
-<!--    </div>-->
 </div>
 <div class="footer01"><p>技术支持：国家统计局黑龙江调查总队</p></div>
       <script>
@@ -516,9 +517,9 @@
             target = 'target="_blank"';
         }
         if(tremClass.endsWith("处室")){
-            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+'  id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr" align="center"><p>'+info.option_name+'&nbsp;</p></div></a></li>';
+            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+'  id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size: 22px;line-height: 35px;padding-left: 11px;">'+info.option_name+'&nbsp;</p></div></a></li>';
         }else{
-            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+' id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size:18px;line-height:18px;padding-left:15px;">'+info.option_name+'&nbsp;</p><span title="'+info.position+'" style="padding-left:15px;">'+info.position+'</span></div></a></li>';
+            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+' id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size:18px;line-height:18px;padding-left:12px;">'+info.option_name+'&nbsp;</p><span title="'+info.position+'" style="padding-left:12px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">'+info.position+'</span></div></a></li>';
         }
     }
     //选择的数据
@@ -626,7 +627,12 @@
     }
 
       function getNames() {
-          var tableHtml = "<tr><th>单位</th><th>姓名</th><th>职务</th><th></th></tr>";
+        var titleDesc="姓名";
+        var termType = getSearchType();
+        if(termType == '3'){
+            titleDesc="处室名称";
+        }
+          var tableHtml = "<tr><th>单位</th><th>"+titleDesc+"</th><th></th></tr>";
           // var tableHtml = "";
           var cart = '';
           if(checkValues && checkValues[0]){
@@ -676,7 +682,7 @@
                   if(data && data[0]){
                       $.each(data, function (index, ele) {
                           if (ele) {
-                              tableHtml += '<tr><td>'+ele.office_name+'</td><td>'+ele.option_name+'</td><td>'+ele.position+'</td><td style="cursor: pointer; color: #ffa200;" onclick="toDelOption(\''+ele.id+'\',\''+ele.office_code+'\',\''+ele.term_id+'\',this)">取消</td></tr>';
+                              tableHtml += '<tr><td>'+ele.office_name+'</td><td>'+ele.option_name+'</td><td style="cursor: pointer; color: #ffa200;" onclick="toDelOption(\''+ele.id+'\',\''+ele.office_code+'\',\''+ele.term_id+'\',this)">取消</td></tr>';
                           }
                       });
                   }
@@ -730,7 +736,7 @@
             return;
         }
         //询问是否投票
-        layer.confirm('慎重选择，提交后不可更改!', {
+        layer.confirm('请慎重选择，提交后将不可更改。', {
             btn: ['确定','取消'] //按钮
         }, function(){
             var optionIds = "";
@@ -750,7 +756,7 @@
                 dataType: "text",
                 success: function (data) {
                     if(data == '投票成功'){
-                        layer.confirm(data, {
+                        layer.confirm(data+"！", {
                             btn: ['继续投票','退出登录'] //按钮
                         }, function(){
                             toUrlAction('${ctx}/vote/formal/gongshi');
