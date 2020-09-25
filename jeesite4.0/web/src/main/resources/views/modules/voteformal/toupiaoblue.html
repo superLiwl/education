@@ -114,7 +114,7 @@
     <p onclick="toStorage()" style="position:absolute;text-align:center;font-size:14px;background-color:#0059ab;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:350px;bottom:22px;border-radius:30px;cursor: pointer;">
         <a style=" color:#fff;" href="javascript:void(0)">预选</a>
     </p>
-    <p onclick="toSubmit()" style="position:absolute;text-align:center;font-size:14px;background-color:#0059ab;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:650px;bottom:22px;border-radius:30px;cursor: pointer;">
+    <p onclick="inputNo()" style="position:absolute;text-align:center;font-size:14px;background-color:#0059ab;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:650px;bottom:22px;border-radius:30px;cursor: pointer;">
         <a style=" color:#fff;" href="javascript:void(0)">确认投票</a>
     </p>
 </div>
@@ -714,6 +714,42 @@
                       '<p onclick="openCart()" style="text-align:center;font-size:14px;color:#cc1c1e;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+second+'px;border-bottom:1px dashed #333;padding-bottom:4px;"><span id="'+info.tremClass+'">'+info.hasOptionCount+'</span>/<span id="'+info.tremClass+'_gd">'+info.allOptionCount+'票</span></p>';
         return xfHtml;
     }
+      var sfzNo = '';
+      function inputNo() {
+          layer.open({
+              id:1,
+              type: 1,
+              title:'请输入身份证号',
+              style: 'width:100%;height:auto;',
+              content: "<div style='display:flex;justify-content:center;'><input id='area' style='width:190px;height: 35px;font-size: 18px;' value='"+sfzNo+"'/></div>",
+              btn:['确定','取消'],
+              yes:function (index,layero) {
+                  //获取输入框里面的值
+                  var no = top.$("#area").val() || $("#area").val();
+                  if(!no){
+                      layer.msg('请输入身份证号！', {time: 2000, });
+                      return;
+                  }else{
+                      sfzNo = no;
+                      if(isCard(sfzNo)){
+                          //开始保存数据
+                          layer.close(index);
+                          toSubmit();
+                      }else{
+                          layer.msg('身份证号输入错误！', {time: 2000, });
+                      }
+                  }
+              },
+              no:function (index,layero) {
+                  layer.close(index);
+              }
+          });
+      }
+
+      function isCard(str) {
+          var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+          return reg.test(str);
+      }
 
     function toSubmit() {
         var termType = getSearchType();
