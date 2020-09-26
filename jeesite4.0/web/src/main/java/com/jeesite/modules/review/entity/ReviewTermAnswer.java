@@ -20,6 +20,7 @@ import org.hibernate.validator.constraints.Length;
         @Column(name = "option_id", attrName = "optionId", label = "投票答案"),
         @Column(name = "review_name", attrName = "reviewName", label = "投票项类型"),
         @Column(name = "vote_status", attrName = "voteStatus", label = "投票状态(0-草稿，1-已投票)"),
+        @Column(name = "sfz_no", attrName = "sfzNo", label = "身份证号"),
 }, orderBy = "a.id DESC"
 )
 public class ReviewTermAnswer extends DataEntity<ReviewTermAnswer> {
@@ -29,6 +30,7 @@ public class ReviewTermAnswer extends DataEntity<ReviewTermAnswer> {
     private String optionId;        // 投票答案
     private String reviewName;        // 投票项类型
     private String voteStatus;        // 投票状态(0-草稿，1-已投票)
+    private String sfzNo;        // 身份证号
 
     public ReviewTermAnswer() {
         this(null);
@@ -72,5 +74,14 @@ public class ReviewTermAnswer extends DataEntity<ReviewTermAnswer> {
 
     public void setVoteStatus(String voteStatus) {
         this.voteStatus = voteStatus;
+    }
+
+    @Length(min = 0, max = 20, message = "身份证号长度不能超过 20 个字符")
+    public String getSfzNo() {
+        return sfzNo;
+    }
+
+    public void setSfzNo(String sfzNo) {
+        this.sfzNo = sfzNo;
     }
 }

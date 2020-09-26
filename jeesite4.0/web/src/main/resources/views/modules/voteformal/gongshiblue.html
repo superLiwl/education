@@ -15,7 +15,7 @@
     <a href="${ctx}/index#/vote/a/sys/user/info?op=pwd" style="color: #ffffff;font-size: 12px;">修改密码</a>
     <a href="${ctx}/logout" style="color: #ffffff;font-size: 12px;">退出登录</a>
   </div>
-  <div class="datou-annu">
+  <div class="datou-annu" align="center">
     <div class="datou-b" id="cs_div" style="display: none;">
       <a href="${ctx}/vote/formal/toupiaoblue?type=3" id="cs_a" target="_top"><img src="${ctxStatic}/images/cs.png" width="100%"/></a>
     </div>
@@ -23,7 +23,7 @@
       <a href="${ctx}/vote/formal/toupiaoblue?type=2" id="cz_a" target="_top"><img src="${ctxStatic}/images/cz.png" width="100%"/></a>
     </div>
     <div class="datou-b" id="ganbu_div" style="display: none;">
-      <a href="${ctx}/vote/formal/toupiaoblue?type=1" target="_top"><img src="${ctxStatic}/images/gb.png" width="100%"/></a>
+      <a href="${ctx}/vote/formal/toupiaoblue?type=1" id="gb_a" target="_top"><img src="${ctxStatic}/images/gb.png" width="100%"/></a>
     </div>
   </div>
 </div>
@@ -41,8 +41,8 @@
             $("#cz_div").show();
             $("#cs_div").show();
             //设置居中
-            $("#cz_a").attr("style","margin-left:200px;");
-            $("#cs_a").attr("style","margin-left:200px;");
+            $("#cs_div").attr("style","margin-left:200px;");
+            $("#cz_div").attr("style","margin-left:100px;");
           }else{
             $("#gb_img").show();
             $("#cz_div").show();

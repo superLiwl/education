@@ -727,16 +727,25 @@
                   //获取输入框里面的值
                   var no = top.$("#area").val() || $("#area").val();
                   if(!no){
-                      layer.msg('请输入身份证号！', {time: 2000, });
+                      layer.msg('请输入身份证号！', {time: 1500 });
+                      setTimeout(function () {
+                          inputNo();
+                      },1600);
                       return;
                   }else{
                       sfzNo = no;
+                      toSubmit();
+                      return;
                       if(isCard(sfzNo)){
                           //开始保存数据
                           layer.close(index);
                           toSubmit();
                       }else{
-                          layer.msg('身份证号输入错误！', {time: 2000, });
+                          layer.msg('身份证号输入错误！', {time: 1500});
+                          setTimeout(function () {
+                              inputNo();
+                          },1600);
+                          return;
                       }
                   }
               },
@@ -787,7 +796,8 @@
                 data: {
                     'optionIds':optionIds,
                     'termType':termType,
-                    'voteStatus':'1'
+                    'voteStatus':'1',
+                    'sfzNo':sfzNo
                 },
                 dataType: "text",
                 success: function (data) {
@@ -844,7 +854,8 @@
                 data: {
                     'optionIds':optionIds,
                     'termType':termType,
-                    'voteStatus':'0'
+                    'voteStatus':'0',
+                    'sfzNo':sfzNo
                 },
                 dataType: "text",
                 success: function (data) {
@@ -911,6 +922,11 @@
     }
 
     function toSearch() {
+        var termType = getSearchType();
+        var nameDesc = '姓名';
+        if('3' == termType){
+            nameDesc = '处室名称';
+        }
         var select_office= $("#select_office").val();
         var select_name= $("#select_name").val();
         var radioVal= $('input:radio:checked').val();
@@ -919,7 +935,7 @@
             return;
         }
         if(!select_name){
-            layer.msg('请填写姓名', {time: 1500, });
+            layer.msg('请填写'+nameDesc, {time: 1500, });
             return;
         }
         if(!radioVal){
@@ -937,15 +953,17 @@
             dataType: "json",
             success: function (data) {
                 if(data && data[0]){
-                    var tsMsg = '<table class="gridtable">'
-                              + '<tr><th>姓名</th><th>组织</th><th>职位</th><th>定位</th></tr>';
+                    var tsMsg = '<table class="gridtable" style="width: 360px;">'
+                              // + '<tr><th>组织</th><th>'+nameDesc+'</th><th>职位</th><th>定位</th></tr>';
+                              + '<tr><th>组织</th><th>'+nameDesc+'</th><th>定位</th></tr>';
                     var toIndex = '';
                     $.each(data, function (index, ele) {
                         if (ele) {
                             if(index == 0){
                                 toIndex = ele.term_id;
                             }
-                            tsMsg +='<tr><td>'+ele.option_name+'</td><td>'+ele.office_name+'</td><td>'+ele.position+'</td><td style="cursor: pointer; color: #ffa200;" onclick="dingwei(\''+select_office+'\',\''+ele.term_id+'\')">定位</td></tr>';
+                            // tsMsg +='<tr><td>'+ele.option_name+'</td><td>'+ele.office_name+'</td><td>'+ele.position+'</td><td style="cursor: pointer; color: #ffa200;" onclick="dingwei(\''+select_office+'\',\''+ele.term_id+'\')">定位</td></tr>';
+                            tsMsg +='<tr><td>'+ele.office_name+'</td><td>'+ele.option_name+'</td><td style="cursor: pointer; color: #ffa200;" onclick="dingwei(\''+select_office+'\',\''+ele.term_id+'\')">定位</td></tr>';
                         }
                     });
                     tsMsg +="</table>"
@@ -967,7 +985,11 @@
                         dingwei(select_office,toIndex);
                     }
                 }else{
-                    layer.alert("未查询到符合条件的人");
+                    if('3' == termType){
+                        layer.alert("未查询到符合条件的处室");
+                    }else{
+                        layer.alert("未查询到符合条件的人");
+                    }
                 }
             }
         });

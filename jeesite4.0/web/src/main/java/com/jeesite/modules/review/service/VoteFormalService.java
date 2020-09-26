@@ -45,7 +45,7 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
      * 根据组织编码获取下边的投票项与参评人
      */
     @Transactional(readOnly = false)
-    public List<Map<String, Object>> getReviewTermListByOfficeCode(String officeCode,String termType) {
+    public List<Map<String, Object>> getReviewTermListByOfficeCode(String officeCode, String termType) {
         Map<String, Object> params = new HashMap<>();
         params.put("officeCode", officeCode);
         params.put("termType", termType);
@@ -74,7 +74,7 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
         String userId = login.getId();
         List<Map<String, Object>> resultList = new ArrayList<>();
         Map<String, Object> paramsMap = new HashMap<>();
-        paramsMap.put("termType",termType);
+        paramsMap.put("termType", termType);
         List<String> classList = reviewTermOptionsDao.getTremClass(paramsMap);
         if (null != classList && !classList.isEmpty() && classList.size() > 0) {
             Map<String, Object> params;
@@ -104,14 +104,17 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
      * 确定投票
      */
     @Transactional(readOnly = false)
-    public String submitAnswer(String optionIds,String termType,String voteStatus) {
+    public String submitAnswer(String optionIds, String termType, String voteStatus, String sfzNo) {
         LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
         String userId = login.getId();
-        if(userId.equals("system") || userId.equals("admin") || userId.equals("gjjsmain")){
+        if (userId.equals("system") || userId.equals("admin") || userId.equals("gjjsmain")) {
             return "管理员不能进行投票";
         }
         if (StringUtils.isEmpty(optionIds)) {
             return "投票失败，未选择参评人";
+        }
+        if ("1".equals(voteStatus) && StringUtils.isEmpty(sfzNo)) {
+            return "投票失败，身份证号为空";
         }
         //查询当前项目下是否投过票。 0:草稿可多次保存   1:已投票-每项只能保存一次
         ReviewTermAnswer select = new ReviewTermAnswer();
@@ -119,7 +122,7 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
         select.setReviewName(termType);
         select.setVoteStatus("1");//已投票
         Long count = reviewTermAnswerDao.findCount(select);
-        if(count > 0){
+        if (count > 0) {
             return "已经投过票了";
         }
 
@@ -134,6 +137,7 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
                 answer.setReviewName(termType);
                 answer.setVoteStatus(voteStatus);
                 answer.setId(UUID.randomUUID().toString());
+                answer.setSfzNo(sfzNo);
                 list.add(answer);
             }
         }
@@ -167,20 +171,20 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
      */
     @Transactional(readOnly = false)
     public List<Map<String, Object>> getHasChecked(String optionIds) {
-        if(null == optionIds || "".equals(optionIds) || "undefined".equals(optionIds)){
+        if (null == optionIds || "".equals(optionIds) || "undefined".equals(optionIds)) {
             return null;
         }
         List<String> list = new ArrayList<>();
-        if(optionIds.contains(",")){
+        if (optionIds.contains(",")) {
             String arry[] = optionIds.split(",");
-            for (String s : arry){
+            for (String s : arry) {
                 list.add(s);
             }
-        }else{
+        } else {
             list.add(optionIds);
         }
         Map<String, Object> params = new HashMap<>();
-        params.put("optionIds",list);
+        params.put("optionIds", list);
         return reviewTermOptionsDao.getHasChecked(params);
     }
 

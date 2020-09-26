@@ -134,8 +134,8 @@ public class VoteFormalController extends BaseController {
      */
     @RequestMapping(value = "submitAnswer")
     @ResponseBody
-    public String submitAnswer(String optionIds, String termType, String voteStatus) {
-        return voteFormalService.submitAnswer(optionIds, termType, voteStatus);
+    public String submitAnswer(String optionIds, String termType, String voteStatus, String sfzNo) {
+        return voteFormalService.submitAnswer(optionIds, termType, voteStatus, sfzNo);
     }
 
     /**
