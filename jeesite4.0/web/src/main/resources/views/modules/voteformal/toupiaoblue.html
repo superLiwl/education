@@ -165,7 +165,6 @@
               $("#" + id).attr("class", "radio-btn");
               $("#" + id + "_box").removeAttr('checked');
           } else {
-
               //将其他已经选中的重置成未选中
               reSetOther(id);
           }
@@ -526,9 +525,9 @@
             target = 'target="_blank"';
         }
         if(tremClass.endsWith("处室")){
-            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+'  id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size: 22px;line-height: 35px;padding-left: 11px;">'+info.option_name+'&nbsp;</p></div></a></li>';
+            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+'  id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size: 16px;line-height: 35px;padding-left: 11px;">'+info.option_name+'</p></div></a></li>';
         }else{
-            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+' id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size:18px;line-height:18px;padding-left:12px;">'+info.option_name+'&nbsp;</p><span title="'+info.position+'" style="padding-left:12px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">'+info.position+'</span></div></a></li>';
+            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+' id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size:18px;line-height:18px;padding-left:12px;">'+info.option_name+'</p><span title="'+info.position+'" style="padding-left:12px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">'+info.position+'</span></div></a></li>';
         }
     }
     //选择的数据
@@ -628,6 +627,7 @@
         $("#toupiao_div").hide();
         getNames();
         $("#result_div").show();
+        submitAnswerAction();
     }
 
     function goBack() {
@@ -724,9 +724,10 @@
 
       function toDelOption(delId,officeCode,termId,obj) {
         if(isisTouPiao == "disabled"){
-            layer.msg('取消投票', {time: 2000, });
-            return "已经投过票了，不能取消";
+            layer.msg('已经投过票了，不能取消', {time: 2000, });
+            return
         }
+          layer.load();
           //先调一下定位-展开列表之后在取消选择
           dingwei(officeCode,termId);
           setTimeout(function () {
@@ -737,6 +738,11 @@
               }else{
                   $(obj).text("取消");
               }
+              //保存预选信息
+              setTimeout(function () {
+                  submitAnswerAction();
+                  layer.closeAll();
+              },1000);
           },1600);
       }
 
@@ -868,11 +874,11 @@
     }
 
     function toStorage() {
-        var termType = getSearchType();
         //询问是否投票
         layer.confirm('预选信息，投票不会生效!', {
             btn: ['确定','取消'] //按钮
         }, function(){
+            var termType = getSearchType();
             var optionIds = "";
             $.each(checkValues,function(index,ele){
                 if(ele){
@@ -891,12 +897,11 @@
                 dataType: "text",
                 success: function (data) {
                     if(data == '投票成功'){
-                       layer.alert("预选成功");
+                        layer.alert("预选成功");
                     }else{
                         var alertMsg = data.replace('投票','预选');
                         layer.alert(alertMsg);
                     }
-
                 },
                 fail:function (data) {
                     layer.alert("预选失败，请再次点击");
@@ -905,7 +910,33 @@
         }, function(){
             layer.msg('取消预选', {time: 2000, });
         });
+    }
 
+    function submitAnswerAction() {
+        var termType = getSearchType();
+        var optionIds = "";
+        $.each(checkValues,function(index,ele){
+            if(ele){
+                optionIds += ele+',';
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/submitAnswer",
+            data: {
+                'optionIds':optionIds,
+                'termType':termType,
+                'voteStatus':'0',
+                'sfzNo':sfzNo
+            },
+            dataType: "text",
+            success: function (data) {
+
+            },
+            fail:function (data) {
+
+            }
+        });
     }
 
     function getAllAnswer() {

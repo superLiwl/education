@@ -4,6 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <title>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</title>
   <script type="text/javascript" src="${ctxStatic}/js/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="${ctxStatic}/layer/3.1/layer.js"></script>
   <link rel="stylesheet" href="${ctxStatic}/css/dianxing02.css">
 </head>
 <body style="background-color:#0452b7">
@@ -17,13 +18,13 @@
   </div>
   <div class="datou-annu" align="center">
     <div class="datou-b" id="cs_div" style="display: none;">
-      <a href="${ctx}/vote/formal/toupiaoblue?type=3" id="cs_a" target="_top"><img src="${ctxStatic}/images/cs.png" width="100%"/></a>
+      <a href="javascript:void(0)" onclick="isTouPiaoByUser('3')" id="cs_a" target="_top"><img src="${ctxStatic}/images/cs.png" width="100%"/></a>
     </div>
     <div class="datou-b" id="cz_div" style="display: none;">
-      <a href="${ctx}/vote/formal/toupiaoblue?type=2" id="cz_a" target="_top"><img src="${ctxStatic}/images/cz.png" width="100%"/></a>
+      <a href="javascript:void(0)" onclick="isTouPiaoByUser('2')" id="cz_a" target="_top"><img src="${ctxStatic}/images/cz.png" width="100%"/></a>
     </div>
     <div class="datou-b" id="ganbu_div" style="display: none;">
-      <a href="${ctx}/vote/formal/toupiaoblue?type=1" id="gb_a" target="_top"><img src="${ctxStatic}/images/gb.png" width="100%"/></a>
+      <a href="javascript:void(0)" onclick="isTouPiaoByUser('1')" id="gb_a" target="_top"><img src="${ctxStatic}/images/gb.png" width="100%"/></a>
     </div>
   </div>
 </div>
@@ -62,6 +63,35 @@
         success: function (data) {
           $("#userName_div").html('登录用户:'+data.userName);
         }});
+    }
+
+    function isTouPiaoByUser(termType) {
+      $.ajax({
+        type: "POST",
+        url: "${ctx}/vote/formal/isTouPiaoByUser",
+        data: {
+          'termType':termType
+        },
+        dataType: "text",
+        success: function (data) {
+          if(data == '0'){
+            //可以继续投票
+            var a = document.createElement('a');
+            a.setAttribute('href', "${ctx}/vote/formal/toupiaoblue?type=" + termType);
+            a.setAttribute('target', "_top");
+            a.setAttribute('id', 'js_a');
+            //防止反复添加
+            if(document.getElementById('js_a')) {
+              document.body.removeChild(document.getElementById('js_a'));
+            }
+            document.body.appendChild(a);
+            a.click();
+          }else{
+            //不可以继续投票
+            layer.alert("已经投过票了");
+          }
+        }
+      });
     }
   </script>
 </body>
