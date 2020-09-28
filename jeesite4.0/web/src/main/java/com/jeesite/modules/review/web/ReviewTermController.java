@@ -95,7 +95,8 @@ public class ReviewTermController extends BaseController {
         rankVo.setPageNo(page.getPageNo());
         rankVo.setPageSize(page.getPageSize());
         rankVo.setStart((page.getPageNo() - 1) * page.getPageSize());
-        rankVo.setEnd(page.getPageNo() * page.getPageSize());
+//        rankVo.setEnd(page.getPageNo() * page.getPageSize());
+        rankVo.setEnd(Integer.MAX_VALUE);
         page.setList(reviewTermService.listRankData(rankVo));
         page.setCount(reviewTermService.listRankDataCount(rankVo));
         return page;

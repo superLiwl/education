@@ -18,8 +18,7 @@
 			</div>
 		</div>
 		<div class="box-body">
-			<#form:form id="searchForm" model="${reviewTerm}" action="${ctx}/review/reviewTerm/listRankData" method="post" class="form-inline"
-					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}">
+			<#form:form id="searchForm" model="${reviewTerm}" action="${ctx}/review/reviewTerm/listRankData" method="post" class="form-inline">
 				<div class="form-group">
 					<label class="control-label">${text('参评单位')}：</label>
 					<div class="control-inline width-120" >
@@ -48,7 +47,7 @@
 				</div>
 			</#form:form>
 			<table id="dataGrid"></table>
-			<div id="dataGridPage"></div>
+<!--			<div id="dataGridPage"></div>-->
 		</div>
 	</div>
 </div>
@@ -59,6 +58,7 @@
 $('#dataGrid').dataGrid({
 	searchForm: $("#searchForm"),
 	sortableColumn : false,
+	rownumWidth: 50,
 	columnModel: [
 		{header:'${text('参评单位')}', name:'office_name', index:'a.office_name', width:150, align:"center"},
 		{header:'${text("参评项")}', name:'review_name', index:'a.review_name', width:150, align:"center", formatter: function(val, obj, row, act){
