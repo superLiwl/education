@@ -107,7 +107,7 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
     public String submitAnswer(String optionIds, String termType, String voteStatus, String sfzNo) {
         LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
         String userId = login.getId();
-        if (userId.equals("system") || userId.equals("admin") || userId.equals("gjjsmain")) {
+        if (userId.equals("system") || userId.equals("admin") || userId.equals("gjjsmain")|| userId.equals("xjpxmain")) {
             return "管理员不能进行投票";
         }
         if (StringUtils.isEmpty(optionIds)) {

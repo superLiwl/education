@@ -48,7 +48,7 @@
 		(SELECT count(id) FROM review_term_answer WHERE user_id = u.user_code AND review_name = '2' AND vote_status ='1') chuzhang,
 		(SELECT count(id) FROM review_term_answer WHERE user_id = u.user_code AND review_name = '3' AND vote_status ='1') chushi
 		FROM `js_sys_user` u LEFT JOIN js_sys_employee e ON u.user_code = e.emp_code
-		WHERE u.user_code NOT IN ('system','admin','gjjsmain')
+		WHERE u.user_code NOT IN ('system','admin','gjjsmain','xjpxmain')
 		<if test="officeCode != null and officeCode != '' ">
 			and e.office_code = #{officeCode}
 		</if>
@@ -76,7 +76,7 @@
 		(SELECT count(id) FROM review_term_answer WHERE user_id = u.user_code AND review_name = '2' AND vote_status ='1') chuzhang,
 		(SELECT count(id) FROM review_term_answer WHERE user_id = u.user_code AND review_name = '3' AND vote_status ='1') chushi
 		FROM `js_sys_user` u LEFT JOIN js_sys_employee e ON u.user_code = e.emp_code
-		WHERE u.user_code NOT IN ('system','admin','gjjsmain')
+		WHERE u.user_code NOT IN ('system','admin','gjjsmain','xjpxmain')
 		<if test="officeCode != null and officeCode != '' ">
 			and e.office_code = #{officeCode}
 		</if>
