@@ -3,8 +3,14 @@
  */
 package com.jeesite.modules.review.web;
 
+import com.jeesite.common.collect.ListUtils;
+import com.jeesite.common.lang.DateUtils;
+import com.jeesite.common.lang.StringUtils;
 import com.jeesite.common.shiro.realm.LoginInfo;
+import com.jeesite.common.utils.excel.ExcelExport;
 import com.jeesite.common.web.BaseController;
+import com.jeesite.modules.review.entity.HasCheckedExportCsVo;
+import com.jeesite.modules.review.entity.HasCheckedExportVo;
 import com.jeesite.modules.review.entity.ReviewTermAnswer;
 import com.jeesite.modules.review.service.ReviewTermAnswerService;
 import com.jeesite.modules.review.service.VoteFormalService;
@@ -20,6 +26,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -210,6 +218,55 @@ public class VoteFormalController extends BaseController {
     @ResponseBody
     public List<Map<String, Object>> getHasChecked(String optionIds) {
         return voteFormalService.getHasChecked(optionIds);
+    }
+
+    /**
+     * 导出获取已投票结果
+     */
+    @RequestMapping(value = "exportGetHasChecked")
+    @ResponseBody
+    public void exportGetHasChecked(String optionIds, String exportType, HttpServletResponse response) {
+        List<Map<String, Object>> list = voteFormalService.getHasChecked(optionIds);
+        ExcelExport ee;
+        List elist;
+        if (!StringUtils.isEmpty(exportType) && "3".equals(exportType)) {
+            List<HasCheckedExportCsVo> exportList = new ArrayList<>();
+            HasCheckedExportCsVo vo;
+            for (Map<String, Object> m : list) {
+                vo = new HasCheckedExportCsVo();
+                vo.setOfficeName(String.valueOf(m.get("office_name")));
+                vo.setOptionName(String.valueOf(m.get("option_name")));
+                exportList.add(vo);
+            }
+            elist = ListUtils.newArrayList(exportList);
+            ee = new ExcelExport("预选结果", HasCheckedExportCsVo.class);
+        } else {
+            List<HasCheckedExportVo> exportList = new ArrayList<>();
+            HasCheckedExportVo vo;
+            for (Map<String, Object> m : list) {
+                vo = new HasCheckedExportVo();
+                vo.setOfficeName(String.valueOf(m.get("office_name")));
+                vo.setOptionName(String.valueOf(m.get("option_name")));
+                exportList.add(vo);
+            }
+            elist = ListUtils.newArrayList(exportList);
+            ee = new ExcelExport("预选结果", HasCheckedExportVo.class);
+        }
+        String fileName = "预选结果" + DateUtils.getDate("yyyyMMddHHmmss") + ".xlsx";
+        Throwable localThrowable3 = null;
+        try {
+            ee.setDataList(elist).write(response, fileName);
+        } catch (Throwable localThrowable1) {
+            localThrowable3 = localThrowable1;
+            throw localThrowable1;
+        } finally {
+            if (ee != null) if (localThrowable3 != null) try {
+                ee.close();
+            } catch (Throwable localThrowable2) {
+                localThrowable3.addSuppressed(localThrowable2);
+            }
+            else ee.close();
+        }
     }
 
 }

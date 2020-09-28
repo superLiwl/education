@@ -106,16 +106,16 @@ public class ReviewTermController extends BaseController {
      */
     @RequiresPermissions({"review:reviewTerm:view"})
     @RequestMapping({"exportListRankData"})
-    public void exportListRankData(RankVo rankVo, HttpServletResponse response){
+    public void exportListRankData(RankVo rankVo, HttpServletResponse response) {
         rankVo.setStart(0);
         rankVo.setEnd(Integer.MAX_VALUE);
-        List<Map<String, Object>> list =reviewTermService.listRankData(rankVo);
+        List<Map<String, Object>> list = reviewTermService.listRankData(rankVo);
         List<RankExportVo> exportList = new ArrayList<>();
         RankExportVo vo;
-        for(Map<String,Object> m: list){
+        for (Map<String, Object> m : list) {
             vo = new RankExportVo();
             vo.setOfficeName(String.valueOf(m.get("office_name")));
-            vo.setReviewName(DictUtils.getDictLabel("term_option",String.valueOf(m.get("review_name")),"已投票"));
+            vo.setReviewName(DictUtils.getDictLabel("term_option", String.valueOf(m.get("review_name")), "已投票"));
             vo.setOptionName(String.valueOf(m.get("option_name")));
             vo.setTjCount(String.valueOf(m.get("tjCount")));
             vo.setXsCount(String.valueOf(m.get("xsCount")));
@@ -123,16 +123,21 @@ public class ReviewTermController extends BaseController {
             exportList.add(vo);
         }
         List elist = ListUtils.newArrayList(exportList);
-
         String fileName = "投票结果" + DateUtils.getDate("yyyyMMddHHmmss") + ".xlsx";
         ExcelExport ee = new ExcelExport("投票结果", RankExportVo.class);
         Throwable localThrowable3 = null;
-        try { ee.setDataList(elist).write(response, fileName); }
-        catch (Throwable localThrowable1)
-        {
-            localThrowable3 = localThrowable1; throw localThrowable1;
+        try {
+            ee.setDataList(elist).write(response, fileName);
+        } catch (Throwable localThrowable1) {
+            localThrowable3 = localThrowable1;
+            throw localThrowable1;
         } finally {
-            if (ee != null) if (localThrowable3 != null) try { ee.close(); } catch (Throwable localThrowable2) { localThrowable3.addSuppressed(localThrowable2); } else ee.close();
+            if (ee != null) if (localThrowable3 != null) try {
+                ee.close();
+            } catch (Throwable localThrowable2) {
+                localThrowable3.addSuppressed(localThrowable2);
+            }
+            else ee.close();
         }
     }
 
@@ -170,19 +175,19 @@ public class ReviewTermController extends BaseController {
      */
     @RequiresPermissions({"review:reviewTerm:view"})
     @RequestMapping({"exportListVoteData"})
-    public void exportListVoteData(VoteInfoVo voteInfoVo, HttpServletResponse response){
+    public void exportListVoteData(VoteInfoVo voteInfoVo, HttpServletResponse response) {
         voteInfoVo.setStart(0);
         voteInfoVo.setEnd(Integer.MAX_VALUE);
-        List<Map<String, Object>> list =reviewTermService.listVoteData(voteInfoVo);
+        List<Map<String, Object>> list = reviewTermService.listVoteData(voteInfoVo);
         List<VoteInfoExportVo> exportList = new ArrayList<>();
         VoteInfoExportVo vo;
-        for(Map<String,Object> m: list){
+        for (Map<String, Object> m : list) {
             vo = new VoteInfoExportVo();
             vo.setOfficeName(String.valueOf(m.get("office_name")));
             vo.setUserName(String.valueOf(m.get("user_name")));
-            vo.setGanbu(DictUtils.getDictLabel("vote_is_throw",String.valueOf(m.get("ganbu")),"已投票"));
-            vo.setChuzhang(DictUtils.getDictLabel("vote_is_throw",String.valueOf(m.get("chuzhang")),"已投票"));
-            vo.setChushi(DictUtils.getDictLabel("vote_is_throw",String.valueOf(m.get("chushi")),"已投票"));
+            vo.setGanbu(DictUtils.getDictLabel("vote_is_throw", String.valueOf(m.get("ganbu")), "已投票"));
+            vo.setChuzhang(DictUtils.getDictLabel("vote_is_throw", String.valueOf(m.get("chuzhang")), "已投票"));
+            vo.setChushi(DictUtils.getDictLabel("vote_is_throw", String.valueOf(m.get("chushi")), "已投票"));
             exportList.add(vo);
         }
         List elist = ListUtils.newArrayList(exportList);
@@ -190,12 +195,18 @@ public class ReviewTermController extends BaseController {
         String fileName = "投票情况" + DateUtils.getDate("yyyyMMddHHmmss") + ".xlsx";
         ExcelExport ee = new ExcelExport("投票情况", VoteInfoExportVo.class);
         Throwable localThrowable3 = null;
-        try { ee.setDataList(elist).write(response, fileName); }
-        catch (Throwable localThrowable1)
-        {
-            localThrowable3 = localThrowable1; throw localThrowable1;
+        try {
+            ee.setDataList(elist).write(response, fileName);
+        } catch (Throwable localThrowable1) {
+            localThrowable3 = localThrowable1;
+            throw localThrowable1;
         } finally {
-            if (ee != null) if (localThrowable3 != null) try { ee.close(); } catch (Throwable localThrowable2) { localThrowable3.addSuppressed(localThrowable2); } else ee.close();
+            if (ee != null) if (localThrowable3 != null) try {
+                ee.close();
+            } catch (Throwable localThrowable2) {
+                localThrowable3.addSuppressed(localThrowable2);
+            }
+            else ee.close();
         }
     }
 

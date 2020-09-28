@@ -146,10 +146,19 @@
         </div>
         <div align="center">
             <a href="javascript:void(0)" onclick="goBack()" style="color: red;font-size: 18px;">返回上一页</a>
+            <a href="javascript:void(0)" onclick="exportHasChecked()" style="color: red;font-size: 18px;">导出</a>
         </div>
     </div>
 </div>
 <div class="footer01"><p>技术支持：国家统计局黑龙江调查总队</p></div>
+
+<div id="export_div" style="display: none">
+    <form id="export_form" action="${ctx}/vote/formal/exportGetHasChecked">
+        <input type="text" id="export_input" name="optionIds"/>
+        <input type="text" id="export_type" name="exportType"/>
+    </form>
+</div>
+
       <script>
       function clickThisBox(id) {
           if ($("#" + id + "_box").is(':checked')) {
@@ -624,6 +633,28 @@
     function goBack() {
         $("#toupiao_div").show();
         $("#result_div").hide();
+    }
+
+    function exportHasChecked() {
+        var cart = '';
+        if(checkValues && checkValues[0]){
+            for(var i = 0 ; i< checkValues.length ; i++){
+                if(checkValues[i]){
+                    cart += checkValues[i] + ',';
+                }
+            }
+        }
+        if(!cart){
+            layer.msg('暂无预选投票', {time: 2000, });
+            return;
+        }
+        if(cart.endsWith(",")){
+            cart.substr(0,cart.length-1);
+        }
+        $("#export_input").val(cart);
+        var termType = getSearchType();
+        $("#export_type").val(termType);
+        $("#export_form").submit();
     }
 
       function getNames() {
