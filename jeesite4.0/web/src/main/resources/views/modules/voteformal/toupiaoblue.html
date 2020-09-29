@@ -61,7 +61,7 @@
 <div style="position:absolute;right: 1%;top: 1%" align="right">
     <a href="${ctx}/vote/formal/gongshi" style="color: #ffffff;font-size: 12px;">返回</a>
     <a href="javascript:void(0)"  style="color: #ffffff;font-size: 12px;" id="userName_div"></a>
-    <a href="${ctx}/index#/vote/a/sys/user/info?op=pwd" style="color: #ffffff;font-size: 12px;">修改密码</a>
+<!--    <a href="${ctx}/index#/vote/a/sys/user/info?op=pwd" style="color: #ffffff;font-size: 12px;">修改密码</a>-->
     <a href="${ctx}/logout" style="color: #ffffff;font-size: 12px;">退出登录</a>
 </div>
 <!--搜索框-->
@@ -525,7 +525,11 @@
             target = 'target="_blank"';
         }
         if(tremClass.endsWith("处室")){
-            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+'  id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size: 16px;line-height: 35px;padding-left: 11px;">'+info.option_name+'</p></div></a></li>';
+            var lingHeight = '35';
+            if(info.option_name.length > 11){
+                lingHeight = '19';
+            }
+            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+'  id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size: 16px;line-height: '+lingHeight+'px;padding-left: 11px;">'+info.option_name+'</p></div></a></li>';
         }else{
             return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+' id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size:18px;line-height:18px;padding-left:12px;">'+info.option_name+'</p><span title="'+info.position+'" style="padding-left:12px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">'+info.position+'</span></div></a></li>';
         }
