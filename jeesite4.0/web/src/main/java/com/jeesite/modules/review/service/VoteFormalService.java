@@ -42,6 +42,14 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
     }
 
     /**
+     * 获取详情信息
+     */
+    @Transactional(readOnly = false)
+    public Map<String, Object> getDetailInfo(String id) {
+        return reviewTermOptionsDao.getDetailInfo(id);
+    }
+
+    /**
      * 根据组织编码获取下边的投票项与参评人
      */
     @Transactional(readOnly = false)

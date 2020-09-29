@@ -22,6 +22,8 @@ public interface ReviewTermOptionsDao extends CrudDao<ReviewTermOptions> {
     //查询参评单位
     List<Map<String, Object>> getReviewTermList();
 
+    Map<String, Object> getDetailInfo(String id);
+
     //根据参评单位查询参评项目
     List<Map<String, Object>> getReviewTermListByOfficeCode(Map<String, Object> params);
 

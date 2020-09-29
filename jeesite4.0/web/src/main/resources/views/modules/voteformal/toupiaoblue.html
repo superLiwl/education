@@ -515,13 +515,13 @@
         var hrefUrl= 'javascript:void(0)';
         var target = '';
         if(tremClass.endsWith("干部")){
-            hrefUrl = '${ctx}/vote/formal/ganbu';
+            hrefUrl = '${ctx}/vote/formal/ganbu?dataId='+info.data_id;
             target = 'target="_blank"';
         }else if (tremClass.endsWith("处长")){
-            hrefUrl = '${ctx}/vote/formal/chuzhang';
+            hrefUrl = '${ctx}/vote/formal/chuzhang?dataId='+info.data_id;
             target = 'target="_blank"';
         }else if (tremClass.endsWith("处室")){
-            hrefUrl = '${ctx}/vote/formal/chushi';
+            hrefUrl = '${ctx}/vote/formal/chushi?dataId='+info.data_id;
             target = 'target="_blank"';
         }
         if(tremClass.endsWith("处室")){

@@ -15,7 +15,7 @@
 	</select>
 
 	<select id="getReviewTermOptionsListByTermId" resultType="map">
-		SELECT o.id,o.option_name,o.position,o.term_id,EXISTS(SELECT * FROM review_term_answer a WHERE a.option_id = o.id and a.user_id=#{userId}) isAnswer
+		SELECT o.id,o.option_name,o.position,o.term_id,EXISTS(SELECT * FROM review_term_answer a WHERE a.option_id = o.id and a.user_id=#{userId}) isAnswer,o.data_id
 		FROM `review_term_options` o WHERE o.term_id = #{termId} ORDER BY sort ASC;
 	</select>
 
@@ -63,6 +63,10 @@
 			#{id}
 		</foreach>
 		ORDER BY s.tree_sort ASC
+	</select>
+
+	<select id="getDetailInfo" resultType="map">
+		SELECT s.*,d.mingcheng dwname FROM `shenpibiao` s LEFT JOIN danwei d ON d.id = s.danweiID WHERE s.ID = #{id}
 	</select>
 
 </mapper>

@@ -95,6 +95,16 @@ public class VoteFormalController extends BaseController {
     }
 
     /**
+     * 获取详情信息
+     */
+    @RequestMapping(value = "getDetailInfo")
+    @ResponseBody
+    public Map<String, Object> getDetailInfo(String id) {
+        return voteFormalService.getDetailInfo(id);
+    }
+
+
+    /**
      * 已投票结果
      */
     @RequestMapping(value = {"toupiaocart", ""})
