@@ -376,8 +376,8 @@
                                 titleHtml ='<div class="title04"><p>省人大机关</p></div>';
                             }else if(ele.office_name == '省政府办公厅'){
                                 titleHtml ='<div class="title04"><p>省政府机关</p></div>';
-                            }else if(ele.office_name == '省政协机关'){
-                                titleHtml ='<div class="title04"><p>省政协机关</p></div>';
+                            }else if(ele.office_name == '省政协'){
+                                titleHtml ='<div class="title04"><p>省政协</p></div>';
                             }else if(ele.office_name == '省法院'){
                                 titleHtml ='<div class="title04"><p>法检两院机关</p></div>';
                                 cssStr = 'style="width:424px;"';
@@ -447,7 +447,7 @@
 
     function getulLi(ele){
         var cssStr ="";
-        if(ele.office_name == '省人大机关' || ele.office_name == '省政协机关' ){
+        if(ele.office_name == '省人大机关' || ele.office_name == '省政协' ){
             cssStr='style="margin:9px auto;width:198px;float:none;"';
         }
         return '<li '+cssStr+'><a href="javascript:void(0)" onclick="getReviewTermListByOfficeCode(\''+ele.office_code+'\')" name="#'+ele.office_code+'">'+ele.office_name+'</a></li>';

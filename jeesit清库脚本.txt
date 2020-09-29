@@ -11,10 +11,12 @@ DELETE FROM js_sys_user_role;
 DELETE FROM js_sys_log;
 
 DELETE FROM `review_term_answer`;
+DELETE FROM `review_term`;
+DELETE FROM `review_term_options`;
+
 
 DELETE FROM `js_gen_table_column`;
 DELETE FROM `js_gen_table`;
-
 
 
 //同步用户脚本
@@ -46,7 +48,74 @@ UPDATE js_sys_user u INNER JOIN (SELECT `password` FROM `js_sys_user` WHERE user
 
 //参评单位---sql
 INSERT INTO `jeesite`.`review_term` (`id`, `review_name`, `sort`, `office_code`, `office_name`, `create_time`)
-SELECT UUID(),'省直机关践行“工匠精神”候选先进处室','1',o.office_code,o.office_name,NOW() FROM `js_sys_office` o WHERE parent_code = 'SD' LIMIT 0,92;
+SELECT UUID(),'1','1',o.office_code,o.office_name,NOW() FROM `js_sys_office` o WHERE parent_code = 'SD' LIMIT 0,92;
 //参评单位选项---sql
 INSERT INTO `jeesite`.`review_term_options` (`id`, `term_id`, `option_name`, `position`, `head_img`, `sort`)
 SELECT UUID(),t.id,'刘浩','固定资产投资处处长','','2' FROM `review_term` t;
+
+
+
+
+#判断是否有对应不上的单位sql============================================
+SELECT o.office_code,d.mingcheng,o.office_name FROM danwei d 
+LEFT JOIN js_sys_office o ON o.office_name = d.mingcheng;
+#参评单位sql============================================
+#干部 
+INSERT INTO `jeesite`.`review_term` (`id`, `review_name`, `sort`, `office_code`, `office_name`, `create_time`)
+SELECT UUID(),'1','1',o.office_code,d.mingcheng,NOW() FROM danwei d 
+LEFT JOIN js_sys_office o ON o.office_name = d.mingcheng WHERE o.office_code is NOT NULL;
+
+#处长 
+INSERT INTO `jeesite`.`review_term` (`id`, `review_name`, `sort`, `office_code`, `office_name`, `create_time`)
+SELECT UUID(),'2','1',o.office_code,d.mingcheng,NOW() FROM danwei d 
+LEFT JOIN js_sys_office o ON o.office_name = d.mingcheng WHERE o.office_code is NOT NULL;
+
+#处室 
+INSERT INTO `jeesite`.`review_term` (`id`, `review_name`, `sort`, `office_code`, `office_name`, `create_time`)
+SELECT UUID(),'3','1',o.office_code,d.mingcheng,NOW() FROM danwei d 
+LEFT JOIN js_sys_office o ON o.office_name = d.mingcheng WHERE o.office_code is NOT NULL;
+
+
+#选项sql============================================
+#处室 188
+INSERT INTO `jeesite`.`review_term_options` (`id`, `term_id`, `option_name`, `position`, `head_img`, `sort`)
+SELECT UUID(),(SELECT r.id FROM review_term r WHERE r.review_name ='3' AND r.office_code = o.office_code),s.mingcheng,s.zhiwu,s.zhaopian,s.ID FROM `shenpibiao` s 
+LEFT JOIN danwei d ON s.danweiID = d.ID 
+LEFT JOIN js_sys_office o ON o.office_name = d.mingcheng
+WHERE s.leibie = '3' ;
+#干部 641
+INSERT INTO `jeesite`.`review_term_options` (`id`, `term_id`, `option_name`, `position`, `head_img`, `sort`)
+SELECT UUID(),(SELECT r.id FROM review_term r WHERE r.review_name ='1' AND r.office_code = o.office_code),s.mingcheng,s.zhiwu,s.zhaopian,s.ID FROM `shenpibiao` s 
+LEFT JOIN danwei d ON s.danweiID = d.ID 
+LEFT JOIN js_sys_office o ON o.office_name = d.mingcheng
+WHERE s.leibie = '2' ;
+#处长 321
+INSERT INTO `jeesite`.`review_term_options` (`id`, `term_id`, `option_name`, `position`, `head_img`, `sort`)
+SELECT UUID(),(SELECT r.id FROM review_term r WHERE r.review_name ='2' AND r.office_code = o.office_code),s.mingcheng,s.zhiwu,s.zhaopian,s.ID FROM `shenpibiao` s 
+LEFT JOIN danwei d ON s.danweiID = d.ID 
+LEFT JOIN js_sys_office o ON o.office_name = d.mingcheng
+WHERE s.leibie = '1' ;
+
+#同步office_name sql============================================
+UPDATE `js_sys_employee` e SET e.office_name = (SELECT o.office_name FROM js_sys_office o WHERE o.office_code = e.office_code);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
