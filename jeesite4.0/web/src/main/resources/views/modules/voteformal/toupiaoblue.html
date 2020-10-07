@@ -684,28 +684,7 @@
           if(cart.endsWith(",")){
               cart.substr(0,cart.length-1);
           }
-          // $.ajax({
-          //     type: "POST",
-          //     url: "${ctx}/vote/formal/getHasChecked",
-          //     data: {
-          //         'optionIds': cart
-          //     },
-          //     dataType: "json",
-          //     success: function (data) {
-          //         if(data && data[0]){
-          //             $.each(data, function (index, ele) {
-          //                 if (ele) {
-          //                     if(termType == '3'){
-          //                         tableHtml += '<li style="background-color:#0059ab;"><a href="javascript:void(0)" target="_blank"><div class="touxiang"><input type="checkbox" '+isisTouPiao+' checked onclick="toDelOption(\''+ele.id+'\',\''+ele.office_code+'\',\''+ele.term_id+'\')" style="cursor:pointer;zoom:200%;"/></div><div class="nr" align="center"><p>'+ele.option_name+'</p></div></a></li>';
-          //                     }else{
-          //                         tableHtml += '<li style="background-color:#0059ab;"><a href="javascript:void(0)" target="_blank"><div class="touxiang"><input type="checkbox" '+isisTouPiao+' checked onclick="toDelOption(\''+ele.id+'\',\''+ele.office_code+'\',\''+ele.term_id+'\')" style="cursor:pointer;zoom:200%;"/></div><div class="nr"><p style="font-size:18px;line-height:18px">'+ele.option_name+'</p><span style="padding-left:6px;">'+ele.office_name+'</span></div></a></li>';
-          //                     }
-          //                 }
-          //             });
-          //         }
-          //         $("#hacChecked").html(tableHtml);
-          //     }
-          // });
+
           $.ajax({
               type: "POST",
               url: "${ctx}/vote/formal/getHasChecked",
@@ -746,8 +725,8 @@
               setTimeout(function () {
                   submitAnswerAction();
                   layer.closeAll();
-              },1000);
-          },1600);
+              },1500);
+          },2000);
       }
 
     function getXfHtml(info,first,second) {
@@ -1064,7 +1043,7 @@
         layer.load();
         setTimeout(function(){
             layer.closeAll();
-        }, 1500);
+        }, 2000);
 
         //---打开组织
         $("a[name='#"+select_office+"']").click();
@@ -1073,7 +1052,7 @@
         setTimeout(function () {
             var h = $("#"+toIndex).offset().top;
             $('html,body').animate({scrollTop:h},500);//回到顶端
-        },1500);
+        },2000);
     }
 
       function getUserInfo() {
