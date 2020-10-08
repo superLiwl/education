@@ -467,7 +467,7 @@
         return termType;
     }
 
-    function getReviewTermListByOfficeCode(office_code) {
+    function getReviewTermListByOfficeCode(office_code,callback) {
         var termType = getSearchType();
         $.ajax({
             type: "POST",
@@ -487,6 +487,7 @@
                     });
                 }
                 $("#"+office_code).html(subHtml);
+                callback && callback();
             }});
     }
     function setDiv(info) {
@@ -547,8 +548,7 @@
             var tremClass = $("#"+termId).html();
             var count = $("#"+tremClass).html();
             $("#"+tremClass).text((parseInt(count)-1));
-            layer.msg('取消投票', {time: 1500, });
-            var termType = getSearchType();
+            // console.log("remove:------"+id);
         }else{
             //未选中---修改为选中
             $("#"+id).attr("style","background-color:#0059ab;");
@@ -558,9 +558,10 @@
             var tremClass = $("#"+termId).html();
             var count = $("#"+tremClass).html();
             $("#"+tremClass).text((parseInt(count)+1));
-            layer.msg('选中投票', {time: 1500, });
-            var termType = getSearchType();
+            // console.log("add:------"+id);
         }
+        //保存预选信息
+        submitAnswerAction();
     }
 
     function isInCheckValues(id){
@@ -710,10 +711,11 @@
             layer.msg('已经投过票了，不能取消', {time: 2000, });
             return
         }
-          layer.load();
           //先调一下定位-展开列表之后在取消选择
-          dingwei(officeCode,termId);
-          setTimeout(function () {
+          getReviewTermListByOfficeCode(officeCode,function () {
+              var h = $("#"+termId).offset().top;
+              $('html,body').animate({scrollTop:h},500);//回到顶端
+              //进行点击操作
               $("#"+delId+"_box").click();
               var textDesc = $(obj).text();
               if(textDesc == '取消'){
@@ -721,12 +723,7 @@
               }else{
                   $(obj).text("取消");
               }
-              //保存预选信息
-              setTimeout(function () {
-                  submitAnswerAction();
-                  layer.closeAll();
-              },1500);
-          },2000);
+          });
       }
 
     function getXfHtml(info,first,second) {
@@ -896,6 +893,7 @@
     }
 
     function submitAnswerAction() {
+        layer.load();
         var termType = getSearchType();
         var optionIds = "";
         $.each(checkValues,function(index,ele){
@@ -914,10 +912,12 @@
             },
             dataType: "text",
             success: function (data) {
-
+                setTimeout(function(){
+                    layer.closeAll();
+                },1500);
             },
             fail:function (data) {
-
+                layer.closeAll();
             }
         });
     }
@@ -1041,10 +1041,6 @@
     }
     function dingwei(select_office,toIndex) {
         layer.load();
-        setTimeout(function(){
-            layer.closeAll();
-        }, 2000);
-
         //---打开组织
         $("a[name='#"+select_office+"']").click();
         hideSearch();
@@ -1052,6 +1048,7 @@
         setTimeout(function () {
             var h = $("#"+toIndex).offset().top;
             $('html,body').animate({scrollTop:h},500);//回到顶端
+            layer.closeAll();
         },2000);
     }
 
