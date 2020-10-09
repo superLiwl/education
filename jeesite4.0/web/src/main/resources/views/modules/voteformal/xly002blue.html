@@ -62,7 +62,8 @@
                     $("#danwei").html(data.dwname);
                     $("#zhiwu").html(data.zhiwu);
                     $("#zhize").html(data.zhize);
-                    $("#touxiang").attr("src","http://www.ljjgdj.org/gjjs" + data.zhaopian);
+                    // $("#touxiang").attr("src","http://www.ljjgdj.org/gjjs" + data.zhaopian);
+                    $("#touxiang").attr("src","${ctxStatic}" + data.zhaopian);
                 }
             }
         });

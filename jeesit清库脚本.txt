@@ -78,20 +78,20 @@ LEFT JOIN js_sys_office o ON o.office_name = d.mingcheng WHERE o.office_code is 
 
 #选项sql============================================
 #处室 188
-INSERT INTO `jeesite`.`review_term_options` (`id`, `term_id`, `option_name`, `position`, `head_img`, `sort`)
-SELECT UUID(),(SELECT r.id FROM review_term r WHERE r.review_name ='3' AND r.office_code = o.office_code),s.mingcheng,s.zhiwu,s.zhaopian,s.ID FROM `shenpibiao` s 
+INSERT INTO `jeesite`.`review_term_options` (`id`, `term_id`, `option_name`, `position`, `head_img`, `sort` ,data_id)
+SELECT UUID(),(SELECT r.id FROM review_term r WHERE r.review_name ='3' AND r.office_code = o.office_code),s.mingcheng,s.zhiwu,s.zhaopian,s.ID,s.ID FROM `shenpibiao` s 
 LEFT JOIN danwei d ON s.danweiID = d.ID 
 LEFT JOIN js_sys_office o ON o.office_name = d.mingcheng
 WHERE s.leibie = '3' ;
 #干部 641
-INSERT INTO `jeesite`.`review_term_options` (`id`, `term_id`, `option_name`, `position`, `head_img`, `sort`)
-SELECT UUID(),(SELECT r.id FROM review_term r WHERE r.review_name ='1' AND r.office_code = o.office_code),s.mingcheng,s.zhiwu,s.zhaopian,s.ID FROM `shenpibiao` s 
+INSERT INTO `jeesite`.`review_term_options` (`id`, `term_id`, `option_name`, `position`, `head_img`, `sort`,data_id)
+SELECT UUID(),(SELECT r.id FROM review_term r WHERE r.review_name ='1' AND r.office_code = o.office_code),s.mingcheng,s.zhiwu,s.zhaopian,s.ID,s.ID FROM `shenpibiao` s 
 LEFT JOIN danwei d ON s.danweiID = d.ID 
 LEFT JOIN js_sys_office o ON o.office_name = d.mingcheng
 WHERE s.leibie = '2' ;
 #处长 321
-INSERT INTO `jeesite`.`review_term_options` (`id`, `term_id`, `option_name`, `position`, `head_img`, `sort`)
-SELECT UUID(),(SELECT r.id FROM review_term r WHERE r.review_name ='2' AND r.office_code = o.office_code),s.mingcheng,s.zhiwu,s.zhaopian,s.ID FROM `shenpibiao` s 
+INSERT INTO `jeesite`.`review_term_options` (`id`, `term_id`, `option_name`, `position`, `head_img`, `sort`,data_id)
+SELECT UUID(),(SELECT r.id FROM review_term r WHERE r.review_name ='2' AND r.office_code = o.office_code),s.mingcheng,s.zhiwu,s.zhaopian,s.ID,s.ID FROM `shenpibiao` s 
 LEFT JOIN danwei d ON s.danweiID = d.ID 
 LEFT JOIN js_sys_office o ON o.office_name = d.mingcheng
 WHERE s.leibie = '1' ;
