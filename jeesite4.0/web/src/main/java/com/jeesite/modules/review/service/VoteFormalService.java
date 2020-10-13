@@ -195,4 +195,14 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
         params.put("optionIds", list);
         return reviewTermOptionsDao.getHasChecked(params);
     }
+
+    /**
+     * 导出投票列表数据
+     */
+    @Transactional(readOnly = false)
+    public List<Map<String, Object>> exportDataByType(String exportDataType) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("exportDataType", exportDataType);
+        return reviewTermOptionsDao.exportDataByType(params);
+    }
 }

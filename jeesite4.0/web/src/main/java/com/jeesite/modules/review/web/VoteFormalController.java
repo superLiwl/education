@@ -9,9 +9,7 @@ import com.jeesite.common.lang.StringUtils;
 import com.jeesite.common.shiro.realm.LoginInfo;
 import com.jeesite.common.utils.excel.ExcelExport;
 import com.jeesite.common.web.BaseController;
-import com.jeesite.modules.review.entity.HasCheckedExportCsVo;
-import com.jeesite.modules.review.entity.HasCheckedExportVo;
-import com.jeesite.modules.review.entity.ReviewTermAnswer;
+import com.jeesite.modules.review.entity.*;
 import com.jeesite.modules.review.service.ReviewTermAnswerService;
 import com.jeesite.modules.review.service.VoteFormalService;
 import com.jeesite.modules.sys.entity.DictData;
@@ -263,6 +261,64 @@ public class VoteFormalController extends BaseController {
             ee = new ExcelExport("预选结果", HasCheckedExportVo.class);
         }
         String fileName = "预选结果" + DateUtils.getDate("yyyyMMddHHmmss") + ".xlsx";
+        Throwable localThrowable3 = null;
+        try {
+            ee.setDataList(elist).write(response, fileName);
+        } catch (Throwable localThrowable1) {
+            localThrowable3 = localThrowable1;
+            throw localThrowable1;
+        } finally {
+            if (ee != null) if (localThrowable3 != null) try {
+                ee.close();
+            } catch (Throwable localThrowable2) {
+                localThrowable3.addSuppressed(localThrowable2);
+            }
+            else ee.close();
+        }
+    }
+
+    /**
+     * 导出获取已投票结果
+     */
+    @RequestMapping(value = "exportDataByType")
+    @ResponseBody
+    public void exportDataByType(String exportDataType, HttpServletResponse response) {
+        List<Map<String, Object>> list = voteFormalService.exportDataByType(exportDataType);
+        ExcelExport ee;
+        List elist;
+        String title = "干部";
+        if (!StringUtils.isEmpty(exportDataType) && "3".equals(exportDataType)) {
+            List<TpDataExportCsVo> exportList = new ArrayList<>();
+            TpDataExportCsVo vo;
+            for (Map<String, Object> m : list) {
+                vo = new TpDataExportCsVo();
+                vo.setOfficeName(String.valueOf(m.get("office_name")));
+                vo.setOptionName(String.valueOf(m.get("option_name")));
+                vo.setPosition(String.valueOf(m.get("position")));
+                exportList.add(vo);
+            }
+            elist = ListUtils.newArrayList(exportList);
+            title = "处室";
+            ee = new ExcelExport(title+"投票选项", TpDataExportCsVo.class);
+        } else {
+            List<TpDataExportVo> exportList = new ArrayList<>();
+            TpDataExportVo vo;
+            for (Map<String, Object> m : list) {
+                vo = new TpDataExportVo();
+                vo.setOfficeName(String.valueOf(m.get("office_name")));
+                vo.setOptionName(String.valueOf(m.get("option_name")));
+                vo.setPosition(String.valueOf(m.get("position")));
+                exportList.add(vo);
+            }
+            elist = ListUtils.newArrayList(exportList);
+            if(!StringUtils.isEmpty(exportDataType) && "2".equals(exportDataType)){
+                title = "处长";
+            }
+            ee = new ExcelExport(title+"投票选项", TpDataExportVo.class);
+
+        }
+
+        String fileName = title +"投票选项" + DateUtils.getDate("yyyyMMddHHmmss") + ".xlsx";
         Throwable localThrowable3 = null;
         try {
             ee.setDataList(elist).write(response, fileName);

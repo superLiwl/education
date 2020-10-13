@@ -44,4 +44,7 @@ public interface ReviewTermOptionsDao extends CrudDao<ReviewTermOptions> {
 
     //获取已投票结果
     List<Map<String, Object>> getHasChecked(Map<String, Object> params);
+
+    //导出投票列表数据
+    List<Map<String, Object>> exportDataByType(Map<String, Object> params);
 }

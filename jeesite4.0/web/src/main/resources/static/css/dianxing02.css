@@ -704,6 +704,8 @@ z-index: 99999;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8p
 .houxuan-title p{font-size:18px;color:#0059ab;font-weight:bold;line-height:22px;padding-left:10px;}
 .houxuan li {width:258px;height:52px;display:block;float:left; overflow:hidden;border-radius: 60px;margin:4px 3px;background-color:#94a0ac;}
 .houxuan li:hover {background-color:#0059ab;}
+.houxuan li .touxiang_x {height:48px;width:48px;margin:2px;float:left;overflow: hidden;border-radius: 60px;}
+.houxuan li .touxiang_x img{width:48px;}
 .houxuan li .touxiang {margin:5%;float:right;overflow: hidden;}
 .houxuan li .touxiang input{float:right;}
 .houxuan li .nr {height:38px;padding:7px 0;float:left;margin-left:10px;width:196px;overflow:hidden;}
