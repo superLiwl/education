@@ -528,24 +528,24 @@
         }
         var hrefUrl= 'javascript:void(0)';
         var target = '';
-        if(tremClass.endsWith("干部")){
+        if(tremClass.indexOf("干部") != -1 /*|| tremClass.endsWith("干部")*/){
             hrefUrl = '${ctx}/vote/formal/ganbu?dataId='+info.data_id;
             target = 'target="_blank"';
-        }else if (tremClass.endsWith("处长")){
+        }else if (tremClass.indexOf("处长") != -1 /*|| tremClass.endsWith("处长")*/){
             hrefUrl = '${ctx}/vote/formal/chuzhang?dataId='+info.data_id;
             target = 'target="_blank"';
-        }else if (tremClass.endsWith("处室")){
+        }else if (tremClass.indexOf("处室") != -1 /*|| tremClass.endsWith("处室")*/){
             hrefUrl = '${ctx}/vote/formal/chushi?dataId='+info.data_id;
             target = 'target="_blank"';
         }
-        if(tremClass.endsWith("处室")){
+        if(tremClass.indexOf("处室") != -1 /*|| tremClass.endsWith("处室")*/){
             var lingHeight = '35';
             if(info.option_name.length > 11){
                 lingHeight = '19';
             }
             return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+'  id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p style="font-size: 16px;line-height: '+lingHeight+'px;padding-left: 11px;">'+info.option_name+'</p></div></a></li>';
         }else{
-            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang_x"><img src="${ctxStatic}'+info.zhaopian+'"></div><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+' id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr" style="width: 144px;"><p style="font-size:18px;line-height:18px;padding-left:0px;">'+info.option_name+'</p><span title="'+info.position+'" style="padding-left:0px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">'+info.position+'</span></div></a></li>';
+            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang_x"><img src="${ctxStatic}'+info.zhaopian+'"></div><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+' id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr" style="width: 142px;"><p style="font-size:18px;line-height:18px;padding-left:0px;">'+info.option_name+'</p><span title="'+info.position+'" style="padding-left:0px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">'+info.position+'</span></div></a></li>';
         }
     }
     //选择的数据
@@ -655,10 +655,12 @@
 
     function exportHasChecked() {
         var cart = '';
+        var isPj = false;
         if(checkValues && checkValues[0]){
             for(var i = 0 ; i< checkValues.length ; i++){
                 if(checkValues[i]){
                     cart += checkValues[i] + ',';
+                    isPj = true;
                 }
             }
         }
@@ -666,7 +668,7 @@
             layer.msg('暂无预选投票', {time: 2000, });
             return;
         }
-        if(cart.endsWith(",")){
+        if(isPj){
             cart.substr(0,cart.length-1);
         }
         $("#export_input").val(cart);
@@ -684,10 +686,12 @@
           var tableHtml = "<tr><th>单位</th><th>"+titleDesc+"</th><th></th></tr>";
           // var tableHtml = "";
           var cart = '';
+          var isPj = false;
           if(checkValues && checkValues[0]){
               for(var i = 0 ; i< checkValues.length ; i++){
                   if(checkValues[i]){
                       cart += checkValues[i] + ',';
+                      isPj = true;
                   }
               }
           }
@@ -695,7 +699,7 @@
               $("#hacChecked").html(tableHtml);
               return;
           }
-          if(cart.endsWith(",")){
+          if(isPj){
               cart.substr(0,cart.length-1);
           }
 
@@ -1026,10 +1030,6 @@
                     });
                     tsMsg +="</table>"
                     if(data.length > 1){
-                        if(tsMsg.endsWith(",")){
-                            tsMsg = tsMsg.substr(0,tsMsg.length -1);
-                        }
-
                         layer.open({
                             type: 1,
                             title: false,
