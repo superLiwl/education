@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -244,7 +244,7 @@
                   dataType: "json",
                   success: function (data) {
                       if(data.officeType == '2'){
-                          layer.msg('不能进行干部投票', {time: 1500, });
+                          layer.msg('不能进行干部投票', {time: 1500});
                           setTimeout(function(){
                                   var a = document.createElement('a');
                                   a.setAttribute('href', '${ctx}/vote/formal/gongshi');
@@ -665,7 +665,7 @@
             }
         }
         if(!cart){
-            layer.msg('暂无预选投票', {time: 2000, });
+            layer.msg('暂无预选投票', {time: 2000});
             return;
         }
         if(isPj){
@@ -725,7 +725,7 @@
 
       function toDelOption(delId,officeCode,termId,obj) {
         if(isisTouPiao == "disabled"){
-            layer.msg('已经投过票了，不能取消', {time: 2000, });
+            layer.msg('已经投过票了，不能取消', {time: 2000});
             return
         }
           //先调一下定位-展开列表之后在取消选择
@@ -853,7 +853,7 @@
                 }
             });
         }, function(){
-            layer.msg('取消投票', {time: 2000, });
+            layer.msg('取消投票', {time: 2000});
         });
     }
 
@@ -905,7 +905,7 @@
                 }
             });
         }, function(){
-            layer.msg('取消预选', {time: 2000, });
+            layer.msg('取消预选', {time: 2000});
         });
     }
 
@@ -993,15 +993,15 @@
         var select_name= $("#select_name").val();
         var radioVal= $('input:radio:checked').val();
         if(!select_office){
-            layer.msg('请选择组织单位', {time: 1500, });
+            layer.msg('请选择组织单位', {time: 1500});
             return;
         }
         if(!select_name){
-            layer.msg('请填写'+nameDesc, {time: 1500, });
+            layer.msg('请填写'+nameDesc, {time: 1500});
             return;
         }
         if(!radioVal){
-            layer.msg('请选择类别', {time: 1500, });
+            layer.msg('请选择类别', {time: 1500});
             return;
         }
         $.ajax({
