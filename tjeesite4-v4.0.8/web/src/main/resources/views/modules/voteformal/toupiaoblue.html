@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</title>
+    <script type="text/javascript" src="${ctxStatic}/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="${ctxStatic}/js/floatAd.js"></script>
+    <script type="text/javascript" src="${ctxStatic}/layer/3.1/layer.js"></script>
+  	<script>
+       window.onload = function(){
+           var initHeight = document.body.clientHeight / 3;
+           //右侧悬浮
+           var ad = new FloatAd({
+               floatObj: "floatright",
+               x: 5,
+               y: 200,
+               locate: "right"
+           });
+           ad.play();
+           //左侧悬浮
+           var search = new FloatAd({
+               floatObj: "floatleft",
+               x: 60,
+               y: 200,
+               locate: "left"
+           });
+           search.play();
+       }
+	</script>
+    <script src="${ctxStatic}/js/prefixfree.min.js"></script>
+    <link rel="stylesheet" href="${ctxStatic}/css/dianxing02.css">
+    <style type="text/css">
+        table.gridtable {
+            width: 100%;
+            font-family: verdana, arial, sans-serif;
+            font-size: 16px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #E6E6E6;
+            border-collapse: collapse;
+        }
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #E6E6E6;
+            background-color: #F2F2F2;
+        }
+        table.gridtable td {
+            text-align: center;
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #E6E6E6;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body style="background:url(${ctxStatic}/images/bg.jpg) repeat-y center;">
+<div id="toupiao_div">
+<div style="position:absolute;right: 1%;top: 1%" align="right">
+    <a href="${ctx}/vote/formal/gongshi" style="color: #ffffff;font-size: 12px;">返回</a>
+    <a href="javascript:void(0)" onclick="exportDataByType()" style="color: #ffffff;font-size: 12px;">导出</a>
+    <a href="javascript:void(0)"  style="color: #ffffff;font-size: 12px;" id="userName_div"></a>
+<!--    <a href="${ctx}/index#/vote/a/sys/user/info?op=pwd" style="color: #ffffff;font-size: 12px;">修改密码</a>-->
+    <a href="${ctx}/logout" style="color: #ffffff;font-size: 12px;">退出登录</a>
+</div>
+<!--搜索框-->
+<div id="floatleft" style="position: absolute; z-index: 10; left: 100px; width:100px;height:132px;">
+    <img src="${ctxStatic}/images/cx.png" width="90" height="90" onclick="showRemarks()">
+</div>
+<!--漂浮广告-->
+<div id="floatright" style="position: absolute; z-index: 10; right: 100px;  width:153px;height:200px;">
+    <img src="${ctxStatic}/images/cartblue.png" width="148" height="130">
+    <p id="subButton"></p>
+</div>
+
+<div id="myModal01" class="reveal-modal">
+    <div class="bd-jz">
+        <div class="biaodan">
+            <div class="bd-wz01" id="name_div"> 姓名：</div>
+            <input name="keywords" type="text" id="select_name" placeholder="请输入姓名" class="input001" size="18"/>
+        </div>
+        <div class="biaodan">
+            <div class="bd-wz01"> 所在厅局：</div>
+            <div class="nice-select" name="nice-select">
+                <select id="select_office" style="position:absolute;margin-top:1px;margin-left: 0px;border: 1px solid #fff;font-size: 18px; border-radius: 30px;color: #fff; background: rgba(255, 255, 255, 0);padding:0 25px;height: 40px;">
+                </select>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="biaodan" style="display: none">
+            <div class="bd-wz01"> 所属类别：</div>
+            <div class="wrapper">
+                <ul>
+                    <li><p>全部</p><div class="radio-btn" id="all"><i onclick="clickThisBox('all')"><input id="all_box" type="radio" name="radio-btn" name="termRadio" value=""/></i></div></li>
+                    <li><p>先进干部</p><div class="radio-btn" id="all_ganbu"><i onclick="clickThisBox('all_ganbu')"><input id="all_ganbu_box" type="radio" name="termRadio" value="1"/></i></div></li>
+                    <li><p>先进处长</p><div class="radio-btn" id="all_chuzhang"><i onclick="clickThisBox('all_chuzhang')"><input id="all_chuzhang_box" type="radio" name="termRadio" value="2"/></i></div></li>
+                    <li><p>先进处室</p><div class="radio-btn" id="all_chushi"><i onclick="clickThisBox('all_chushi')"><input id="all_chushi_box" type="radio" name="termRadio" value="3"/></i></div></li>
+                </ul>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+    <div class="yanzheng">
+        <div style="text-align:center;" onclick="toSearch()"><a href="javascript:void(0)">确认查询</a></div>
+    </div>
+    <a class="close-reveal-modal" onclick="hideSearch()">&#215;</a>
+</div>
+<div class="sy-title"><p id="p_name"></p> </div>
+
+<div class="content">
+    <div id="reviewDiv"  class="clear"></div>
+    <p onclick="toStorage()" style="position:absolute;text-align:center;font-size:14px;background-color:#0059ab;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:350px;bottom:22px;border-radius:30px;cursor: pointer;">
+        <a style=" color:#fff;" href="javascript:void(0)">预选</a>
+    </p>
+    <p onclick="inputNo()" style="position:absolute;text-align:center;font-size:14px;background-color:#0059ab;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:650px;bottom:22px;border-radius:30px;cursor: pointer;">
+        <a style=" color:#fff;" href="javascript:void(0)">确认投票</a>
+    </p>
+</div>
+
+<div id="loadingDiv" style="position:fixed;z-index:2000;top:0px;left:0px;width:100%;height:100%;background-color:rgba(0,0,0,0.5);display: none;" onclick="hideSearch()"></div>
+<div id="loadingDiv_img" style="display: none">
+</div>
+
+</div>
+<!--查看结果-->
+<div id="result_div" style="display: none;margin-top: -22px;" align="center">
+<!--    <div class="sy-title"><p>预选票</p></div>-->
+<!--    <div class="content">-->
+<!--        <div id="content">-->
+<!--            <ul class="houxuan" id="hacChecked">-->
+
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div style="position:absolute;right: 1%;top: 1%" align="center">-->
+<!--        <a href="javascript:void(0)" onclick="goBack()" style="color: #ffffff;font-size: 12px;">返回上一页</a>-->
+<!--    </div>-->
+    <div class="content" style="width: 1200px;margin-top:5%;">
+        <div class="title02"><p>预选票</p></div>
+        <div class="buju" style="width: 1000px;">
+            <table class="gridtable" id="hacChecked">
+
+            </table>
+        </div>
+        <div align="center">
+            <a href="javascript:void(0)" onclick="goBack()" style="color: red;font-size: 18px;">返回上一页</a>
+            <a href="javascript:void(0)" onclick="exportHasChecked()" style="color: red;font-size: 18px;">导出</a>
+        </div>
+    </div>
+</div>
+<div class="footer01"><p>技术支持：国家统计局黑龙江调查总队</p></div>
+
+<div id="export_div" style="display: none">
+    <form id="export_form" action="${ctx}/vote/formal/exportGetHasChecked">
+        <input type="text" id="export_input" name="optionIds"/>
+        <input type="text" id="export_type" name="exportType"/>
+    </form>
+</div>
+
+<div id="export_data_div" style="display: none">
+    <form id="export_data_form" action="${ctx}/vote/formal/exportDataByType">
+        <input type="text" id="export_data_type" name="exportDataType"/>
+    </form>
+</div>
+
+      <script>
+       function exportDataByType() {
+           var termType = getSearchType();
+           $("#export_data_type").val(termType);
+           $("#export_data_form").submit();
+       }
+
+      function clickThisBox(id) {
+          if ($("#" + id + "_box").is(':checked')) {
+              $("#" + id).attr("class", "radio-btn");
+              $("#" + id + "_box").removeAttr('checked');
+          } else {
+              //将其他已经选中的重置成未选中
+              reSetOther(id);
+          }
+      }
+
+      function reSetOther(id) {
+          //all
+          $("#all").attr("class", "radio-btn");
+          $("#all_box").removeAttr('checked');
+          //1
+          $("#all_ganbu").attr("class", "radio-btn");
+          $("#all_ganbu_box").removeAttr('checked');
+          //2
+          $("#all_chuzhang").attr("class", "radio-btn");
+          $("#all_chuzhang_box").removeAttr('checked');
+          //3
+          $("#all_chushi").attr("class", "radio-btn");
+          $("#all_chushi_box").removeAttr('checked');
+
+          //将传入的id设置成选中
+          $("#" + id).attr("class", "radio-btn checkedRadio");
+          $("#" + id + "_box").attr('checked', 'checked');
+      }
+
+    function resetTabs(){
+        $("#content > div").hide(); //Hide all content
+        $("#tabs a").attr("id",""); //Reset id's
+    }
+
+    var myUrl = window.location.href; //get URL
+    var myUrlTab = myUrl.substring(myUrl.indexOf("#")); // For localhost/tabs.html#tab2, myUrlTab = #tab2     
+    var myUrlTabName = myUrlTab.substring(0,4); // For the above example, myUrlTabName = #tab
+
+    var termType = getSearchType();
+    (function () {
+        getUserInfo();
+        //判断是否可以投票
+        getUserType();
+        layer.load();
+        setTimeout(function () {
+            layer.closeAll();
+        },2000);
+        //查询我是否投过票
+        isTouPiaoByUser();
+        //获取列表组织
+        getReviewTermList();
+        //获取投票信息
+        getAnswerInfo();
+        //获取所有投票结果
+        getAllAnswer();
+        //定时执行
+        // delTimer();
+        //获取标题名称
+        getTitle();
+    })()
+      function getUserType() {
+          var termType = getSearchType();
+          if(termType == '1'){
+              //判断当前要不过户是否可以进行干部投票
+              $.ajax({
+                  type: "POST",
+                  url: "${ctx}/vote/formal/getOfficeInfo",
+                  data: {},
+                  dataType: "json",
+                  success: function (data) {
+                      if(data.officeType == '2'){
+                          layer.msg('不能进行干部投票', {time: 1500});
+                          setTimeout(function(){
+                                  var a = document.createElement('a');
+                                  a.setAttribute('href', '${ctx}/vote/formal/gongshi');
+                                  a.setAttribute('target', "_top");
+                                  a.setAttribute('id', 'js_a');
+                                  //防止反复添加
+                                  if(document.getElementById('js_a')) {
+                                      document.body.removeChild(document.getElementById('js_a'));
+                                  }
+                                  document.body.appendChild(a);
+                                  a.click();
+                          }, 1501);
+
+                      }
+                  }
+              });
+          }
+
+      }
+      var isisTouPiao = '';
+      function isTouPiaoByUser() {
+          var termType = getSearchType();
+          $.ajax({
+              type: "POST",
+              url: "${ctx}/vote/formal/isTouPiaoByUser",
+              data: {
+                  'termType':termType
+              },
+              dataType: "text",
+              success: function (data) {
+                  if(data == '0'){
+                      //可以继续投票
+                      isisTouPiao = '';
+                  }else{
+                      //不可以继续投票
+                      isisTouPiao = 'disabled';
+                  }
+              }
+          });
+      }
+     function getTitle() {
+         var termType = getSearchType();
+         if(termType == '1'){
+             $("#p_name").html('候选先进干部事迹');
+             $("#all_ganbu").attr("class", "radio-btn checkedRadio");
+             $("#all_ganbu_box").attr('checked', 'checked');
+         }else if (termType == '2'){
+             $("#p_name").html('候选先进处长事迹');
+             $("#all_chuzhang").attr("class", "radio-btn checkedRadio");
+             $("#all_chuzhang_box").attr('checked', 'checked');
+         }else {
+             $("#p_name").html('候选先进处室事迹');
+             $("#all_chushi").attr("class", "radio-btn checkedRadio");
+             $("#all_chushi_box").attr('checked', 'checked');
+         }
+     }
+    //用来判断是否可以投票
+    var reviewNameArry = [];
+    var reviewNameCount = [];
+    function getDicInfo() {
+        var termType = getSearchType();
+        var divHtml = "";
+        var left =  200;
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/getDicInfo",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data && data[0]) {
+                    $.each(data, function (index, ele) {
+                        if (ele && ele.dictValue == termType) {
+                            reviewNameArry.push(ele.dictLabel);
+                            reviewNameCount.push(ele.description);
+                            divHtml = getDicGtml(ele,left);
+                            left += 150;
+                            $("#searchButton").before(divHtml);
+                            // $("#"+ele.dictLabel+"_gd").html(ele.description+"票");
+                            if(termType =='1'){
+                                $("#"+ele.dictLabel+"_gd").html("500票");
+                            }else if(termType =='2'){
+                                $("#"+ele.dictLabel+"_gd").html("200票");
+                            }else {
+                                $("#"+ele.dictLabel+"_gd").html("100票");
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+    function getDicGtml(info,left){
+        return '<input type="radio" name="termRadio" checked value="'+info.dictValue+'" style="position:absolute;margin-top:120px;margin-left: '+left+'px;width: 100px;height: 30px;cursor: pointer;display: none;"/>' +
+               '<label style="position:absolute;margin-top:120px;margin-left: '+(left+70)+'px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;display: none;">'+info.dictLabel+'</label>';
+    }
+
+    function initDiv() {
+        $("#content > div").hide(); // Initially hide all content
+
+        $("#tabs a").on("click",function(e) {
+            e.preventDefault();
+            if ($(this).attr("id") == "current"){ //detection for current tab
+                return
+            }
+            else{
+                resetTabs();
+                $(this).attr("id","current"); // Activate this
+                $($(this).attr('name')).fadeIn(); // Show content for current tab
+            }
+        });
+
+        for (i = 1; i <= $("#tabs li").length; i++) {
+            if (myUrlTab == myUrlTabName + i) {
+                resetTabs();
+                $("a[name='"+myUrlTab+"']").attr("id","current"); // Activate url tab
+                $(myUrlTab).fadeIn(); // Show url tab content
+            }
+        }
+    }
+
+    function getReviewTermList() {
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/getReviewTermList",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                var ulLi = '<ul id="tabs">';
+                var xh = 1;
+                var divHtml = '';
+                // var selectHtml = '<option value="">请选择</option>';
+                var selectHtml = '';
+                var titleHtml = '';
+                if(data && data[0]){
+                    $.each(data,function(index,ele){
+                        if(ele){
+                            var cssStr = '';
+                            //增加机关列的判断
+                            if(ele.office_name == '省纪委监委'){
+                                titleHtml ='<div class="title04"><p>省委机关</p></div>';
+                            }else if(ele.office_name == '省人大机关'){
+                                titleHtml ='<div class="title04"><p>省人大机关</p></div>';
+                            }else if(ele.office_name == '省政府办公厅'){
+                                titleHtml ='<div class="title04"><p>省政府机关</p></div>';
+                            }else if(ele.office_name == '省政协'){
+                                titleHtml ='<div class="title04"><p>省政协</p></div>';
+                            }else if(ele.office_name == '省法院'){
+                                titleHtml ='<div class="title04"><p>法检两院机关</p></div>';
+                                cssStr = 'style="width:424px;"';
+                            }else if(ele.office_name == '省总工会'){
+                                titleHtml ='<div class="title04"><p>组织团体</p></div>';
+                            }else if(ele.office_name == '省供销社'){
+                                titleHtml ='<div class="title04"><p>事业单位</p></div>';
+                            }else{
+                                titleHtml='';
+                            }
+                            if(titleHtml){
+                                //5个一循环
+                                xh = 1;
+                                if(ele.office_name != '省纪委监委'){
+                                    //结尾
+                                    divHtml += '</div>';
+                                    ulLi += '</ul>';
+                                    //输出
+                                    $("#reviewDiv").before(ulLi);
+                                    $("#reviewDiv").before(divHtml);
+                                }
+
+                                $("#reviewDiv").before(titleHtml);
+                            }else if(xh > 5){
+                                //5个一循环
+                                xh = 1;
+                                //结尾
+                                divHtml += '</div>';
+                                ulLi += '</ul>';
+                                //输出
+                                $("#reviewDiv").before(ulLi);
+                                $("#reviewDiv").before(divHtml);
+                            }
+                            if(xh == 1){
+                                //初始化
+                                divHtml = '<div id="content">';
+                                ulLi = '<ul id="tabs" '+cssStr+'>';
+                                //拼接子元素
+                                divHtml += getDiv(ele);
+                                ulLi += getulLi(ele);
+                            }else{
+                                //拼接子元素
+                                divHtml += getDiv(ele);
+                                ulLi += getulLi(ele);
+                            }
+                            selectHtml += getSelectHtml(ele);
+                        }
+                        xh++;
+                    });
+                    $("#select_office").html(selectHtml);
+                    if(xh <= 5){
+                        //结尾
+                        divHtml += '</div>';
+                        ulLi += '</ul>';
+                        //输出
+                        $("#reviewDiv").before(ulLi);
+                        $("#reviewDiv").before(divHtml);
+                    }
+                }
+                initDiv();
+            }});
+    }
+
+    function getSelectHtml(info) {
+        return '<option style="color: #000000" value="'+info.office_code+'">'+info.office_name+'</option>';
+    }
+
+    function getulLi(ele){
+        var cssStr ="";
+        if(ele.office_name == '省人大机关' || ele.office_name == '省政协' ){
+            cssStr='style="margin:9px auto;width:198px;float:none;"';
+        }
+        return '<li '+cssStr+'><a href="javascript:void(0)" onclick="getReviewTermListByOfficeCode(\''+ele.office_code+'\')" name="#'+ele.office_code+'">'+ele.office_name+'</a></li>';
+    }
+
+    function getDiv(ele) {
+        return '<div id="'+ele.office_code+'"></div>';
+    }
+
+    function getSearchType() {
+        //获取url中参数
+        var type = window.location.search.replace("?type=","");
+        var termType = 1;
+        if(type != null && type != '' && type != undefined && type !="undefined"){
+            termType = type;
+        }
+        return termType;
+    }
+
+    function getReviewTermListByOfficeCode(office_code,callback) {
+        var termType = getSearchType();
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/getReviewTermListByOfficeCode",
+            data: {
+                'officeCode':office_code,
+                'termType':termType
+            },
+            dataType: "json",
+            success: function (data) {
+                var subHtml = '';
+                if(data && data[0]){
+                    $.each(data,function(index,ele){
+                        if(ele){
+                            subHtml += setDiv(ele);
+                        }
+                    });
+                }
+                $("#"+office_code).html(subHtml);
+                callback && callback();
+            }});
+    }
+    function setDiv(info) {
+        var ulHtml = '<ul class="houxuan"><div class="houxuan-title"><p>'+info.office_name+'——省直机关践行“工匠精神”候选<span id="'+info.id+'">'+info.review_name+'</span></p></div>';
+        if(info.options && info.options[0]){
+            $.each(info.options,function(index,ele){
+                if(ele){
+                    ulHtml+=liHtml(ele,info.review_name);
+                }
+            });
+        }
+        ulHtml += '</ul>';
+        return ulHtml;
+    }
+
+    function liHtml(info,tremClass) {
+        //return '<li id="'+info.id+'" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"><a href="javascript:void(0)" target="_blank"><div class="touxiang"><img src=""></div><div class="nr"><p>'+info.option_name+'</p><span>'+info.position+'</span></div></a></li>';
+        var styleStr = ""
+        var isChecked = "0";
+        var isCheckedStr = ""
+        if(info.isAnswer == '1' || isInCheckValues(info.id)){
+            styleStr = 'style=background-color:#0059ab;"';
+            isChecked = "1";
+            isCheckedStr = "checked";
+        }
+        var hrefUrl= 'javascript:void(0)';
+        var target = '';
+        if(tremClass.indexOf("干部") != -1 /*|| tremClass.endsWith("干部")*/){
+            hrefUrl = '${ctx}/vote/formal/ganbu?dataId='+info.data_id;
+            target = 'target="_blank"';
+        }else if (tremClass.indexOf("处长") != -1 /*|| tremClass.endsWith("处长")*/){
+            hrefUrl = '${ctx}/vote/formal/chuzhang?dataId='+info.data_id;
+            target = 'target="_blank"';
+        }else if (tremClass.indexOf("处室") != -1 /*|| tremClass.endsWith("处室")*/){
+            hrefUrl = '${ctx}/vote/formal/chushi?dataId='+info.data_id;
+            target = 'target="_blank"';
+        }
+        if(tremClass.indexOf("处室") != -1 /*|| tremClass.endsWith("处室")*/){
+            var lingHeight = '35';
+            if(info.option_name.length > 11){
+                lingHeight = '19';
+            }
+            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+'  id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr" style="width: 182px;"><p style="font-size: 16px;line-height: '+lingHeight+'px;padding-left: 11px;">'+info.option_name+'</p></div></a></li>';
+        }else{
+            return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang_x"><img src="${ctxStatic}'+info.zhaopian+'"></div><div class="touxiang"><input '+isCheckedStr+' type="checkbox" '+isisTouPiao+' id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr" style="width: 130px;"><p style="font-size:18px;line-height:18px;padding-left:0px;">'+info.option_name+'</p><span title="'+info.position+'" style="padding-left:0px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">'+info.position+'</span></div></a></li>';
+        }
+    }
+    //选择的数据
+    var checkValues = [];
+    function selectTouPiao(id,termId) {
+        if( $("#"+id).attr("data_isChecked") == '1'){
+            //已经选中---修改为未选中
+            $("#"+id).removeAttr("style");
+            $("#"+id).attr("data_isChecked","0");
+            //移除选中的数据
+            removeCheckedVal(id,termId);
+            //选中数减1
+            var tremClass = $("#"+termId).html();
+            var count = $("#"+tremClass).html();
+            $("#"+tremClass).text((parseInt(count)-1));
+            // console.log("remove:------"+id);
+        }else{
+            //未选中---修改为选中
+            $("#"+id).attr("style","background-color:#0059ab;");
+            $("#"+id).attr("data_isChecked","1");
+            checkValues.push(id);
+            //选中数加1
+            var tremClass = $("#"+termId).html();
+            var count = $("#"+tremClass).html();
+            $("#"+tremClass).text((parseInt(count)+1));
+            // console.log("add:------"+id);
+        }
+        //保存预选信息
+        submitAnswerAction();
+    }
+
+    function isInCheckValues(id){
+        var result = false;
+        if(checkValues && checkValues[0]){
+            $.each(checkValues,function(index,ele){
+                if(ele){
+                    if(ele == id){
+                        result = true;
+                        return;
+                    }
+                }
+            });
+        }
+        return result;
+    }
+
+
+    function removeCheckedVal(val) {
+        var newCheckVals = [];
+        if(checkValues && checkValues[0]){
+            $.each(checkValues,function(index,ele){
+                if(ele){
+                    if(ele != val){
+                        newCheckVals.push(ele);
+                    }
+                }
+            });
+        }
+        checkValues = newCheckVals;
+    }
+
+    function getAnswerInfo() {
+        var termType = getSearchType();
+        var termDesc = '先进干部';
+        if(termType == '3'){
+            termDesc = '先进处室';
+        }else if(termType == '2'){
+            termDesc = '先进处长';
+        }
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/getAnswerInfo",
+            data: {
+                // 'termType':termType
+            },
+            dataType: "json",
+            success: function (data) {
+                var xfHtml = '';
+                var first = 60;
+                var second = 78;
+                $.each(data,function(index,ele){
+                    if(ele){
+                        if(ele.tremClass == termDesc){
+                            xfHtml += getXfHtml(ele,first,second);
+                            first += 44;
+                            second += 44;
+                        }
+                    }
+                });
+                $("#subButton").before(xfHtml);
+                // 查询字典信息
+                getDicInfo();
+            }});
+    }
+
+    function openCart() {
+        $("#toupiao_div").hide();
+        getNames();
+        $("#result_div").show();
+        submitAnswerAction();
+    }
+
+    function goBack() {
+        $("#toupiao_div").show();
+        $("#result_div").hide();
+    }
+
+    function exportHasChecked() {
+        var cart = '';
+        var isPj = false;
+        if(checkValues && checkValues[0]){
+            for(var i = 0 ; i< checkValues.length ; i++){
+                if(checkValues[i]){
+                    cart += checkValues[i] + ',';
+                    isPj = true;
+                }
+            }
+        }
+        if(!cart){
+            layer.msg('暂无预选投票', {time: 2000});
+            return;
+        }
+        if(isPj){
+            cart.substr(0,cart.length-1);
+        }
+        $("#export_input").val(cart);
+        var termType = getSearchType();
+        $("#export_type").val(termType);
+        $("#export_form").submit();
+    }
+
+      function getNames() {
+        var titleDesc="姓名";
+        var termType = getSearchType();
+        if(termType == '3'){
+            titleDesc="处室名称";
+        }
+          var tableHtml = "<tr><th>单位</th><th>"+titleDesc+"</th><th></th></tr>";
+          // var tableHtml = "";
+          var cart = '';
+          var isPj = false;
+          if(checkValues && checkValues[0]){
+              for(var i = 0 ; i< checkValues.length ; i++){
+                  if(checkValues[i]){
+                      cart += checkValues[i] + ',';
+                      isPj = true;
+                  }
+              }
+          }
+          if(!cart){
+              $("#hacChecked").html(tableHtml);
+              return;
+          }
+          if(isPj){
+              cart.substr(0,cart.length-1);
+          }
+
+          $.ajax({
+              type: "POST",
+              url: "${ctx}/vote/formal/getHasChecked",
+              data: {
+                  'optionIds': cart
+              },
+              dataType: "json",
+              success: function (data) {
+                  if(data && data[0]){
+                      $.each(data, function (index, ele) {
+                          if (ele) {
+                              tableHtml += '<tr><td>'+ele.office_name+'</td><td>'+ele.option_name+'</td><td style="cursor: pointer; color: #ffa200;" onclick="toDelOption(\''+ele.id+'\',\''+ele.office_code+'\',\''+ele.term_id+'\',this)">取消</td></tr>';
+                          }
+                      });
+                  }
+                  $("#hacChecked").html(tableHtml);
+              }
+          });
+      }
+
+      function toDelOption(delId,officeCode,termId,obj) {
+        if(isisTouPiao == "disabled"){
+            layer.msg('已经投过票了，不能取消', {time: 2000});
+            return
+        }
+          //先调一下定位-展开列表之后在取消选择
+          getReviewTermListByOfficeCode(officeCode,function () {
+              var h = $("#"+termId).offset().top;
+              $('html,body').animate({scrollTop:h},500);//回到顶端
+              //进行点击操作
+              $("#"+delId+"_box").click();
+              var textDesc = $(obj).text();
+              if(textDesc == '取消'){
+                  $(obj).text("投票");
+              }else{
+                  $(obj).text("取消");
+              }
+          });
+      }
+
+    function getXfHtml(info,first,second) {
+        var xfHtml = '<p onclick="openCart()" style="text-align:center;font-size:14px;color:#333;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+first+'px;">'+info.tremClass+'</p>' +
+                      '<p onclick="openCart()" style="text-align:center;font-size:14px;color:#cc1c1e;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+second+'px;border-bottom:1px dashed #333;padding-bottom:4px;"><span id="'+info.tremClass+'">'+info.hasOptionCount+'</span>/<span id="'+info.tremClass+'_gd">'+info.allOptionCount+'票</span></p>';
+        return xfHtml;
+    }
+      var sfzNo = '';
+      function inputNo() {
+          layer.open({
+              id:1,
+              type: 1,
+              title:'请输入身份证号',
+              style: 'width:100%;height:auto;',
+              content: "<div style='display:flex;justify-content:center;'><input id='area' style='width:190px;height: 35px;font-size: 18px;' value='"+sfzNo+"'/></div>",
+              btn:['确定','取消'],
+              yes:function (index,layero) {
+                  //获取输入框里面的值
+                  var no = top.$("#area").val() || $("#area").val();
+                  if(!no){
+                      layer.msg('请输入身份证号！', {time: 1500 });
+                      setTimeout(function () {
+                          inputNo();
+                      },1600);
+                      return;
+                  }else{
+                      sfzNo = no;
+                      toSubmit();
+                      return;
+                      if(isCard(sfzNo)){
+                          //开始保存数据
+                          layer.close(index);
+                          toSubmit();
+                      }else{
+                          layer.msg('身份证号输入错误！', {time: 1500});
+                          setTimeout(function () {
+                              inputNo();
+                          },1600);
+                          return;
+                      }
+                  }
+              },
+              no:function (index,layero) {
+                  layer.close(index);
+              }
+          });
+      }
+
+      function isCard(str) {
+          var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+          return reg.test(str);
+      }
+
+    function toSubmit() {
+        var termType = getSearchType();
+        var isToToupiao = true;
+        //用来判断是否可以投票
+        if(reviewNameArry && reviewNameArry[0]){
+            var hasCount = "";
+            for(var i = 0; i< reviewNameArry.length ;i++){
+                if(reviewNameArry[i] && reviewNameCount[i]){
+                    hasCount = $("#"+reviewNameArry[i]).text();
+                    if(hasCount != reviewNameCount[i]){
+                        layer.alert(reviewNameArry[i] + '的投票数应为 ' + reviewNameCount[i]);
+                        isToToupiao = false;
+                        break;
+                    }
+                }
+            }
+        }
+        if(!isToToupiao){
+            return;
+        }
+        //询问是否投票
+        layer.confirm('请慎重选择，提交后将不可更改。', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var optionIds = "";
+            $.each(checkValues,function(index,ele){
+                if(ele){
+                    optionIds += ele+',';
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "${ctx}/vote/formal/submitAnswer",
+                data: {
+                    'optionIds':optionIds,
+                    'termType':termType,
+                    'voteStatus':'1',
+                    'sfzNo':sfzNo
+                },
+                dataType: "text",
+                success: function (data) {
+                    if(data == '投票成功'){
+                        layer.confirm(data+"！", {
+                            btn: ['继续投票','退出登录'] //按钮
+                        }, function(){
+                            toUrlAction('${ctx}/vote/formal/gongshi');
+                        }, function(){
+                            toUrlAction('${ctx}/logout');
+                        });
+                    }else{
+                        layer.alert(data);
+                    }
+
+                },
+                fail:function (data) {
+                    layer.alert("投票失败，请再次点击");
+                }
+            });
+        }, function(){
+            layer.msg('取消投票', {time: 2000});
+        });
+    }
+
+    function toUrlAction(url) {
+        var a = document.createElement('a');
+        a.setAttribute('href', url);
+        a.setAttribute('target', "_top");
+        a.setAttribute('id', 'js_a');
+        //防止反复添加
+        if(document.getElementById('js_a')) {
+            document.body.removeChild(document.getElementById('js_a'));
+        }
+        document.body.appendChild(a);
+        a.click();
+    }
+
+    function toStorage() {
+        //询问是否投票
+        layer.confirm('预选信息，投票不会生效!', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var termType = getSearchType();
+            var optionIds = "";
+            $.each(checkValues,function(index,ele){
+                if(ele){
+                    optionIds += ele+',';
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "${ctx}/vote/formal/submitAnswer",
+                data: {
+                    'optionIds':optionIds,
+                    'termType':termType,
+                    'voteStatus':'0',
+                    'sfzNo':sfzNo
+                },
+                dataType: "text",
+                success: function (data) {
+                    if(data == '投票成功'){
+                        layer.alert("预选成功");
+                    }else{
+                        var alertMsg = data.replace('投票','预选');
+                        layer.alert(alertMsg);
+                    }
+                },
+                fail:function (data) {
+                    layer.alert("预选失败，请再次点击");
+                }
+            });
+        }, function(){
+            layer.msg('取消预选', {time: 2000});
+        });
+    }
+
+    function submitAnswerAction() {
+        layer.load();
+        var termType = getSearchType();
+        var optionIds = "";
+        $.each(checkValues,function(index,ele){
+            if(ele){
+                optionIds += ele+',';
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/submitAnswer",
+            data: {
+                'optionIds':optionIds,
+                'termType':termType,
+                'voteStatus':'0',
+                'sfzNo':sfzNo
+            },
+            dataType: "text",
+            success: function (data) {
+                setTimeout(function(){
+                    layer.closeAll();
+                },300);
+            },
+            fail:function (data) {
+                layer.closeAll();
+            }
+        });
+    }
+
+    function getAllAnswer() {
+        var termType = getSearchType();
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/getAllAnswer",
+            data: {
+                'termType':termType
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data && data[0]) {
+                    $.each(data, function (index, ele) {
+                        if (ele) {
+                            checkValues.push(ele.optionId);
+                        }
+                    });
+
+                }
+            }
+        });
+    }
+
+    function showRemarks() {
+        var termType = getSearchType();
+        if('3' == termType){
+            $("#name_div").html("处室名称：");
+            $("#select_name").attr("placeholder","请输入处室名称");
+        }else{
+            $("#name_div").html("姓名：");
+            $("#select_name").attr("placeholder","请输入姓名");
+        }
+        var h = $("#floatleft").offset().top;
+        $("#loadingDiv").show();
+        // $("#loadingDiv_img").attr("style", 'position:absolute;left:20%; top:' + h + 'px;z-index: 2001;');
+        $("#myModal01").css("visibility","visible");
+        $("#myModal01").css("top",h+"px");
+    }
+
+    function hideSearch(){
+        $("#myModal01").css("visibility","hidden");
+        $("#loadingDiv").hide();
+        // $("#loadingDiv_img").hide();
+    }
+
+    function toSearch() {
+        var termType = getSearchType();
+        var nameDesc = '姓名';
+        if('3' == termType){
+            nameDesc = '处室名称';
+        }
+        var select_office= $("#select_office").val();
+        var select_name= $("#select_name").val();
+        var radioVal= $('input:radio:checked').val();
+        if(!select_office){
+            layer.msg('请选择组织单位', {time: 1500});
+            return;
+        }
+        if(!select_name){
+            layer.msg('请填写'+nameDesc, {time: 1500});
+            return;
+        }
+        if(!radioVal){
+            layer.msg('请选择类别', {time: 1500});
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/searchList",
+            data: {
+                'officeCode': select_office,
+                'reviewName': radioVal,
+                'optionName': select_name
+            },
+            dataType: "json",
+            success: function (data) {
+                if(data && data[0]){
+                    var tsMsg = '<table class="gridtable" style="width: 360px;">'
+                              // + '<tr><th>组织</th><th>'+nameDesc+'</th><th>职位</th><th>定位</th></tr>';
+                              + '<tr><th>组织</th><th>'+nameDesc+'</th><th>定位</th></tr>';
+                    var toIndex = '';
+                    $.each(data, function (index, ele) {
+                        if (ele) {
+                            if(index == 0){
+                                toIndex = ele.term_id;
+                            }
+                            // tsMsg +='<tr><td>'+ele.option_name+'</td><td>'+ele.office_name+'</td><td>'+ele.position+'</td><td style="cursor: pointer; color: #ffa200;" onclick="dingwei(\''+select_office+'\',\''+ele.term_id+'\')">定位</td></tr>';
+                            tsMsg +='<tr><td>'+ele.office_name+'</td><td>'+ele.option_name+'</td><td style="cursor: pointer; color: #ffa200;" onclick="dingwei(\''+select_office+'\',\''+ele.term_id+'\')">定位</td></tr>';
+                        }
+                    });
+                    tsMsg +="</table>"
+                    if(data.length > 1){
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            closeBtn: 0,
+                            shadeClose: true,
+                            skin: 'yourclass',
+                            content: tsMsg
+                        });
+                        return;
+                    }else{
+                        dingwei(select_office,toIndex);
+                    }
+                }else{
+                    if('3' == termType){
+                        layer.alert("未查询到符合条件的处室");
+                    }else{
+                        layer.alert("未查询到符合条件的人");
+                    }
+                }
+            }
+        });
+    }
+    function dingwei(select_office,toIndex) {
+        layer.load();
+        //---打开组织
+        $("a[name='#"+select_office+"']").click();
+        hideSearch();
+        //延时跳转
+        setTimeout(function () {
+            var h = $("#"+toIndex).offset().top;
+            $('html,body').animate({scrollTop:h},500);//回到顶端
+            layer.closeAll();
+        },2000);
+    }
+
+      function getUserInfo() {
+          $.ajax({
+              type: "POST",
+              url: "${ctx}/vote/formal/getUserInfo",
+              data: {},
+              dataType: "json",
+              success: function (data) {
+                  $("#userName_div").html('登录用户:' + data.userName);
+              }
+          });
+      }
+
+      </script>
+</body>
+</html>

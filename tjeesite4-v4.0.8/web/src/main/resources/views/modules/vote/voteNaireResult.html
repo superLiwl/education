@@ -1,0 +1,59 @@
+<% layout('/layouts/default.html', {title: '', bodyClass: ''}){ %>
+<!-- <link rel="stylesheet" href="${ctxStatic}/modules/sys/sysDesktop.css?${_version}"> -->
+<div class="content pb0" id="resultDiv">
+
+</div>
+<% } %>
+<script>
+    $(document).ready(function () {
+        getListData();
+    });
+
+    function getListData() {
+        var nId = window.location.search.replace("?id=", "");
+        var url = "${ctx}/vote/voteNaire/seeResult?naireId=" + nId;
+        js.ajaxSubmit(url, function (data) {
+        	var html = "";
+            if (data && data.length > 0 && data[0]) {
+				$.each(data,function(index,ele){
+					if(ele){
+						html += getRow(ele);
+					}
+				});
+            }
+            $("#resultDiv").html(html);
+        });
+    }
+
+    function getRow(info) {
+		var html = " <div class=\"row\">" +
+				"        <section class=\"col-md-12 ui-sortable\">" +
+				"            <div class=\"box box-widget\">" +
+				"                <div class=\"col-md-12\">" +
+				"                    <p class=\"text-left\">" +
+				"                        <strong>"+info.pTitle+"</strong>" +
+				"                    </p>";
+		if (info.subList && info.subList.length > 0 && info.subList[0]) {
+			$.each(info.subList,function(index,ele){
+				if(ele){
+					html += getSub(ele);
+				}
+			});
+		}
+		html += "                </div>" +
+				"            </div>" +
+				"        </section>" +
+				"    </div>";
+		return html;
+    }
+    function getSub(info) {
+		var html ="<div class=\"progress-group\">" +
+				"	<span class=\"progress-text\">"+info.subTitle+"</span>" +
+				" 	<span class=\"progress-number\"><b>"+info.subCount+"</b>/"+info.allCount+"</span>" +
+				" 	<div class=\"progress sm\">" +
+				"      	<div class=\"progress-bar progress-bar-red\" style=\"width: "+(info.rate*100)+"%\"></div>" +
+				"  	</div>" +
+				" </div>";
+		return html;
+	}
+</script>

@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</title>
+    <script type="text/javascript" src="${ctxStatic}/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="${ctxStatic}/layer/3.1/layer.js"></script>
+    <link rel="stylesheet" href="${ctxStatic}/css/dianxing02.css">
+    <style type="text/css">
+        table.gridtable {
+            width: 100%;
+            font-family: verdana, arial, sans-serif;
+            font-size: 11px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #E6E6E6;
+            border-collapse: collapse;
+        }
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #E6E6E6;
+            background-color: #F2F2F2;
+        }
+        table.gridtable td {
+            text-align: center;
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #E6E6E6;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body style="background:url(${ctxStatic}/images/bg.jpg) repeat-y center;">
+<!--<div class="daohang">-->
+<!--    <div class="wenzi"><p>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</p></div>-->
+<!--    <div class="wenzi01"><p>主办单位：中共黑龙江省直属机关工作委员会</p></div>-->
+
+<!--</div>-->
+<!--<div class="top"><img src="${ctxStatic}/images/ttt.jpg" width="100%"></div>-->
+<div class="content" style="width: 100%;">
+    <div class="title02"><p>已选投票</p></div>
+    <div class="buju" style="width: 1000px;">
+        <table class="gridtable" id="hacChecked">
+
+        </table>
+    </div>
+</div>
+
+<div class="clear"></div>
+
+</div>
+<div class="footer01"><p>技术支持：国家统计局黑龙江调查总队</p></div>
+<script>
+    var termType = getSearchType();
+    $(document).ready(function(){
+        getNames();
+    });
+
+    function getNames() {
+        var tableHtml = "<tr><th>单位</th><th>姓名</th><th>职务</th><th></th></tr>";
+        var cart = localStorage.getItem("select_answer_" + termType);
+        if(!cart){
+            $("#hacChecked").html(tableHtml);
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/getHasChecked",
+            data: {
+                'optionIds': cart
+            },
+            dataType: "json",
+            success: function (data) {
+                if(data && data[0]){
+                    $.each(data, function (index, ele) {
+                        if (ele) {
+                            tableHtml += '<tr><td>'+ele.office_name+'</td><td>'+ele.option_name+'</td><td>'+ele.position+'</td><td style="cursor: pointer; color: #ffa200;" onclick="toDelOption(\''+ele.id+'\',\''+ele.office_code+'\',\''+ele.term_id+'\')">取消</td></tr>';
+                        }
+                    });
+                }
+                $("#hacChecked").html(tableHtml);
+            }
+        });
+    }
+
+    function toDelOption(id, office_code, term_id) {
+        layer.load();
+        var key = "select_answer_del_" + termType;
+        localStorage.setItem(key, id + "_" + office_code + "_" + term_id);
+        setTimeout(function () {
+            layer.closeAll();
+            var delInfo = localStorage.getItem(key);
+            if(delInfo){
+                layer.msg('取消失败,请确认投票页面是否关闭', {time: 1500, });
+            }else{
+                layer.msg('取消成功', {time: 1500, });
+                getNames();
+            }
+        }, 2600);
+    }
+
+    function getSearchType() {
+        //获取url中参数
+        var type = window.location.search.replace("?type=","");
+        var termType = 1;
+        if(type != null && type != '' && type != undefined && type !="undefined"){
+            termType = type;
+        }
+        return termType;
+    }
+
+    // $(window).unload(function(){
+    //     //清空缓存
+    //     localStorage.removeItem("select_answer_" + termType);
+    //     localStorage.removeItem("select_answer_del_" + termType);
+    // });
+</script>
+</body>
+</html>

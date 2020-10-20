@@ -1,0 +1,721 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</title>
+    <script type="text/javascript" src="${ctxStatic}/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="${ctxStatic}/js/floatAd.js"></script>
+    <script type="text/javascript" src="${ctxStatic}/layer/3.1/layer.js"></script>
+  	<script>
+       window.onload = function(){
+           var initHeight = document.body.clientHeight / 4;
+           //右侧悬浮
+           var ad = new FloatAd({
+               floatObj: "floatright",
+               x: 5,
+               y: initHeight,
+               locate: "right"
+           });
+           ad.play();
+           //左侧悬浮
+           var search = new FloatAd({
+               floatObj: "floatleft",
+               x: 60,
+               y: initHeight,
+               locate: "left"
+           });
+           search.play();
+       }
+	</script>
+    <link rel="stylesheet" href="${ctxStatic}/css/dianxing01.css">
+    <style type="text/css">
+        table.gridtable {
+            width: 360px;
+            font-family: verdana, arial, sans-serif;
+            font-size: 11px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+        }
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #dedede;
+        }
+        table.gridtable td {
+            text-align: center;
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body style="background-color:#ffefcd;">
+<!--搜索框-->
+<div id="floatleft" style="position: absolute; z-index: 10; left: 100px; top: 520px; width:100px;height:132px;">
+    <img src="${ctxStatic}/images/search.png" width="83" height="83" onclick="showRemarks()">
+</div>
+
+<!--漂浮广告-->
+<div id="floatright" style="position: absolute; z-index: 10; right: 100px; top: 520px; width:153px;height:200px;">
+    <img src="${ctxStatic}/images/jsq.png" width="153" height="243">
+
+    <p id="subButton"></p>
+</div>
+<!--漂浮广告end-->
+<div class="daohang">
+    <div class="wenzi"><p>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</p></div>
+    <div class="wenzi01"><p>主办单位：中共黑龙江省直属机关工作委员会</p></div>
+</div>
+<div class="top"><img src="${ctxStatic}/images/ttt.jpg" width="100%"></div>
+<div class="content">
+    <div class="title02"><p>公示简介</p></div>
+    <div class="sy-nr">
+        <p>为了深入贯彻落实习近平总书记提出的“五细”重要要求，按照省委关于深化作风整顿优化营商环境的统一部署，今年在省直机关组织开展践行“工
+            匠精神”先进集体和先进个人评选。评选的宗旨和目的是进一步推动习近平总书记考察我省重要讲话精神的贯彻落实，在省直机关大力弘扬“工匠精神”,
+            充分调动广大机关干部干事创业的积极性、主动性和创造性，努力把省直机关建设成为讲政治、守纪律、负责任、有效率的模范机关，为实现龙江全面振
+            兴全方位振兴提供坚强组织保证和作风保证。</p>
+        <p>按照《省直机关践行“工匠精神”先进集体和先进个人评选办法》,现对省直各部门评选并按要求推荐上报的省直机关践行“工匠精神”先进集体和先
+            进个人候选人的先进事迹进行集中公示，供省直机关广大干部学习借鉴并接受监督。</p>
+        <p>联系电话：53609475、18903660110</p>
+    </div>
+    <div class="title02"><p>参评单位</p></div>
+
+    <div id="reviewDiv"  class="clear"></div>
+    <p onclick="toStorage()" style="position:absolute;text-align:center;font-size:14px;background-color:#cc1c1e;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:350px;bottom:22px;border-radius:30px;">
+        <a style=" color:#fff;" href="javascript:void(0)">暂存</a>
+    </p>
+    <p onclick="toSubmit()" style="position:absolute;text-align:center;font-size:14px;background-color:#cc1c1e;font-weight:bold;display:block;width:200px;line-height:35px;margin-left:650px;bottom:22px;border-radius:30px;">
+        <a style=" color:#fff;" href="javascript:void(0)">确认投票</a>
+    </p>
+</div>
+
+<div id="loadingDiv" style="position:fixed;z-index:2000;top:0px;left:0px;width:100%;height:100%;background-color:rgba(0,0,0,0.5);display: none;" onclick="hideSearch()"></div>
+<div id="loadingDiv_img" style="display: none">
+    <div style="position:absolute;z-index: 2001;">
+        <img src="${ctxStatic}/images/search_bg1.png" style="position:absolute;left: 100px;"/>
+        <img src="${ctxStatic}/images/close1.png" style="position:absolute;left: 755px;top: -20px;" onclick="hideSearch()"/>
+
+<!--        <label style="position:absolute;margin-top:50px;margin-left: 150px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">姓名：</label>-->
+<!--        <input type="text" id="select_name" style="position:absolute;margin-top:50px;margin-left: 200px;width: 150px;height: 28px;border-radius:30px;"/>-->
+
+
+<!--        <label style="position:absolute;margin-top:50px;margin-left: 450px;width: 120px;height: 30px;z-index:2002;color: #FFFFFF;">所在厅局：</label>-->
+<!--        <select id="select_office" style="position:absolute;margin-top:50px;margin-left: 530px;width: 150px;height: 30px;border-radius:30px;">-->
+
+<!--        </select>-->
+
+        <label style="position:absolute;margin-top:70px;margin-left: 150px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;">姓名：</label>
+        <input type="text" id="select_name" style="position:absolute;margin-top:70px;margin-left: 200px;width: 150px;height: 28px;border-radius:30px;"/>
+
+
+        <label style="position:absolute;margin-top:70px;margin-left: 450px;width: 120px;height: 30px;z-index:2002;color: #FFFFFF;">所在厅局：</label>
+        <select id="select_office" style="position:absolute;margin-top:70px;margin-left: 530px;width: 150px;height: 30px;border-radius:30px;">
+
+        </select>
+
+        <label style="position:absolute;margin-top:120px;margin-left: 150px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;display: none;">所属类别：</label>
+
+        <input id="searchButton" onclick="toSearch()" type="button" style="position:absolute;margin-top:160px;margin-left: 310px;width: 250px;height: 40px;border-radius:30px;background-color: red;color: #FFFFFF;border-style:solid; border-width:2px; border-color:#FFFFFF;font-size: 20px;" value="确定查询"/>
+<!--        <input id="searchButton" onclick="toSearch()" type="button" style="position:absolute;margin-top:190px;margin-left: 310px;width: 250px;height: 40px;border-radius:30px;background-color: red;color: #FFFFFF;border-style:solid; border-width:2px; border-color:#FFFFFF;font-size: 20px;" value="确定查询"/>-->
+    </div>
+</div>
+
+<div class="footer01"><p>技术支持：国家统计局黑龙江调查总队</p></div>
+      <script>
+    function resetTabs(){
+        $("#content > div").hide(); //Hide all content
+        $("#tabs a").attr("id",""); //Reset id's
+    }
+
+    var myUrl = window.location.href; //get URL
+    var myUrlTab = myUrl.substring(myUrl.indexOf("#")); // For localhost/tabs.html#tab2, myUrlTab = #tab2     
+    var myUrlTabName = myUrlTab.substring(0,4); // For the above example, myUrlTabName = #tab
+
+    (function () {
+        layer.load();
+        setTimeout(function () {
+            layer.closeAll();
+        },2000);
+        //获取列表组织
+        getReviewTermList();
+        //获取投票信息
+        getAnswerInfo();
+        //获取所有投票结果
+        getAllAnswer();
+        // 查询字典信息
+        getDicInfo();
+        //定时执行
+        delTimer();
+    })()
+    //用来判断是否可以投票
+    var reviewNameArry = [];
+    var reviewNameCount = [];
+    function getDicInfo() {
+        var termType = getSearchType();
+        var divHtml = "";
+        var left =  200;
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/getDicInfo",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                if (data && data[0]) {
+                    $.each(data, function (index, ele) {
+                        if (ele && ele.dictValue == termType) {
+                            reviewNameArry.push(ele.dictLabel);
+                            reviewNameCount.push(ele.description);
+                            divHtml = getDicGtml(ele,left);
+                            left += 150;
+                            $("#searchButton").before(divHtml);
+                        }
+                    });
+                }
+            }
+        });
+    }
+    function getDicGtml(info,left){
+        return '<input type="radio" name="termRadio" checked value="'+info.dictValue+'" style="position:absolute;margin-top:120px;margin-left: '+left+'px;width: 100px;height: 30px;cursor: pointer;display: none;"/>' +
+               '<label style="position:absolute;margin-top:120px;margin-left: '+(left+70)+'px;width: 100px;height: 30px;z-index:2002;color: #FFFFFF;display: none;">'+info.dictLabel+'</label>';
+    }
+
+    function initDiv() {
+        $("#content > div").hide(); // Initially hide all content
+
+        $("#tabs a").on("click",function(e) {
+            e.preventDefault();
+            if ($(this).attr("id") == "current"){ //detection for current tab
+                return
+            }
+            else{
+                resetTabs();
+                $(this).attr("id","current"); // Activate this
+                $($(this).attr('name')).fadeIn(); // Show content for current tab
+            }
+        });
+
+        for (i = 1; i <= $("#tabs li").length; i++) {
+            if (myUrlTab == myUrlTabName + i) {
+                resetTabs();
+                $("a[name='"+myUrlTab+"']").attr("id","current"); // Activate url tab
+                $(myUrlTab).fadeIn(); // Show url tab content
+            }
+        }
+    }
+
+    function getReviewTermList() {
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/getReviewTermList",
+            data: {},
+            dataType: "json",
+            success: function (data) {
+                var ulLi = '<ul id="tabs">';
+                var xh = 1;
+                var divHtml = '';
+                // var selectHtml = '<option value="">请选择</option>';
+                var selectHtml = '';
+                if(data && data[0]){
+                    $.each(data,function(index,ele){
+                        if(ele){
+                            //5个一循环
+                            if(xh > 5){
+                                xh = 1;
+                                //结尾
+                                divHtml += '</div>';
+                                ulLi += '</ul>';
+                                //输出
+                                $("#reviewDiv").before(ulLi);
+                                $("#reviewDiv").before(divHtml);
+                            }
+                            if(xh == 1){
+                                //初始化
+                                divHtml = '<div id="content">';
+                                ulLi = '<ul id="tabs">';
+                                //拼接子元素
+                                divHtml += getDiv(ele);
+                                ulLi += getulLi(ele);
+                            }else{
+                                //拼接子元素
+                                divHtml += getDiv(ele);
+                                ulLi += getulLi(ele);
+                            }
+                            selectHtml += getSelectHtml(ele);
+                        }
+                        xh++;
+                    });
+                    $("#select_office").html(selectHtml);
+                    if(xh <= 5){
+                        //结尾
+                        divHtml += '</div>';
+                        ulLi += '</ul>';
+                        //输出
+                        $("#reviewDiv").before(ulLi);
+                        $("#reviewDiv").before(divHtml);
+                    }
+                }
+                initDiv();
+            }});
+    }
+
+    function getSelectHtml(info) {
+        return '<option value="'+info.office_code+'">'+info.office_name+'</option>';
+    }
+
+
+
+    function getulLi(ele){
+        return '<li><a href="#" onclick="getReviewTermListByOfficeCode(\''+ele.office_code+'\')" name="#'+ele.office_code+'">'+ele.office_name+'</a></li>';
+    }
+
+    function getDiv(ele) {
+        return '<div id="'+ele.office_code+'"></div>';
+    }
+
+    function getSearchType() {
+        //获取url中参数
+        var type = window.location.search.replace("?type=","");
+        var termType = 1;
+        if(type != null && type != '' && type != undefined && type !="undefined"){
+            termType = type;
+        }
+        return termType;
+    }
+
+    function getReviewTermListByOfficeCode(office_code) {
+        var termType = getSearchType();
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/getReviewTermListByOfficeCode",
+            data: {
+                'officeCode':office_code,
+                'termType':termType
+            },
+            dataType: "json",
+            success: function (data) {
+                var subHtml = '';
+                if(data && data[0]){
+                    $.each(data,function(index,ele){
+                        if(ele){
+                            subHtml += setDiv(ele);
+                        }
+                    });
+                }
+                $("#"+office_code).html(subHtml);
+            }});
+    }
+    function setDiv(info) {
+        var ulHtml = '<ul class="houxuan"><div class="houxuan-title"><p>'+info.office_name+'——省直机关践行“工匠精神”候选<span id="'+info.id+'">'+info.review_name+'</span></p></div>';
+        if(info.options && info.options[0]){
+            $.each(info.options,function(index,ele){
+                if(ele){
+                    ulHtml+=liHtml(ele,info.review_name);
+                }
+            });
+        }
+        ulHtml += '</ul>';
+        return ulHtml;
+    }
+
+    function liHtml(info,tremClass) {
+        //return '<li id="'+info.id+'" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"><a href="javascript:void(0)" target="_blank"><div class="touxiang"><img src=""></div><div class="nr"><p>'+info.option_name+'</p><span>'+info.position+'</span></div></a></li>';
+        var styleStr = ""
+        var isChecked = "0";
+        var isCheckedStr = ""
+        if(info.isAnswer == '1' || isInCheckValues(info.id)){
+            styleStr = 'style=background-color:rgba(234,45,47,0.8);"';
+            isChecked = "1";
+            isCheckedStr = "checked";
+        }
+        var hrefUrl= 'javascript:void(0)';
+        var target = '';
+        if(tremClass.endsWith("干部")){
+            hrefUrl = '${ctx}/vote/formal/ganbu';
+            target = 'target="_blank"';
+        }else if (tremClass.endsWith("处长")){
+            hrefUrl = '${ctx}/vote/formal/chuzhang';
+            target = 'target="_blank"';
+        }else if (tremClass.endsWith("处室")){
+            hrefUrl = '${ctx}/vote/formal/chushi';
+            target = 'target="_blank"';
+        }
+        return '<li '+styleStr+' data_isChecked="'+isChecked+'" id="'+info.id+'"><a href="'+hrefUrl+'" '+target+'><div class="touxiang"><input '+isCheckedStr+' type="checkbox" id="'+info.id+'_box" style="cursor:pointer;zoom:200%;" onclick="selectTouPiao(\''+info.id+'\',\''+info.term_id+'\')"/></div><div class="nr"><p>'+info.option_name+'&nbsp;</p><span title="'+info.position+'">'+info.position+'</span></div></a></li>';
+    }
+    //选择的数据
+    var checkValues = [];
+    function selectTouPiao(id,termId) {
+        if( $("#"+id).attr("data_isChecked") == '1'){
+            //已经选中---修改为未选中
+            $("#"+id).removeAttr("style");
+            $("#"+id).attr("data_isChecked","0");
+            //移除选中的数据
+            removeCheckedVal(id,termId);
+            //选中数减1
+            var tremClass = $("#"+termId).html();
+            var count = $("#"+tremClass).html();
+            $("#"+tremClass).text((parseInt(count)-1));
+            layer.msg('取消投票', {time: 1500, });
+            var termType = getSearchType();
+            setHc(termType);
+        }else{
+            //未选中---修改为选中
+            $("#"+id).attr("style","background-color:rgba(234,45,47,0.8);");
+            $("#"+id).attr("data_isChecked","1");
+            checkValues.push(id);
+            //选中数加1
+            var tremClass = $("#"+termId).html();
+            var count = $("#"+tremClass).html();
+            $("#"+tremClass).text((parseInt(count)+1));
+            layer.msg('选中投票', {time: 1500, });
+            var termType = getSearchType();
+            setHc(termType);
+        }
+    }
+
+    function isInCheckValues(id){
+        var result = false;
+        if(checkValues && checkValues[0]){
+            $.each(checkValues,function(index,ele){
+                if(ele){
+                    if(ele == id){
+                        result = true;
+                        return;
+                    }
+                }
+            });
+        }
+        return result;
+    }
+
+
+    function removeCheckedVal(val) {
+        var newCheckVals = [];
+        if(checkValues && checkValues[0]){
+            $.each(checkValues,function(index,ele){
+                if(ele){
+                    if(ele != val){
+                        newCheckVals.push(ele);
+                    }
+                }
+            });
+        }
+        checkValues = newCheckVals;
+    }
+
+    function getAnswerInfo() {
+        // var termType = getSearchType();
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/getAnswerInfo",
+            data: {
+                // 'termType':termType
+            },
+            dataType: "json",
+            success: function (data) {
+                var xfHtml = '';
+                var first = 60;
+                var second = 78;
+                $.each(data,function(index,ele){
+                    if(ele){
+                        xfHtml += getXfHtml(ele,first,second);
+                        first += 44;
+                        second += 44;
+                    }
+                });
+                $("#subButton").before(xfHtml);
+            }});
+    }
+
+    function openCart() {
+        var termType = getSearchType();
+        var a = document.createElement('a');
+        a.setAttribute('href', "${ctx}/vote/formal/toupiaocart?type="+termType);
+        a.setAttribute('target', "_blank");
+        a.setAttribute('id', 'js_a');
+        //防止反复添加
+        if(document.getElementById('js_a')) {
+            document.body.removeChild(document.getElementById('js_a'));
+        }
+        document.body.appendChild(a);
+        a.click();
+    }
+
+    function getXfHtml(info,first,second) {
+        var xfHtml = '<p onclick="openCart()" style="text-align:center;font-size:14px;color:#333;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+first+'px;">'+info.tremClass+'</p>' +
+                      '<p onclick="openCart()" style="text-align:center;font-size:14px;color:#cc1c1e;width:100px;line-height:18px;margin:0 26px;position:absolute;top:'+second+'px;border-bottom:1px dashed #333;padding-bottom:4px;"><span id="'+info.tremClass+'">'+info.hasOptionCount+'</span>/'+info.allOptionCount+'票</p>';
+        return xfHtml;
+    }
+
+    function toSubmit() {
+        var termType = getSearchType();
+        var isToToupiao = true;
+        //用来判断是否可以投票
+        if(reviewNameArry && reviewNameArry[0]){
+            var hasCount = "";
+            for(var i = 0; i< reviewNameArry.length ;i++){
+                if(reviewNameArry[i] && reviewNameCount[i]){
+                    hasCount = $("#"+reviewNameArry[i]).text();
+                    if(hasCount != reviewNameCount[i]){
+                        layer.alert(reviewNameArry[i] + '的投票数应为 ' + reviewNameCount[i]);
+                        isToToupiao = false;
+                        break;
+                    }
+                }
+            }
+        }
+        if(!isToToupiao){
+            return;
+        }
+        //询问是否投票
+        layer.confirm('慎重选择，提交后不可更改!', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var optionIds = "";
+            $.each(checkValues,function(index,ele){
+                if(ele){
+                    optionIds += ele+',';
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "${ctx}/vote/formal/submitAnswer",
+                data: {
+                    'optionIds':optionIds,
+                    'termType':termType,
+                    'voteStatus':'1'
+                },
+                dataType: "text",
+                success: function (data) {
+                    if(data == '投票成功'){
+                        layer.confirm(data, {
+                            btn: ['继续投票','退出登录'] //按钮
+                        }, function(){
+                            toUrlAction('${ctx}/vote/formal/gongshi');
+                        }, function(){
+                            toUrlAction('${ctx}/logout');
+                        });
+                    }else{
+                        layer.alert(data);
+                    }
+
+                },
+                fail:function (data) {
+                    layer.alert("投票失败，请再次点击");
+                }
+            });
+        }, function(){
+            layer.msg('取消投票', {time: 2000, });
+        });
+    }
+
+    function toUrlAction(url) {
+        var a = document.createElement('a');
+        a.setAttribute('href', url);
+        a.setAttribute('target', "_top");
+        a.setAttribute('id', 'js_a');
+        //防止反复添加
+        if(document.getElementById('js_a')) {
+            document.body.removeChild(document.getElementById('js_a'));
+        }
+        document.body.appendChild(a);
+        a.click();
+    }
+
+    function toStorage() {
+        var termType = getSearchType();
+        //询问是否投票
+        layer.confirm('暂存信息，投票不会生效!', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            var optionIds = "";
+            $.each(checkValues,function(index,ele){
+                if(ele){
+                    optionIds += ele+',';
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "${ctx}/vote/formal/submitAnswer",
+                data: {
+                    'optionIds':optionIds,
+                    'termType':termType,
+                    'voteStatus':'0'
+                },
+                dataType: "text",
+                success: function (data) {
+                    if(data == '投票成功'){
+                       layer.alert("暂存成功");
+                    }else{
+                        var alertMsg = data.replace('投票','暂存');
+                        layer.alert(alertMsg);
+                    }
+
+                },
+                fail:function (data) {
+                    layer.alert("暂存失败，请再次点击");
+                }
+            });
+        }, function(){
+            layer.msg('取消暂存', {time: 2000, });
+        });
+
+    }
+
+    function getAllAnswer() {
+        var termType = getSearchType();
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/getAllAnswer",
+            data: {
+                'termType':termType
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data && data[0]) {
+                    $.each(data, function (index, ele) {
+                        if (ele) {
+                            checkValues.push(ele.optionId);
+                        }
+                    });
+                    setHc(termType);
+                }
+            }
+        });
+    }
+
+    function setHc(termType) {
+        localStorage.setItem("select_answer_" + termType, checkValues);
+    }
+
+    function showRemarks() {
+        var h = $("#floatleft").offset().top;
+        $("#loadingDiv").show();
+        $("#loadingDiv_img").attr("style", 'position:absolute;left:20%; top:' + h + 'px;z-index: 2001;');
+    }
+
+    function hideSearch(){
+        $("#loadingDiv").hide();
+        $("#loadingDiv_img").hide();
+    }
+
+    function toSearch() {
+        var select_office= $("#select_office").val();
+        var select_name= $("#select_name").val();
+        var radioVal= $('input:radio:checked').val();
+        if(!select_office){
+            layer.msg('请选择组织单位', {time: 1500, });
+            return;
+        }
+        if(!select_name){
+            layer.msg('请填写姓名', {time: 1500, });
+            return;
+        }
+        if(!radioVal){
+            layer.msg('请选择类别', {time: 1500, });
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/searchList",
+            data: {
+                'officeCode': select_office,
+                'reviewName': radioVal,
+                'optionName': select_name
+            },
+            dataType: "json",
+            success: function (data) {
+                if(data && data[0]){
+                    var tsMsg = '<table class="gridtable">'
+                              + '<tr><th>姓名</th><th>组织</th><th>职位</th><th>定位</th></tr>';
+                    var toIndex = '';
+                    $.each(data, function (index, ele) {
+                        if (ele) {
+                            if(index == 0){
+                                toIndex = ele.term_id;
+                            }
+                            tsMsg +='<tr><td>'+ele.option_name+'</td><td>'+ele.office_name+'</td><td>'+ele.position+'</td><td style="cursor: pointer; color: #ffa200;" onclick="dingwei(\''+select_office+'\',\''+ele.term_id+'\')">定位</td></tr>';
+                        }
+                    });
+                    tsMsg +="</table>"
+                    if(data.length > 1){
+                        if(tsMsg.endsWith(",")){
+                            tsMsg = tsMsg.substr(0,tsMsg.length -1);
+                        }
+
+                        layer.open({
+                            type: 1,
+                            title: false,
+                            closeBtn: 0,
+                            shadeClose: true,
+                            skin: 'yourclass',
+                            content: tsMsg
+                        });
+                        return;
+                    }else{
+                        dingwei(select_office,toIndex);
+                    }
+                }else{
+                    layer.alert("未查询到符合条件的人");
+                }
+            }
+        });
+    }
+    function dingwei(select_office,toIndex) {
+        layer.load();
+        setTimeout(function(){
+            layer.closeAll();
+        }, 1500);
+
+        //---打开组织
+        $("a[name='#"+select_office+"']").click();
+        hideSearch();
+        //延时跳转
+        setTimeout(function () {
+            var h = $("#"+toIndex).offset().top;
+            $('html,body').animate({scrollTop:h},500);//回到顶端
+        },1500);
+    }
+
+    var termType = getSearchType();
+    function delTimer() {
+        var key = "select_answer_del_" + termType;
+        var delInfo = localStorage.getItem(key);
+        if(delInfo){
+            var arry = delInfo.split('_');
+            var delId = arry[0];
+            var officeCode = arry[1];
+            var termId = arry[2];
+            //先调一下定位-展开列表之后在取消选择
+            dingwei(officeCode,termId);
+            setTimeout(function () {
+                $("#"+delId+"_box").click();
+                localStorage.removeItem(key);
+                var cart = localStorage.getItem("select_answer_" + termType);
+                cart = cart.replace(delId+',',"");
+                cart = cart.replace(delId,"");
+                localStorage.setItem("select_answer_" + termType,cart);
+                setTimeout(function () {
+                    delTimer();
+                },1000);
+            },1500);
+        }else{
+            setTimeout(function () {
+                delTimer();
+            },1000);
+        }
+    }
+
+    // $(window).unload(function(){
+    //     //清空缓存
+    //     localStorage.removeItem("select_answer_" + termType);
+    //     localStorage.removeItem("select_answer_del_" + termType);
+    // });
+      </script>
+</body>
+</html>

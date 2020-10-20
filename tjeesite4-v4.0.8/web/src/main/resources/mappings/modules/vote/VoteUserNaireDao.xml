@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeesite.modules.vote.dao.VoteUserNaireDao">
+
+    <select id="getHasCount" resultType="long">
+        SELECT count(DISTINCT user_id) count FROM `vote_answer` WHERE naire_id = #{naireId}
+    </select>
+
+    <select id="isAllDraft" resultType="long">
+        SELECT count(id) FROM `vote_naire` WHERE statues != '1'
+        <if test="naireIds != null and naireIds.size() > 0">
+            and id in
+            <foreach close=")" collection="naireIds" item="it" open="(" separator=",">
+                #{it}
+            </foreach>
+        </if>
+    </select>
+</mapper>

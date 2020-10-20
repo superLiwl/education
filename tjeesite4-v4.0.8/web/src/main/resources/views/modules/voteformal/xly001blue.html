@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</title>
+    <script type="text/javascript" src="${ctxStatic}/js/jquery-1.8.3.min.js"></script>
+    <link href="${ctxStatic}/css/dianxing02.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <div class="daohang01">
+    <div class="wenzi"><p>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</p></div>
+    <div class="wenzi01"><p>主办单位：中共黑龙江省直属机关工作委员会</p></div>
+  </div>
+
+<!--列表开始--> 
+<div class="erjiye">
+<div class="xly-bt01">
+<h2 id="cs_h"></h2>
+</div>
+   <div class="xly-jianjie">
+   <div class="xly-jianjie-l"><img id="touxiang" src=""></div>
+   <div class="xly-jianjie-r">
+   <div class="xly-jianjie-r-wz"><span>姓&emsp;名：</span><p id="mingcheng"></p></div>
+   <div class="xly-jianjie-r-wz"><span>性&emsp;别：</span><p id="xingbie"></p></div>
+   <div class="xly-jianjie-r-wz"><span>年&emsp;龄：</span><p id="ningling"></p></div>
+   <div class="xly-jianjie-r-wz"><span>政治面貌：</span><p id="mianmao"></p></div>
+   <div class="xly-jianjie-r-wz"><span>工作单位：</span><p id="danwei"></p></div>
+   <div class="xly-jianjie-r-wz"><span>部门职务：</span><p id="zhiwu"></p></div>
+   </div>
+    </div>
+<div class="xly-yj">
+<div class="xly-title01"><p>简要事迹</p></div>
+<div class="xly-nr01">
+<p id="cs_shiji"></p>
+</div>
+<!--<div class="fanhui"><a href="${ctx}/vote/formal/toupiaoblue?type=1">返回上一页</a></div>-->
+</div> 
+</div>
+<!--列表结束 -->
+<div class="footer" style="margin-top:30px;"><p>技术支持：国家统计局黑龙江调查总队</p></div>
+</body>
+<script>
+    (function () {
+        var dataId = getSearchType();
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/vote/formal/getDetailInfo",
+            data: {'id':dataId},
+            dataType: "json",
+            success: function (data) {
+                if(data){
+                    $("#cs_h").html("省直机关践行“工匠精神”候选先进干部——"+data.mingcheng);
+                    $("#cs_shiji").html(data.shiji);
+                    $("#mingcheng").html(data.mingcheng);
+                    if(data.xingbie == '1'){
+                        $("#xingbie").html("男");
+                    }else{
+                        $("#xingbie").html("女");
+                    }
+                    $("#ningling").html(data.nianling);
+                    $("#mianmao").html(data.zhengzhimm);
+                    $("#danwei").html(data.dwname);
+                    $("#zhiwu").html(data.zhiwu);
+                    // $("#touxiang").attr("src","http://www.ljjgdj.org/gjjs" + data.zhaopian);
+                    $("#touxiang").attr("src","${ctxStatic}" + data.zhaopian);
+                }
+            }
+        });
+    })()
+
+    function getSearchType() {
+        //获取url中参数
+        var type = window.location.search.replace("?dataId=","");
+        var termType = "";
+        if(type != null && type != '' && type != undefined && type !="undefined"){
+            termType = type;
+        }
+        return termType;
+    }
+</script>
+</html>

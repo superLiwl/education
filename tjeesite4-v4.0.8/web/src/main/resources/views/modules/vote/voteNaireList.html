@@ -1,0 +1,287 @@
+<% layout('/layouts/default.html', {title: '投票管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('投票配置')}
+			</div>
+			<div class="box-tools pull-right">
+				<% if(hasPermi('vote:voteNaire:edit')){ %>
+				<a href="#" class="btn btn-default" onclick="conQuestion()" title="${text('投票配题')}"><i class="fa fa-plus"></i> ${text('投票配题')}</a>
+				<a href="#" class="btn btn-default" id="btnAddUser" title="${text('配置投票用户')}"><i class="fa fa-plus"></i> ${text('配置投票用户')}</a>
+				<a href="#" class="btn btn-default" id="btnResult" onclick="toVoteResult('查看结果')" title="${text('查看结果')}"><i class="fa fa-filter"></i> ${text('查看结果')}</a>
+				<a href="#" class="btn btn-default" id="btnSee" onclick="toSeeUser('查看投票')" title="${text('查看投票')}"><i class="fa fa-filter"></i> ${text('查看投票')}</a>
+				<a href="#" class="btn btn-default" id="btnPublish" onclick="getCheckBoxValue('2','发布')" title="${text('发布')}"><i class="fa fa-filter"></i> ${text('发布')}</a>
+				<a href="#" class="btn btn-default" id="btnStop" onclick="getCheckBoxValue('3','终止投票')" title="${text('终止投票')}"><i class="fa fa-filter"></i> ${text('终止投票')}</a>
+				<% } %>
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<% if(hasPermi('vote:voteNaire:edit')){ %>
+					<a href="${ctx}/vote/voteNaire/form" class="btn btn-default btnTool" title="${text('新增投票')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+				<% } %>
+				<a href="#" class="btn btn-default hide" id="voteResult"></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${voteNaire}" action="${ctx}/vote/voteNaire/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('投票名称')}：</label>
+					<div class="control-inline">
+						<#form:input path="name" maxlength="50" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<div class="hide">
+	<#form:listselect id="userSelect" title="${text('用户选择')}" url="${ctx}/sys/empUser/empUserSelect" allowClear="false" checkbox="true" itemCode="userCode" itemName="userName"/>
+</div>
+
+<div class="hide">
+	<#form:form id="saveNaireUserForm" action="${ctx}/vote/voteNaire/saveNaireUser" method="post" class="form-inline">
+		<#form:input name="userCodes" id="userCodes" class="form-control width-120"/>
+		<#form:input name="naireIds" id="naireIds" class="form-control width-120"/>
+		<#form:input name="proportion" id="proportion" class="form-control width-120"/>
+	</#form:form>
+</div>
+
+<div class="hide">
+	<#form:form id="saveQuestionsForm" action="${ctx}/vote/voteNaire/saveQuestions" method="post" class="form-inline">
+		<#form:input name="userCodes" id="userCodes_q" class="form-control width-120"/>
+		<#form:input name="naireIds" id="naireIds_q" class="form-control width-120"/>
+		<#form:input name="proportion" id="proportion_q" class="form-control width-120"/>
+	</#form:form>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	showCheckbox:true,
+	columnModel: [
+		{header:'${text("投票名称")}', name:'name', index:'a.name', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/vote/voteNaire/form?id='+row.id+'" class="btnList" data-title="${text("编辑投票")}">'+(val||row.id)+'</a>';
+		}},
+		{header:'${text("投票描述")}', name:'content', index:'a.content', width:150, align:"left"},
+		{header:'${text("创建时间")}', name:'createTime', index:'a.create_time', width:150, align:"center"},
+		{header:'${text("状态")}', name:'statues', index:'a.statues', width:80, align:"center", formatter: function(val, obj, row, act){
+				return js.getDictLabel(${@DictUtils.getDictListJson('vote_statues')}, val, '未知', true);
+			}},
+		{header:'${text("排序")}', name:'sort', index:'a.sort', width:150, align:"center"},
+		{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+			var actions = [];
+			<% if(hasPermi('vote:voteNaire:edit')){ %>
+				actions.push('<a href="${ctx}/vote/voteNaire/form?id='+row.id+'" class="btnList" title="${text("编辑投票")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/vote/voteNaire/delete?id='+row.id+'" class="btnList" title="${text("删除投票")}" data-confirm="${text("确认要删除该投票吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+			<% } %>
+			return actions.join('');
+		}}
+	],
+	ajaxSuccess: function(data){
+		
+	}
+});
+
+function getCheckBoxValue(type,title) {
+	var vals = getCheckVals();
+	if(!vals[0]){
+		js.showMessage("至少选择一个投票", title, "info", 2000);
+		return;
+	}if(vals.length == 0){
+		js.showMessage("至少选择一个投票", title, "info", 2000);
+		return;
+	}
+	js.ajaxSubmit("${ctx}/vote/voteNaire/updateStatues?type="+type+"&ids="+vals, function(data){
+		js.showMessage(data.message);
+		page();
+	});
+}
+
+function toVoteResult(title) {
+	var vals = getCheckVals();
+	if(!vals[0]){
+		js.showMessage("请选择一个投票", title, "info", 2000);
+		return;
+	}if(vals.length == 0){
+		js.showMessage("请选择一个投票", title, "info", 2000);
+		return;
+	}else if(vals.length > 1){
+		js.showMessage("只能选择一个投票", title, "info", 2000);
+		return;
+	}
+	var url="${ctx}/vote/voteNaire/result?id="+vals[0];
+	js.addTabPage($("#voteResult"), title, url, true, false);
+}
+
+$('#btnAddUser').click(function(){
+	var vals = getCheckVals();
+	if(!vals[0]){
+		js.showMessage("至少选择一个投票", "配置投票用户", "info", 2000);
+		return;
+	}if(vals.length == 0){
+		js.showMessage("至少选择一个投票", "配置投票用户", "info", 2000);
+		return;
+	}
+	$('#userSelectCode').val('');
+	$('#userSelectName').val('').click();
+});
+$('#userSelectCode').change(function(){
+	var userCodes = $('#userSelectCode').val()
+	var naireIds = getCheckVals();
+	var proportion = "1";
+	$("#userCodes").val(userCodes);
+	$("#naireIds").val(naireIds);
+	$("#proportion").val(proportion);
+
+	js.ajaxSubmitForm($('#saveNaireUserForm'), {
+				callback: function (data) {
+					js.showMessage(data.message, "配置投票用户", "info", 2000);
+				},
+				dataType: 'json',
+				async: true,
+				message: '正在获取数据...'
+			});
+});
+function getCheckVals() {
+	var vals = [];
+	var val;
+	$.each($('input:checkbox:checked'), function () {
+		val = $(this).attr('id').replace("jqg_dataGrid_", "").replace("cb_dataGrid", "");
+		if (val) {
+			vals.push(val);
+		}
+	});
+	$("#naireIds").val(vals);
+	return vals;
+}
+
+function conQuestion() {
+	var vals = getCheckVals();
+	if(!vals[0]){
+		js.showMessage("至少选择一个投票", "配置投票用户", "info", 2000);
+		return;
+	}if(vals.length == 0){
+		js.showMessage("至少选择一个投票", "配置投票用户", "info", 2000);
+		return;
+	}
+	//查询所有参评单位
+	var url = "${ctx}/vote/voteQuestion/listQuestion";
+	js.ajaxSubmit(url, function(data){
+		var tableHtml = "<tr><td>序号</td><td>参评单位</td><td><input type='checkbox' name='chackAllQuestion' onclick='checkAllQ(this)' value=''></td></tr>";
+		if(data && data.length > 0 && data[0]){
+			var xh = 1;
+			$.each(data,function(index,ele){
+				if(ele){
+					tableHtml +=getTableHtml(xh,ele)
+					xh++;
+				}
+			});
+			//在这里面输入任何合法的js语句
+			layer.open({
+				type: 1 //Page层类型
+				, area: ['600px', '400px']
+				, title: '选择参评单位'
+				, shade: 0.6 //遮罩透明度
+				, maxmin: true //允许全屏最小化
+				, anim: 1 //0-6的动画形式，-1不开启
+				, content: '<div style="padding:50px;"><table class="table table-striped">' + tableHtml + '</table><div class="pull-right"><button type="button" onclick="toSaveQ()" class="btn btn-success">保存</button></div></div>'
+			});
+		}else{
+			js.showMessage("至少选择一个投票", "暂无可配置投票用户", "info", 2000);
+		}
+	});
+}
+
+function toSeeUser(title) {
+	var vals = getCheckVals();
+	if(!vals[0]){
+		js.showMessage("请选择一个投票", title, "info", 2000);
+		return;
+	}if(vals.length == 0){
+		js.showMessage("请选择一个投票", title, "info", 2000);
+		return;
+	}else if(vals.length > 1){
+		js.showMessage("只能选择一个投票", title, "info", 2000);
+		return;
+	}
+	// //查询所有参评单位
+	var url = "${ctx}/vote/voteNaire/toSeeUser?naireId="+vals[0];
+	js.ajaxSubmit(url, function(data){
+		var tableHtml = "<tr><td>序号</td><td>投票人</td><td>是否投票</td></tr>";
+		if(data && data.length > 0 && data[0]){
+			var xh = 1;
+			$.each(data,function(index,ele){
+				if(ele){
+					tableHtml +=getUserTableHtml(xh,ele)
+					xh++;
+				}
+			});
+			//在这里面输入任何合法的js语句
+			layer.open({
+				type: 1 //Page层类型
+				, area: ['600px', '400px']
+				, title: '查看投票'
+				, shade: 0.6 //遮罩透明度
+				, maxmin: true //允许全屏最小化
+				, anim: 1 //0-6的动画形式，-1不开启
+				, content: '<div style="padding:50px;"><table class="table table-striped">' + tableHtml + '</table><div class="pull-right"></div></div>'
+			});
+		}
+	});
+}
+function getUserTableHtml(xh,info) {
+	if(info.checkCount == 0){
+		return "<tr><td>" + xh + "</td><td>" + info.user_name + "</td><td><input type='checkbox' name='checkUser' disabled></td></tr>";
+	}else{
+		return "<tr><td>" + xh + "</td><td>" + info.user_name + "</td><td><input type='checkbox' name='checkUser' checked disabled></td></tr>";
+	}
+}
+
+
+function getTableHtml(xh,info) {
+	return "<tr><td>" + xh + "</td><td>" + info.title + "</td><td><input type='checkbox' name='chackQuestion' value='" + info.id + "' ></td></tr>";
+}
+
+function checkAllQ(obj) {
+	if($(obj).is(':checked')) {
+		$("input[name=chackQuestion]").prop("checked",true);
+	}else{
+		$("input[name=chackQuestion]").prop("checked",false);
+	}
+}
+
+function toSaveQ() {
+	var vals = [];
+	$.each($('input[name=chackQuestion]:checked'), function () {
+		vals.push($(this).val());
+	});
+	if(!vals[0]){
+		js.showMessage("至少选择一个选项", "选择参评单位", "info", 2000);
+		return;
+	}if(vals.length == 0){
+		js.showMessage("至少选择一个选项", "选择参评单位", "info", 2000);
+		return;
+	}
+	var naireIds = $("#naireIds").val();
+	$("#userCodes_q").val(vals);
+	$("#naireIds_q").val(naireIds);
+	$("#proportion_q").val("1");
+
+	js.ajaxSubmitForm($('#saveQuestionsForm'), {
+		callback: function (data) {
+			js.showMessage(data.message, "配置选项", "info", 2000);
+		},
+		dataType: 'json',
+		async: true,
+		message: '正在获取数据...'
+	});
+
+}
+</script>

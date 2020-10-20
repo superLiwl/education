@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</title>
+  <script type="text/javascript" src="${ctxStatic}/js/jquery-1.8.3.min.js"></script>
+  <link href="${ctxStatic}/css/dianxing02.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <div class="daohang01">
+    <div class="wenzi"><p>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</p></div>
+    <div class="wenzi01"><p>主办单位：中共黑龙江省直属机关工作委员会</p></div>
+  </div>
+<!--列表开始--> 
+<div class="erjiye">
+<div class="xly-bt02">
+  <h2 id="cs_h"></h2>
+</div>
+<div class="xly-yj">
+  <div class="xly-title01"><p>处室职责</p></div>
+  <div class="xly-nr01">
+    <p id="cs_zhize"></p>
+  </div>
+</div> 
+<div class="xly-yj">
+<div class="xly-title01"><p>简要事迹</p></div>  
+<div class="xly-nr01">
+<p id="cs_shiji"></p>
+</div>
+<!--<div class="fanhui"><a href="${ctx}/vote/formal/toupiaoblue?type=3">返回上一页</a></div>-->
+</div> 
+ 
+<div class="xly-yj" style="display:none;">
+<div class="xly-title03"><p>评审委员会意见</p></div>  
+<div class="xly-nr01">
+<p id="cs_yijian"></p>
+</div>
+</div>
+</div>
+<!--列表结束 -->
+<div class="footer" style="margin-top:30px;"><p>技术支持：国家统计局黑龙江调查总队</p></div>
+</body>
+<script>
+  (function () {
+    var dataId = getSearchType();
+    $.ajax({
+      type: "POST",
+      url: "${ctx}/vote/formal/getDetailInfo",
+      data: {'id':dataId},
+      dataType: "json",
+      success: function (data) {
+        if(data){
+          $("#cs_h").html("省直机关践行“工匠精神”候选先进处室——"+data.mingcheng);
+          $("#cs_zhize").html(data.zhize);
+          $("#cs_shiji").html(data.shiji);
+          $("#cs_yijian").html(data.yijian);
+        }
+      }
+    });
+  })()
+
+  function getSearchType() {
+    //获取url中参数
+    var type = window.location.search.replace("?dataId=","");
+    var termType = "";
+    if(type != null && type != '' && type != undefined && type !="undefined"){
+      termType = type;
+    }
+    return termType;
+  }
+</script>
+</html>

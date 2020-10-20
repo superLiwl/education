@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeesite.modules.vote.dao.VoteNaireDao">
+
+    <update id="updateStatues">
+		/*1-草稿，2-发布，3-结束*/
+		update vote_naire set statues = #{type} where id in
+		<foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</update>
+
+
+	<select id="checkQuesIds" resultType="string">
+		SELECT id FROM `vote_question` q WHERE q.parent_id in
+		(SELECT question_id FROM `vote_naire_question` nq WHERE nq.naire_id=#{naireId})
+		AND q.id in
+		<foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</select>
+
+	<select id="seeResult" resultType="map">
+		SELECT q.title,count(a.id) count,(SELECT p.title FROM vote_question p WHERE p.id = q.parent_id) pTitle,q.parent_id ,
+		(SELECT count(id) FROM `vote_user_naire` WHERE naire_id = a.naire_id) allCount
+		FROM `vote_answer` a
+		LEFT JOIN vote_question q ON q.id = a.question_id
+		WHERE a.naire_id =#{naireId} GROUP BY a.question_id
+	</select>
+
+	<select id="getListByPages" resultType="VoteNaire">
+		SELECT * FROM `vote_naire`
+		<where>
+			<if test="userCode != null and userCode != '' and userCode != 'system'">
+				id in (SELECT naire_id FROM `vote_user_naire` WHERE user_code = #{userCode})
+			</if>
+			<if test="name != null and name != ''">
+				and name like CONCAT('%',#{name},'%')
+			</if>
+		</where>
+		limit ${start},${end}
+	</select>
+
+	<select id="toSeeUser" resultType="map">
+		SELECT un.*,(SELECT count(1) FROM `vote_answer` a WHERE a.user_id =un.user_code AND a.naire_id = un.naire_id) checkCount ,u.user_name
+		FROM `vote_user_naire` un LEFT JOIN js_sys_user u on u.user_code = un.user_code
+		WHERE un.naire_id =#{naireId} ;
+	</select>
+
+</mapper>

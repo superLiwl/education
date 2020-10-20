@@ -1,0 +1,56 @@
+<% layout('/layouts/default.html', {title: '投票管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('投票管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${voteNaire}" action="${ctx}/vote/voteNaire/listDataPt" method="post" class="form-inline hide"
+			data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+			<div class="form-group">
+				<label class="control-label">${text('投票名称')}：</label>
+				<div class="control-inline">
+					<#form:input path="name" maxlength="50" class="form-control width-120"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+				<button type="reset" class="btn btn-default btn-sm">${text('重置')}</button>
+			</div>
+		</#form:form>
+		<table id="dataGrid"></table>
+		<div id="dataGridPage"></div>
+	</div>
+</div>
+<% } %>
+<script>
+	// 初始化DataGrid对象
+	$('#dataGrid').dataGrid({
+		searchForm: $("#searchForm"),
+		columnModel: [
+			{header:'${text("投票名称")}', name:'name', index:'a.name', width:150, align:"left"},
+			{header:'${text("投票描述")}', name:'content', index:'a.content', width:150, align:"left"},
+			{header:'${text("创建时间")}', name:'createTime', index:'a.create_time', width:150, align:"center"},
+			{header:'${text("状态")}', name:'statues', index:'a.statues', width:80, align:"center", formatter: function(val, obj, row, act){
+					return js.getDictLabel(${@DictUtils.getDictListJson('vote_statues')}, val, '未知', true);
+				}},
+			{header:'${text("排序")}', name:'sort', index:'a.sort', width:150, align:"center"},
+			{header:'${text("操作")}', name:'actions', width:120, sortable:false, title:false, formatter: function(val, obj, row, act){
+					var actions = [];
+				<% if(hasPermi('vote:voteNaire:edit')){ %>
+						actions.push('<a href="${ctx}/vote/voteQuestion/list?naireId='+row.id+'" class="btnList" title="${text("投票")}"><i class="fa fa-glass"></i></a>&nbsp;');
+					<% } %>
+					return actions.join('');
+				}}
+		],
+		ajaxSuccess: function(data){
+
+		}
+	});
+</script>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeesite.modules.review.dao.ReviewTermOptionsDao">
+
+	<select id="getReviewTermList" resultType="map">
+		SELECT DISTINCT t.office_code,t.office_name,o.tree_sort FROM `review_term` t LEFT JOIN js_sys_office o ON o.office_code = t.office_code  ORDER BY o.tree_sort ASC;
+	</select>
+
+	<select id="getReviewTermListByOfficeCode" resultType="map">
+		SELECT DISTINCT id,review_name,office_code,office_name FROM `review_term` WHERE office_code = #{officeCode}
+		<if test="termType != null and termType != '' ">
+			and review_name =#{termType}
+		</if>
+		ORDER BY sort ASC ;
+	</select>
+
+	<select id="getReviewTermOptionsListByTermId" resultType="map">
+		SELECT o.id,o.option_name,o.position,o.term_id,EXISTS(SELECT * FROM review_term_answer a WHERE a.option_id = o.id and a.user_id=#{userId}) isAnswer,o.data_id,s.zhaopian
+		FROM `review_term_options` o
+		LEFT JOIN shenpibiao s ON o.data_id = s.ID
+		WHERE o.term_id = #{termId} ORDER BY sort ASC;
+	</select>
+
+
+	<select id="getTremClass" resultType="string">
+		SELECT t.review_name FROM `review_term` t
+		<where>
+			<if test="termType != null and termType != '' ">
+				and review_name =#{termType}
+			</if>
+		</where>
+		GROUP BY t.review_name ORDER BY t.sort ASC;
+	</select>
+
+	<select id="getOptionsCountByClass" resultType="Long">
+		SELECT count(id) FROM review_term_options o WHERE o.term_id in (SELECT t.id FROM `review_term` t WHERE t.review_name = #{tremClass})
+	</select>
+
+	<select id="getAnswerOptionsByClass" resultType="string">
+		SELECT a.option_id FROM review_term_answer a WHERE a.user_id =#{userId} AND a.option_id in
+		(SELECT o.id FROM review_term_options o WHERE o.term_id in (SELECT t.id FROM `review_term` t WHERE t.review_name = #{tremClass}))
+	</select>
+
+	<select id="searchList" resultType="map">
+		SELECT t.office_name,o.option_name,o.term_id,o.id,o.position FROM `review_term_options` o LEFT JOIN review_term t ON t.id = o.term_id
+		<where>
+			<if test="officeCode != null and officeCode != '' ">
+				and t.office_code = #{officeCode}
+			</if>
+			<if test="reviewName != null and reviewName != '' ">
+				and review_name =#{reviewName}
+			</if>
+			<if test="optionName != null and optionName != '' ">
+				AND option_name like CONCAT('%',#{optionName},'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="getHasChecked" resultType="map">
+		SELECT o.id,o.term_id,o.option_name,o.position,t.office_code,t.office_name FROM `review_term_options` o
+		LEFT JOIN review_term t ON t.id = o.term_id
+		LEFT JOIN js_sys_office s ON s.office_code = t.office_code
+		WHERE o.id in
+		<foreach collection="optionIds" item="id" index="index" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+		ORDER BY s.tree_sort ASC
+	</select>
+
+	<select id="getDetailInfo" resultType="map">
+		SELECT s.*,d.mingcheng dwname FROM `shenpibiao` s LEFT JOIN danwei d ON d.id = s.danweiID WHERE s.ID = #{id}
+	</select>
+
+	<select id="exportDataByType" resultType="map">
+		SELECT off.office_name,o.option_name,o.position FROM `review_term_options` o
+		LEFT JOIN review_term t ON t.id = o.term_id
+		LEFT JOIN js_sys_office off ON off.office_code = t.office_code
+		WHERE t.review_name = #{exportDataType} ORDER BY off.tree_sort ASC
+	</select>
+
+</mapper>

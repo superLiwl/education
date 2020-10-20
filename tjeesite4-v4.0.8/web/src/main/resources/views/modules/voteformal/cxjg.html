@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>省直机关践行“工匠精神”先进集体和先进个人评选事迹公示</title>
+    <script type="text/javascript" src="${ctxStatic}/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="${ctxStatic}/layer/3.1/layer.js"></script>
+    <link rel="stylesheet" href="${ctxStatic}/css/dianxing02.css">
+</head>
+<body style="background:url(${ctxStatic}/images/bg.jpg) repeat-y center;">
+<div style="position:absolute;right: 1%;top: 1%" align="right">
+    <a href="javascript:void(0)" onclick="goBack()" style="color: #ffffff">返回上一页</a>
+</div>
+<div class="sy-title"><p>预选票</p></div>
+<div class="content">
+    <div id="content">
+        <ul class="houxuan" id="hacChecked">
+
+        </ul>
+    </div>
+</div>
+<script>
+ var termType = getSearchType();
+ $(document).ready(function(){
+  getNames();
+ });
+
+ function goBack() {
+     var a = document.createElement('a');
+     // a.setAttribute('href', "${ctx}/vote/formal/toupiaocart?type="+termType);
+     //blue
+     a.setAttribute('href', "${ctx}/vote/formal/toupiaoblue?type="+termType);
+     a.setAttribute('target', "_top");
+     a.setAttribute('id', 'js_a');
+     //防止反复添加
+     if(document.getElementById('js_a')) {
+         document.body.removeChild(document.getElementById('js_a'));
+     }
+     document.body.appendChild(a);
+     a.click();
+ }
+
+ function getNames() {
+  var tableHtml = "";
+  var cart = localStorage.getItem("select_answer_" + termType);
+  if(!cart){
+   $("#hacChecked").html(tableHtml);
+   return;
+  }
+  $.ajax({
+   type: "POST",
+   url: "${ctx}/vote/formal/getHasChecked",
+   data: {
+    'optionIds': cart
+   },
+   dataType: "json",
+   success: function (data) {
+    if(data && data[0]){
+     $.each(data, function (index, ele) {
+      if (ele) {
+          if(termType == '3'){
+              tableHtml += '<li style="background-color:#0059ab;"><a href="javascript:void(0)" target="_blank"><div class="touxiang"><input type="checkbox" checked onclick="toDelOption(\''+ele.id+'\',\''+ele.office_code+'\',\''+ele.term_id+'\')" style="cursor:pointer;zoom:200%;"/></div><div class="nr" align="center"><p>'+ele.option_name+'</p></div></a></li>';
+          }else{
+              tableHtml += '<li style="background-color:#0059ab;"><a href="javascript:void(0)" target="_blank"><div class="touxiang"><input type="checkbox" checked onclick="toDelOption(\''+ele.id+'\',\''+ele.office_code+'\',\''+ele.term_id+'\')" style="cursor:pointer;zoom:200%;"/></div><div class="nr"><p style="font-size:18px;line-height:18px">'+ele.option_name+'</p><span style="padding-left:6px;">'+ele.office_name+'</span></div></a></li>';
+          }
+      }
+     });
+    }
+    $("#hacChecked").html(tableHtml);
+   }
+  });
+ }
+
+ // function toDelOption(id, office_code, term_id) {
+ //  layer.load();
+ //  var key = "select_answer_del_" + termType;
+ //  localStorage.setItem(key, id + "_" + office_code + "_" + term_id);
+ //  setTimeout(function () {
+ //   layer.closeAll();
+ //   var delInfo = localStorage.getItem(key);
+ //   if(delInfo){
+ //    layer.msg('取消失败,请确认投票页面是否关闭', {time: 1500, });
+ //   }else{
+ //    layer.msg('取消成功', {time: 1500, });
+ //    getNames();
+ //   }
+ //  }, 2600);
+ // }
+
+ function getSearchType() {
+  //获取url中参数
+  var type = window.location.search.replace("?type=","");
+  var termType = 1;
+  if(type != null && type != '' && type != undefined && type !="undefined"){
+   termType = type;
+  }
+  return termType;
+ }
+
+ // $(window).unload(function(){
+ //     //清空缓存
+ //     localStorage.removeItem("select_answer_" + termType);
+ //     localStorage.removeItem("select_answer_del_" + termType);
+ // });
+</script>
+</body>
+</html>
