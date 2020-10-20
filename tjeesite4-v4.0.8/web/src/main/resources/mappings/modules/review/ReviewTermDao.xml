@@ -96,7 +96,9 @@
 		</where>
 	</select>
 
-
-
+	<select id="listVoteStatisticsData" resultType="long">
+		SELECT count(DISTINCT a.user_id) count FROM review_term_answer a WHERE a.review_name =#{reviewType} AND a.vote_status = '1'
+		AND a.user_id in(SELECT e.emp_code FROM `js_sys_employee` e WHERE e.`status` = #{cityType});
+	</select>
 
 </mapper>

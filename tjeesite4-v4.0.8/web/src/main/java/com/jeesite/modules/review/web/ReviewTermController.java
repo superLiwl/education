@@ -171,6 +171,29 @@ public class ReviewTermController extends BaseController {
         return page;
     }
 
+
+    /**
+     * 投票数据统计
+     */
+    @RequiresPermissions("review:reviewTerm:view")
+    @RequestMapping(value = {"listVoteStatistics", ""})
+    public String listVoteStatistics(Model model) {
+        return "modules/review/reviewTermStatistics";
+    }
+
+    /**
+     * 投票数据统计数据查询
+     */
+    @RequiresPermissions("review:reviewTerm:view")
+    @RequestMapping(value = "listVoteStatisticsData")
+    @ResponseBody
+    public Page<Map<String, Object>> listVoteStatisticsData(HttpServletRequest request, HttpServletResponse response) {
+        Page<Map<String, Object>> page = new Page<Map<String, Object>>(request, response);
+        page.setList(reviewTermService.listVoteStatisticsData());
+        return page;
+    }
+
+
     /**
      * 导出个人投票情况数据
      */

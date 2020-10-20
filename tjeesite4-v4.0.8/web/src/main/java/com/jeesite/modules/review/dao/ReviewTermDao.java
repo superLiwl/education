@@ -31,4 +31,6 @@ public interface ReviewTermDao extends CrudDao<ReviewTerm> {
 
     //查询个人投票总数
     Long listVoteDataCount(VoteInfoVo voteInfoVo);
+
+    Long listVoteStatisticsData(Map<String, Object> params);
 }

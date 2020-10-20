@@ -17,10 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
 
 /**
  * 参评管理Service
@@ -180,6 +179,47 @@ public class ReviewTermService extends CrudService<ReviewTermDao, ReviewTerm> {
     @Transactional(readOnly = false)
     public Long listVoteDataCount(VoteInfoVo voteInfoVo) {
         return reviewTermDao.listVoteDataCount(voteInfoVo);
+    }
+
+    /**
+     * 查询投票数据统计数据
+     */
+    @Transactional(readOnly = false)
+    public List<Map<String, Object>> listVoteStatisticsData() {
+        List<Map<String, Object>> result = new ArrayList<>();
+        //查询处室数据
+        result.add(genDataMap("3"));
+        //查询处长数据
+        result.add(genDataMap("2"));
+        //查询干部数据
+        result.add(genDataMap("1"));
+        return result;
+    }
+
+    //构造投票统计数据
+    private Map<String, Object> genDataMap(String reviewType) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("typeDesc", "先进处室");
+        params.put("reviewType", reviewType);//处室类型
+        params.put("cityType", "1");//厅级类型
+        Long tjCount = reviewTermDao.listVoteStatisticsData(params);
+        params.put("tjCount", tjCount);
+        params.put("cityType", "0");//市县类型
+        Long sxCount = reviewTermDao.listVoteStatisticsData(params);
+        params.put("sxCount", sxCount);
+        //已经投票的总数
+        params.put("allCount", (tjCount + sxCount));
+        //总投票数--分母
+        Long totalCount = 1010l;
+        //合计
+        params.put("totalCount", totalCount);
+        //计算比例--厅级
+        params.put("tjRate", new BigDecimal(tjCount).divide(new BigDecimal(totalCount), 2, RoundingMode.HALF_UP)+"%");
+        //计算比例--市县
+        params.put("sxRate", new BigDecimal(sxCount).divide(new BigDecimal(totalCount), 2, RoundingMode.HALF_UP)+"%");
+        //总完成率
+        params.put("allRate", new BigDecimal((tjCount + sxCount)*100).divide(new BigDecimal(totalCount), 2, RoundingMode.HALF_UP) +"%");
+        return params;
     }
 
 }
