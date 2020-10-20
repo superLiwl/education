@@ -59,7 +59,7 @@
 					<![CDATA[ AND (a.ganbu = 0  or a.chuzhang = 0 OR a.chushi = 0) ]]>
 				</if>
 				<if test="hasVote == 1 ">
-					<![CDATA[ AND a.ganbu > 0  and a.chuzhang > 0 and a.chushi > 0 ]]>
+					<![CDATA[ AND (a.ganbu > 0  or a.chuzhang > 0 or a.chushi > 0) ]]>
 				</if>
 			</if>
 			<if test="userName != null and userName != '' ">
