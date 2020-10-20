@@ -35,7 +35,7 @@
 				</div>
 
 			<div class="form-group">
-				<label class="control-label">${text('参评人')}：</label>
+				<label class="control-label">${text('参评人/处室')}：</label>
 				<div class="control-inline">
 					<#form:input path="optionName" maxlength="255" class="form-control width-120"/>
 				</div>
@@ -64,7 +64,7 @@ $('#dataGrid').dataGrid({
 		{header:'${text("参评项")}', name:'review_name', index:'a.review_name', width:150, align:"center", formatter: function(val, obj, row, act){
 				return js.getDictLabel(${@DictUtils.getDictListJson('term_option')}, val, '未知', true);
 			}},
-		{header:'${text('参评人')}', name:'option_name', index:'a.option_name', width:150, align:"center"},
+		{header:'${text('参评人/处室')}', name:'option_name', index:'a.option_name', width:150, align:"center"},
 		{header:'${text('厅局票数')}', name:'tjCount', index:'a.tjCount', width:150, align:"center"},
 		{header:'${text('县市票数')}', name:'xsCount', index:'a.xsCount', width:150, align:"center"},
 		{header:'${text('总票数')}', name:'answerCount', index:'a.answerCount', width:150, align:"center"}

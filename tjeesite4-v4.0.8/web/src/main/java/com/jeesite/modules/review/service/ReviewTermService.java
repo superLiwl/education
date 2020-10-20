@@ -188,18 +188,18 @@ public class ReviewTermService extends CrudService<ReviewTermDao, ReviewTerm> {
     public List<Map<String, Object>> listVoteStatisticsData() {
         List<Map<String, Object>> result = new ArrayList<>();
         //查询处室数据
-        result.add(genDataMap("3"));
+        result.add(genDataMap("先进处室", "3"));
         //查询处长数据
-        result.add(genDataMap("2"));
+        result.add(genDataMap("先进处长", "2"));
         //查询干部数据
-        result.add(genDataMap("1"));
+        result.add(genDataMap("先进干部", "1"));
         return result;
     }
 
     //构造投票统计数据
-    private Map<String, Object> genDataMap(String reviewType) {
+    private Map<String, Object> genDataMap(String typeDesc, String reviewType) {
         Map<String, Object> params = new HashMap<>();
-        params.put("typeDesc", "先进处室");
+        params.put("typeDesc", typeDesc);
         params.put("reviewType", reviewType);//处室类型
         params.put("cityType", "1");//厅级类型
         Long tjCount = reviewTermDao.listVoteStatisticsData(params);
@@ -214,11 +214,11 @@ public class ReviewTermService extends CrudService<ReviewTermDao, ReviewTerm> {
         //合计
         params.put("totalCount", totalCount);
         //计算比例--厅级
-        params.put("tjRate", new BigDecimal(tjCount).divide(new BigDecimal(totalCount), 2, RoundingMode.HALF_UP)+"%");
+        params.put("tjRate", new BigDecimal(tjCount).divide(new BigDecimal(totalCount), 2, RoundingMode.HALF_UP) + "%");
         //计算比例--市县
-        params.put("sxRate", new BigDecimal(sxCount).divide(new BigDecimal(totalCount), 2, RoundingMode.HALF_UP)+"%");
+        params.put("sxRate", new BigDecimal(sxCount).divide(new BigDecimal(totalCount), 2, RoundingMode.HALF_UP) + "%");
         //总完成率
-        params.put("allRate", new BigDecimal((tjCount + sxCount)*100).divide(new BigDecimal(totalCount), 2, RoundingMode.HALF_UP) +"%");
+        params.put("allRate", new BigDecimal((tjCount + sxCount) * 100).divide(new BigDecimal(totalCount), 2, RoundingMode.HALF_UP) + "%");
         return params;
     }
 
