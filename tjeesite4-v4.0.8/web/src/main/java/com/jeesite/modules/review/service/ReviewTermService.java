@@ -211,12 +211,15 @@ public class ReviewTermService extends CrudService<ReviewTermDao, ReviewTerm> {
         params.put("allCount", (tjCount + sxCount));
         //总投票数--分母
         Long totalCount = 1010l;
+        if ("1".equals(reviewType)) {
+            totalCount = 930l;
+        }
         //合计
         params.put("totalCount", totalCount);
         //计算比例--厅级
-        params.put("tjRate", new BigDecimal(tjCount).divide(new BigDecimal(totalCount), 2, RoundingMode.HALF_UP) + "%");
+        params.put("tjRate", new BigDecimal(tjCount * 100).divide(new BigDecimal(totalCount), 2, RoundingMode.HALF_UP) + "%");
         //计算比例--市县
-        params.put("sxRate", new BigDecimal(sxCount).divide(new BigDecimal(totalCount), 2, RoundingMode.HALF_UP) + "%");
+        params.put("sxRate", new BigDecimal(sxCount * 100).divide(new BigDecimal(totalCount), 2, RoundingMode.HALF_UP) + "%");
         //总完成率
         params.put("allRate", new BigDecimal((tjCount + sxCount) * 100).divide(new BigDecimal(totalCount), 2, RoundingMode.HALF_UP) + "%");
         return params;
