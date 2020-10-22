@@ -15,7 +15,7 @@
 	</select>
 
 	<select id="getReviewTermOptionsListByTermId" resultType="map">
-		SELECT o.id,o.option_name,o.position,o.term_id,EXISTS(SELECT * FROM review_term_answer a WHERE a.option_id = o.id and a.user_id=#{userId}) isAnswer,o.data_id,s.zhaopian
+		SELECT o.id,o.option_name,o.position,o.term_id,EXISTS(SELECT a.id FROM review_term_answer a WHERE a.option_id = o.id and a.user_id=#{userId}) isAnswer,o.data_id,s.zhaopian
 		FROM `review_term_options` o
 		LEFT JOIN shenpibiao s ON o.data_id = s.ID
 		WHERE o.term_id = #{termId} ORDER BY sort ASC;

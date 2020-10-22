@@ -152,7 +152,6 @@ public class ReviewTermService extends CrudService<ReviewTermDao, ReviewTerm> {
     /**
      * 查询投票结果数据
      */
-    @Transactional(readOnly = false)
     public List<Map<String, Object>> listRankData(RankVo rankVo) {
         return reviewTermDao.listRankData(rankVo);
     }
@@ -160,7 +159,6 @@ public class ReviewTermService extends CrudService<ReviewTermDao, ReviewTerm> {
     /**
      * 查询投票结果数据--count
      */
-    @Transactional(readOnly = false)
     public Long listRankDataCount(RankVo rankVo) {
         return reviewTermDao.listRankDataCount(rankVo);
     }
@@ -168,7 +166,6 @@ public class ReviewTermService extends CrudService<ReviewTermDao, ReviewTerm> {
     /**
      * 查询个人投票情况
      */
-    @Transactional(readOnly = false)
     public List<Map<String, Object>> listVoteData(VoteInfoVo voteInfoVo) {
         return reviewTermDao.listVoteData(voteInfoVo);
     }
@@ -176,7 +173,6 @@ public class ReviewTermService extends CrudService<ReviewTermDao, ReviewTerm> {
     /**
      * 查询个人投票情况--count
      */
-    @Transactional(readOnly = false)
     public Long listVoteDataCount(VoteInfoVo voteInfoVo) {
         return reviewTermDao.listVoteDataCount(voteInfoVo);
     }
@@ -184,7 +180,6 @@ public class ReviewTermService extends CrudService<ReviewTermDao, ReviewTerm> {
     /**
      * 查询投票数据统计数据
      */
-    @Transactional(readOnly = false)
     public List<Map<String, Object>> listVoteStatisticsData() {
         List<Map<String, Object>> result = new ArrayList<>();
         //查询处室数据

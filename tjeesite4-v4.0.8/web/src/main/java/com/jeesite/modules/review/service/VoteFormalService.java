@@ -36,7 +36,6 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
     /**
      * 查询参评单位
      */
-    @Transactional(readOnly = false)
     public List<Map<String, Object>> getReviewTermList() {
         return reviewTermOptionsDao.getReviewTermList();
     }
@@ -44,7 +43,6 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
     /**
      * 获取详情信息
      */
-    @Transactional(readOnly = false)
     public Map<String, Object> getDetailInfo(String id) {
         return reviewTermOptionsDao.getDetailInfo(id);
     }
@@ -52,7 +50,6 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
     /**
      * 根据组织编码获取下边的投票项与参评人
      */
-    @Transactional(readOnly = false)
     public List<Map<String, Object>> getReviewTermListByOfficeCode(String officeCode, String termType) {
         Map<String, Object> params = new HashMap<>();
         params.put("officeCode", officeCode);
@@ -76,7 +73,6 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
     /**
      * 获取总投票数，已投票数，当前登陆人已经投过的选项
      */
-    @Transactional(readOnly = false)
     public List<Map<String, Object>> getAnswerInfo(String termType) {
         LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
         String userId = login.getId();
@@ -111,7 +107,6 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
     /**
      * 确定投票
      */
-    @Transactional(readOnly = false)
     public String submitAnswer(String optionIds, String termType, String voteStatus, String sfzNo) {
         LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
         String userId = login.getId();
@@ -165,7 +160,6 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
     /**
      * 确定投票
      */
-    @Transactional(readOnly = false)
     public List<Map<String, Object>> searchList(String officeCode, String reviewName, String optionName) {
         Map<String, Object> params = new HashMap<>();
         params.put("officeCode", officeCode);
@@ -177,7 +171,6 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
     /**
      * 获取已投票结果
      */
-    @Transactional(readOnly = false)
     public List<Map<String, Object>> getHasChecked(String optionIds) {
         if (null == optionIds || "".equals(optionIds) || "undefined".equals(optionIds)) {
             return null;
@@ -199,7 +192,6 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
     /**
      * 导出投票列表数据
      */
-    @Transactional(readOnly = false)
     public List<Map<String, Object>> exportDataByType(String exportDataType) {
         Map<String, Object> params = new HashMap<>();
         params.put("exportDataType", exportDataType);
