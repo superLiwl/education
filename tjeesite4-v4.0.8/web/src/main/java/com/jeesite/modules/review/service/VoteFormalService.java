@@ -107,6 +107,7 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
     /**
      * 确定投票
      */
+    @Transactional(readOnly = false)
     public String submitAnswer(String optionIds, String termType, String voteStatus, String sfzNo) {
         LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
         String userId = login.getId();
