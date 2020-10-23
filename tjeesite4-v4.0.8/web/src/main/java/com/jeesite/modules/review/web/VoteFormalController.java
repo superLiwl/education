@@ -150,8 +150,8 @@ public class VoteFormalController extends BaseController {
      */
     @RequestMapping(value = "submitAnswer")
     @ResponseBody
-    public String submitAnswer(String optionIds, String termType, String voteStatus, String sfzNo) {
-        return voteFormalService.submitAnswer(optionIds, termType, voteStatus, sfzNo);
+    public String submitAnswer(String optionIds, String termType, String voteStatus, String sfzNo, String type) {
+        return voteFormalService.submitAnswer(optionIds, termType, voteStatus, sfzNo, type);
     }
 
     /**
@@ -299,7 +299,7 @@ public class VoteFormalController extends BaseController {
             }
             elist = ListUtils.newArrayList(exportList);
             title = "处室";
-            ee = new ExcelExport(title+"投票选项", TpDataExportCsVo.class);
+            ee = new ExcelExport(title + "投票选项", TpDataExportCsVo.class);
         } else {
             List<TpDataExportVo> exportList = new ArrayList<>();
             TpDataExportVo vo;
@@ -311,14 +311,14 @@ public class VoteFormalController extends BaseController {
                 exportList.add(vo);
             }
             elist = ListUtils.newArrayList(exportList);
-            if(!StringUtils.isEmpty(exportDataType) && "2".equals(exportDataType)){
+            if (!StringUtils.isEmpty(exportDataType) && "2".equals(exportDataType)) {
                 title = "处长";
             }
-            ee = new ExcelExport(title+"投票选项", TpDataExportVo.class);
+            ee = new ExcelExport(title + "投票选项", TpDataExportVo.class);
 
         }
 
-        String fileName = title +"投票选项" + DateUtils.getDate("yyyyMMddHHmmss") + ".xlsx";
+        String fileName = title + "投票选项" + DateUtils.getDate("yyyyMMddHHmmss") + ".xlsx";
         Throwable localThrowable3 = null;
         try {
             ee.setDataList(elist).write(response, fileName);

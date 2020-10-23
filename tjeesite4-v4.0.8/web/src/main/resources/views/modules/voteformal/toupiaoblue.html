@@ -561,7 +561,8 @@
             var tremClass = $("#"+termId).html();
             var count = $("#"+tremClass).html();
             $("#"+tremClass).text((parseInt(count)-1));
-            // console.log("remove:------"+id);
+            //保存预选信息
+            submitAnswerAction(id,'del');
         }else{
             //未选中---修改为选中
             $("#"+id).attr("style","background-color:#0059ab;");
@@ -571,10 +572,8 @@
             var tremClass = $("#"+termId).html();
             var count = $("#"+tremClass).html();
             $("#"+tremClass).text((parseInt(count)+1));
-            // console.log("add:------"+id);
+            submitAnswerAction(id,'add');
         }
-        //保存预选信息
-        submitAnswerAction();
     }
 
     function isInCheckValues(id){
@@ -645,7 +644,6 @@
         $("#toupiao_div").hide();
         getNames();
         $("#result_div").show();
-        submitAnswerAction();
     }
 
     function goBack() {
@@ -909,23 +907,18 @@
         });
     }
 
-    function submitAnswerAction() {
+    function submitAnswerAction(optionsId,type) {
         layer.load();
         var termType = getSearchType();
-        var optionIds = "";
-        $.each(checkValues,function(index,ele){
-            if(ele){
-                optionIds += ele+',';
-            }
-        });
         $.ajax({
             type: "POST",
             url: "${ctx}/vote/formal/submitAnswer",
             data: {
-                'optionIds':optionIds,
+                'optionIds':optionsId,
                 'termType':termType,
                 'voteStatus':'0',
-                'sfzNo':sfzNo
+                'sfzNo':sfzNo,
+                'type':type,
             },
             dataType: "text",
             success: function (data) {

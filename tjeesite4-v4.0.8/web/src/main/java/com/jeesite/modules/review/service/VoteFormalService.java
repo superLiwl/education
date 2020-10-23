@@ -108,7 +108,7 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
      * 确定投票
      */
     @Transactional(readOnly = false)
-    public String submitAnswer(String optionIds, String termType, String voteStatus, String sfzNo) {
+    public String submitAnswer(String optionIds, String termType, String voteStatus, String sfzNo, String type) {
         LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
         String userId = login.getId();
         if (userId.equals("system") || userId.equals("admin") || userId.equals("gjjsmain") || userId.equals("xjpxmain_q4xj")) {
@@ -130,31 +130,31 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
             return "已经投过票了";
         }
 
-        String arry[] = optionIds.split(",");
-        List<ReviewTermAnswer> list = new ArrayList<>();
-        ReviewTermAnswer answer;
-        for (String s : arry) {
-            if (!StringUtils.isEmpty(s)) {
-                answer = new ReviewTermAnswer();
-                answer.setOptionId(s);
+        if("1".equals(voteStatus)){
+            //已投票更新数据
+            Map<String, Object> params = new HashMap<>();
+            params.put("userId",userId);
+            params.put("reviewType",termType);
+            reviewTermAnswerDao.updateToToupiao(params);
+        }else{
+            //预选更新数据
+            if("add".equals(type)){
+                ReviewTermAnswer answer = new ReviewTermAnswer();
+                answer.setOptionId(optionIds);
                 answer.setUserId(userId);
                 answer.setReviewName(termType);
                 answer.setVoteStatus(voteStatus);
                 answer.setId(UUID.randomUUID().toString());
                 answer.setSfzNo(sfzNo);
-                list.add(answer);
+                reviewTermAnswerDao.insert(answer);
+            }else{
+                ReviewTermAnswer del = new ReviewTermAnswer();
+                del.setUserId(userId);
+                del.setReviewName(termType);
+                del.setOptionId(optionIds);
+                reviewTermAnswerDao.deleteByEntity(del);
             }
         }
-        if (null == list || list.isEmpty() || list.size() == 0) {
-            return "投票失败，未选择参评人";
-        }
-        //先执行删除
-        ReviewTermAnswer del = new ReviewTermAnswer();
-        del.setUserId(userId);
-        del.setReviewName(termType);
-        reviewTermAnswerDao.deleteByEntity(del);
-        //在执行插入
-        reviewTermAnswerDao.insertBatch(list);
         return "投票成功";
     }
 
