@@ -98,7 +98,7 @@ public class ReviewTermController extends BaseController {
 //        rankVo.setEnd(page.getPageNo() * page.getPageSize());
         rankVo.setEnd(Integer.MAX_VALUE);
         page.setList(reviewTermService.listRankData(rankVo));
-        page.setCount(reviewTermService.listRankDataCount(rankVo));
+//        page.setCount(reviewTermService.listRankDataCount(rankVo));
         return page;
     }
 
@@ -167,7 +167,7 @@ public class ReviewTermController extends BaseController {
 //        voteInfoVo.setEnd(page.getPageNo() * page.getPageSize());
         voteInfoVo.setEnd(Integer.MAX_VALUE);
         page.setList(reviewTermService.listVoteData(voteInfoVo));
-        page.setCount(reviewTermService.listVoteDataCount(voteInfoVo));
+//        page.setCount(reviewTermService.listVoteDataCount(voteInfoVo));
         return page;
     }
 

@@ -36,9 +36,8 @@
 		SELECT count(id) FROM review_term_options o WHERE o.term_id in (SELECT t.id FROM `review_term` t WHERE t.review_name = #{tremClass})
 	</select>
 
-	<select id="getAnswerOptionsByClass" resultType="string">
-		SELECT a.option_id FROM review_term_answer a WHERE a.user_id =#{userId} AND a.option_id in
-		(SELECT o.id FROM review_term_options o WHERE o.term_id in (SELECT t.id FROM `review_term` t WHERE t.review_name = #{tremClass}))
+	<select id="getAnswerOptionsByClass" resultType="long">
+		SELECT count(a.id) count FROM review_term_answer a WHERE a.user_id =#{userId} and a.review_name = #{tremClass}
 	</select>
 
 	<select id="searchList" resultType="map">

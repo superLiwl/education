@@ -82,20 +82,16 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
         List<String> classList = reviewTermOptionsDao.getTremClass(paramsMap);
         if (null != classList && !classList.isEmpty() && classList.size() > 0) {
             Map<String, Object> params;
-            Long allOptionCount;
-            List<String> answerList;
+//            Long allOptionCount;
             for (String c : classList) {
                 params = new HashMap<>();
                 params.put("tremClass", c);
                 //获取投票总数
-                allOptionCount = reviewTermOptionsDao.getOptionsCountByClass(params);
-                params.put("allOptionCount", allOptionCount);
+//                allOptionCount = reviewTermOptionsDao.getOptionsCountByClass(params);
+//                params.put("allOptionCount", allOptionCount);
                 params.put("userId", userId);
                 //获取已选的投票数据
-                answerList = reviewTermOptionsDao.getAnswerOptionsByClass(params);
-                if (null != answerList) {
-                    params.put("hasOptionCount", answerList.size());
-                }
+                params.put("hasOptionCount", reviewTermOptionsDao.getAnswerOptionsByClass(params));
                 params.remove("userId");
                 params.put("tremClass", DictUtils.getDictLabel("term_option", c, ""));
                 resultList.add(params);
