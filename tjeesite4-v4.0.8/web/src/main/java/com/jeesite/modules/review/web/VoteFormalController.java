@@ -155,6 +155,15 @@ public class VoteFormalController extends BaseController {
     }
 
     /**
+     * 校验是否投票
+     */
+    @RequestMapping(value = "checkIsTouPiao")
+    @ResponseBody
+    public String submitAnswer(String termType) {
+        return voteFormalService.checkIsTouPiao(termType);
+    }
+
+    /**
      * 获取所有投票信息
      */
     @RequestMapping(value = "getAllAnswer")

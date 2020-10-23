@@ -822,33 +822,42 @@
                     optionIds += ele+',';
                 }
             });
-            $.ajax({
-                type: "POST",
-                url: "${ctx}/vote/formal/submitAnswer",
-                data: {
-                    'optionIds':optionIds,
-                    'termType':termType,
-                    'voteStatus':'1',
-                    'sfzNo':sfzNo
-                },
-                dataType: "text",
-                success: function (data) {
-                    if(data == '投票成功'){
-                        layer.confirm(data+"！", {
-                            btn: ['继续投票','退出登录'] //按钮
-                        }, function(){
-                            toUrlAction('${ctx}/vote/formal/gongshi');
-                        }, function(){
-                            toUrlAction('${ctx}/logout');
-                        });
-                    }else{
-                        layer.alert(data);
-                    }
-
-                },
-                fail:function (data) {
-                    layer.alert("投票失败，请再次点击");
+            checkIsTouPiao(function (res) {
+                if(res == 'fail'){
+                    layer.msg('已经投过票了', {time: 2000});
+                    return;
                 }
+                $.ajax({
+                    type: "POST",
+                    url: "${ctx}/vote/formal/submitAnswer",
+                    data: {
+                        'optionIds':optionIds,
+                        'termType':termType,
+                        'voteStatus':'1',
+                        'sfzNo':sfzNo
+                    },
+                    dataType: "text",
+                    success: function (data) {
+                        if(data == '投票成功'){
+                            layer.confirm(data+"！", {
+                                btn: ['继续投票','退出登录'], //按钮
+                                cancel:function(){
+                                    location.reload();
+                                }
+                            }, function(){
+                                toUrlAction('${ctx}/vote/formal/gongshi');
+                            }, function(){
+                                toUrlAction('${ctx}/logout');
+                            });
+                        }else{
+                            layer.alert(data);
+                        }
+
+                    },
+                    fail:function (data) {
+                        layer.alert("投票失败，请再次点击");
+                    }
+                });
             });
         }, function(){
             layer.msg('取消投票', {time: 2000});
@@ -873,35 +882,14 @@
         layer.confirm('预选信息，投票不会生效!', {
             btn: ['确定','取消'] //按钮
         }, function(){
-            var termType = getSearchType();
-            var optionIds = "";
-            $.each(checkValues,function(index,ele){
-                if(ele){
-                    optionIds += ele+',';
+            checkIsTouPiao(function (res) {
+                layer.closeAll();
+                if(res == 'success'){
+                    layer.alert("预选成功");
+                }else{
+                    layer.alert("已经投过票了");
                 }
-            });
-            $.ajax({
-                type: "POST",
-                url: "${ctx}/vote/formal/submitAnswer",
-                data: {
-                    'optionIds':optionIds,
-                    'termType':termType,
-                    'voteStatus':'0',
-                    'sfzNo':sfzNo
-                },
-                dataType: "text",
-                success: function (data) {
-                    if(data == '投票成功'){
-                        layer.alert("预选成功");
-                    }else{
-                        var alertMsg = data.replace('投票','预选');
-                        layer.alert(alertMsg);
-                    }
-                },
-                fail:function (data) {
-                    layer.alert("预选失败，请再次点击");
-                }
-            });
+            })
         }, function(){
             layer.msg('取消预选', {time: 2000});
         });
@@ -910,21 +898,41 @@
     function submitAnswerAction(optionsId,type) {
         layer.load();
         var termType = getSearchType();
+        checkIsTouPiao(function (res) {
+            $.ajax({
+                type: "POST",
+                url: "${ctx}/vote/formal/submitAnswer",
+                data: {
+                    'optionIds':optionsId,
+                    'termType':termType,
+                    'voteStatus':'0',
+                    'sfzNo':sfzNo,
+                    'type':type,
+                },
+                dataType: "text",
+                success: function (data) {
+                    setTimeout(function(){
+                        layer.closeAll();
+                    },300);
+                },
+                fail:function (data) {
+                    layer.closeAll();
+                }
+            });
+        });
+    }
+
+    function checkIsTouPiao(callback) {
+        var termType = getSearchType();
         $.ajax({
             type: "POST",
-            url: "${ctx}/vote/formal/submitAnswer",
+            url: "${ctx}/vote/formal/checkIsTouPiao",
             data: {
-                'optionIds':optionsId,
-                'termType':termType,
-                'voteStatus':'0',
-                'sfzNo':sfzNo,
-                'type':type,
+                'termType':termType
             },
             dataType: "text",
             success: function (data) {
-                setTimeout(function(){
-                    layer.closeAll();
-                },300);
+                callback && callback(data);
             },
             fail:function (data) {
                 layer.closeAll();
