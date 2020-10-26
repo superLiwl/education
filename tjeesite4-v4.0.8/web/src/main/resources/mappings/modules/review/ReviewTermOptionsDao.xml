@@ -7,7 +7,7 @@
 	</select>
 
 	<select id="getReviewTermListByOfficeCode" resultType="map">
-		SELECT DISTINCT id,review_name,office_code,office_name FROM `review_term` WHERE office_code = #{officeCode}
+		SELECT id,review_name,office_code,office_name FROM `review_term` WHERE office_code = #{officeCode}
 		<if test="termType != null and termType != '' ">
 			and review_name =#{termType}
 		</if>
