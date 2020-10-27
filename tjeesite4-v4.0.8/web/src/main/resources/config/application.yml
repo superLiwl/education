@@ -20,11 +20,18 @@ demoMode: false
 
 server:
 
-  port: 8980
+  port: 80
   context-path: /vote
   tomcat:
     uri-encoding: UTF-8
-    
+    #最小线程数
+    min-spare-threads: 500
+    #最大线程数
+    max-threads: 5000
+    #最大链接数
+    max-connections: 50000
+    #最大等待队列长度
+    accept-count: 1000
 #======================================#
 #========== Database sttings ==========#
 #======================================#
@@ -37,8 +44,8 @@ jdbc:
   driver: com.mysql.jdbc.Driver
   url: jdbc:mysql://127.0.0.1:3306/jeesite?useSSL=true&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull
   username: root
-  password: 123456
-#  password: Tgjt2020
+#  password: 123456
+  password: Tgjt2020
   testSql: SELECT 1
 
 #  # Oracle 数据库配置
