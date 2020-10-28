@@ -25,13 +25,13 @@ server:
   tomcat:
     uri-encoding: UTF-8
     #最小线程数
-    min-spare-threads: 500
+    min-spare-threads: 20
     #最大线程数
     max-threads: 5000
     #最大链接数
     max-connections: 50000
     #最大等待队列长度
-    accept-count: 1000
+    accept-count: 2000
 #======================================#
 #========== Database sttings ==========#
 #======================================#
@@ -120,24 +120,6 @@ jdbc:
 #  druid:
 #    stat:
 #      enabled: true
-
-# Redis 配置
-#redis: 
-#  enabled: false
-#  
-#  # Redis 连接参数
-#  host: 127.0.0.1
-#  port: 6379
-#  isSSL: false
-#  timeout: 2000
-#  password: 1234
-#  database: 0
-#  clientName: ~
-#  
-#  # Redis 连接池配置
-#  pool:
-#    maxIdle: 3
-#    maxTotal: 20
 #
 #  # 是否启用Redis系统缓存及会话（专业版）
 #  cacheAndSession: false
@@ -157,7 +139,25 @@ spring:
     
   main:
     banner-mode: "off"
-  
+
+  # Redis 配置
+  redis:
+    enabled: true
+    host: 127.0.0.1
+    port: 6379
+    isSSL: false
+    timeout: 2000
+    password: 1234
+    database: 8
+    pool:
+      # 连接池最大连接数（使用负值表示没有限制）
+      max-active: 20000
+      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+      max-wait: -1
+      # 连接池中的最大空闲连接
+      max-idle: 50
+      # 连接池中的最小空闲连接
+      min-idle: 10
 #======================================#
 #========== System settings ===========#
 #======================================#

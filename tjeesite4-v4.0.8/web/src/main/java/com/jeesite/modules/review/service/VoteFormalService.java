@@ -6,6 +6,7 @@ package com.jeesite.modules.review.service;
 import com.jeesite.common.lang.StringUtils;
 import com.jeesite.common.service.CrudService;
 import com.jeesite.common.shiro.realm.LoginInfo;
+import com.jeesite.modules.common.RedisService;
 import com.jeesite.modules.review.dao.ReviewTermAnswerDao;
 import com.jeesite.modules.review.dao.ReviewTermOptionsDao;
 import com.jeesite.modules.review.entity.ReviewTermAnswer;
@@ -32,6 +33,8 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
     private ReviewTermOptionsDao reviewTermOptionsDao;
     @Autowired
     private ReviewTermAnswerDao reviewTermAnswerDao;
+    @Autowired
+    private RedisService redisService;
 
     /**
      * 查询参评单位
@@ -54,7 +57,15 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
         Map<String, Object> params = new HashMap<>();
         params.put("officeCode", officeCode);
         params.put("termType", termType);
-        List<Map<String, Object>> result = reviewTermOptionsDao.getReviewTermListByOfficeCode(params);
+        String key = officeCode + "_" + termType;
+        Object obj = redisService.get(key);
+        List<Map<String, Object>> result;
+        if (null != obj) {
+            result = (List<Map<String, Object>>) obj;
+        } else {
+            result = reviewTermOptionsDao.getReviewTermListByOfficeCode(params);
+            redisService.set(key, result, 24*60*60l);
+        }
         LoginInfo login = (LoginInfo) SecurityUtils.getSubject().getPrincipal();
         String userId = login.getId();
         if (null != result && !result.isEmpty() && result.size() > 0) {
@@ -136,16 +147,16 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
             return "投票失败，身份证号为空";
         }
 
-        if("1".equals(voteStatus)){
+        if ("1".equals(voteStatus)) {
             //已投票更新数据
             Map<String, Object> params = new HashMap<>();
-            params.put("userId",userId);
-            params.put("reviewType",termType);
-            params.put("sfzNo",sfzNo);
+            params.put("userId", userId);
+            params.put("reviewType", termType);
+            params.put("sfzNo", sfzNo);
             reviewTermAnswerDao.updateToToupiao(params);
-        }else{
+        } else {
             //预选更新数据
-            if("add".equals(type)){
+            if ("add".equals(type)) {
                 ReviewTermAnswer answer = new ReviewTermAnswer();
                 answer.setOptionId(optionIds);
                 answer.setUserId(userId);
@@ -154,7 +165,7 @@ public class VoteFormalService extends CrudService<VoteNaireDao, VoteNaire> {
                 answer.setId(UUID.randomUUID().toString());
                 answer.setSfzNo(sfzNo);
                 reviewTermAnswerDao.insert(answer);
-            }else{
+            } else {
                 ReviewTermAnswer del = new ReviewTermAnswer();
                 del.setUserId(userId);
                 del.setReviewName(termType);
